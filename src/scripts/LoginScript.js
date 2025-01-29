@@ -1,5 +1,3 @@
-import axios from "@/api/axiosClient.js";
-
 export default {
     data() {
         return {
@@ -13,48 +11,34 @@ export default {
     methods: {
         async handleLogin() {
             this.loading = true;
-            this.error = null;
-
             try {
-                const data = await this.login(this.email, this.password);
-
-                this.$router.push("/customer-dashboard");
-            } catch (error) {
-                alert(error.response?.data?.message || "Login failed!");
-            } finally {
-                this.loading = false;
-            }
-        },
-
-        async login(email, password) {
-            try {
-                const response = await axios.post("/api/DashShoe/login", {
-                    email,
-                    password,
+                const response = await fetch("https://api.example.com/login", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        email: this.email,
+                        password: this.password,
+                    }),
                 });
 
-                const data = response.data;
+                const result = await response.json();
 
-                if (!data.access_token) {
-                    throw new Error("Access token is missing in login response!");
-                }
+                if (!response.ok) throw new Error(result.error || "Login failed");
 
-                localStorage.setItem("jwt", data.access_token);
-                localStorage.setItem("token_type", data.token_type);
-                localStorage.setItem("user_id", data.user?.C_ID);
-                localStorage.setItem("user_email", data.user?.email_address);
+                // Store token and role
+                localStorage.setItem("token", result.token);
+                localStorage.setItem("role", result.user.role);
 
-                return data;
-            } catch (error) {
-                const status = error.response?.status || "Unknown";
-
-                if ([404, 422, 401].includes(status)) {
-                    alert("Invalid username or password. Please try again.");
+                // Redirect based on role
+                if (result.user.role === "admin") {
+                    this.$router.push("/admin-dashboard");
                 } else {
-                    alert("Unexpected login error occurred!");
+                    this.$router.push("/customer-dashboard");
                 }
-
-                throw error;
+            } catch (err) {
+                this.error = err.message;
+            } finally {
+                this.loading = false;
             }
         },
     },

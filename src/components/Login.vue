@@ -1,5 +1,6 @@
 <template>
   <div class="login-wrapper">
+
     <div class="login-container">
       <h1>Login Now</h1>
       <form @submit.prevent="handleLogin">
@@ -37,18 +38,9 @@
       </form>
 
       <div class="login-links">
-        <router-link to="/register">Don’t have an account?</router-link>
-        <router-link to="/forgot-password">Forgot password?</router-link>
+        <a href="/create-account">Don’t have an account?</a>
+        <a href="/forgot-password">Forgot password?</a>
       </div>
-
-      <div v-if="error" class="error-message">{{ error }}</div>
     </div>
   </div>
 </template>
-
-<script>
-import LoginScript from "@/scripts/LoginScript.js";
-
-export default LoginScript;
-</script>
-<style src="../styles/LoginStyle.css"></style>
