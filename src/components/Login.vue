@@ -38,7 +38,7 @@
       </form>
 
       <div class="login-links">
-        <a href="/create-account">Don’t have an account?</a>
+        <router-link to="/register">Don’t have an account?</router-link>
         <a href="/forgot-password">Forgot password?</a>
       </div>
     </div>

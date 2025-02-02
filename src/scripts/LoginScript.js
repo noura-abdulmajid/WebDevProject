@@ -1,3 +1,5 @@
+import axiosClient from "../api/axiosClient";
+
 export default {
     data() {
         return {
@@ -12,20 +14,14 @@ export default {
         async handleLogin() {
             this.loading = true;
             try {
-                const response = await fetch("https://api.example.com/login", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        email: this.email,
-                        password: this.password,
-                    }),
+                const response = await axiosClient.post("/login", {
+                    email: this.email,
+                    password: this.password,
                 });
 
-                const result = await response.json();
+                const result = response.data;
 
-                if (!response.ok) throw new Error(result.error || "Login failed");
-
-                // Store token and role
+                // Store the token and role in localStorage
                 localStorage.setItem("token", result.token);
                 localStorage.setItem("role", result.user.role);
 
@@ -36,7 +32,7 @@ export default {
                     this.$router.push("/customer-dashboard");
                 }
             } catch (err) {
-                this.error = err.message;
+                this.error = err.response?.data?.message || "Login failed.";
             } finally {
                 this.loading = false;
             }
