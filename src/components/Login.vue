@@ -39,7 +39,7 @@
 
       <div class="login-links">
         <router-link to="/register">Don’t have an account?</router-link>
-        <a href="/forgot-password">Forgot password?</a>
+        <router-link to="/forgot-password">Forgot password?</router-link>
       </div>
     </div>
   </div>

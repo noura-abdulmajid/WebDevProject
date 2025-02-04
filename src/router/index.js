@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Login from "../components/Login.vue";
 import CreateAccount from "../components/CreateAccount.vue";
+import ForgotPassword from "../components/ForgotPassword.vue";
+import ResetPassword from "../components/ResetPassword.vue";
 import CustomerProfile from "../components/CustomerProfile.vue";
 import AdminDashboard from "../components/AdminDashboard.vue";
 
@@ -8,6 +10,8 @@ const routes = [
     { path: "/", redirect: "/login" },
     { path: "/login", component: Login, meta: { guestOnly: true } },
     { path: "/register", component: CreateAccount, meta: { guestOnly: true } },
+    { path: "/forgot-password", component: ForgotPassword },
+    { path: "/reset-password", component: ResetPassword },
     { path: "/admin-dashboard", component: AdminDashboard, meta: { requiresAuth: true, role: "admin" } },
     { path: "/customer-dashboard", component: CustomerProfile, meta: { requiresAuth: true, role: "customer" } },
     { path: "/forbidden", component: () => import("../components/Forbidden.vue") }, // New Forbidden Page
