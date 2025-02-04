@@ -1,6 +1,5 @@
 <template>
   <div class="login-wrapper">
-
     <div class="login-container">
       <h1>Login Now</h1>
       <form @submit.prevent="handleLogin">
@@ -41,6 +40,44 @@
         <router-link to="/register">Don’t have an account?</router-link>
         <router-link to="/forgot-password">Forgot password?</router-link>
       </div>
+
+      <div v-if="error" class="error-message">{{ error }}</div>
     </div>
   </div>
 </template>
+
+<script>
+import { login } from "@/api/users";
+
+export default {
+  data() {
+    return {
+      email: "",
+      password: "",
+      rememberMe: false,
+      loading: false,
+      error: null,
+    };
+  },
+  methods: {
+    async handleLogin() {
+      this.loading = true;
+      this.error = null;
+
+      try {
+        const data = await login(this.email, this.password);
+
+        if (data.user.role === "admin") {
+          this.$router.push("/admin-dashboard");
+        } else {
+          this.$router.push("/customer-dashboard");
+        }
+      } catch (error) {
+        this.error = error.response?.data?.message || "Login failed!";
+      } finally {
+        this.loading = false;
+      }
+    },
+  },
+};
+</script>
