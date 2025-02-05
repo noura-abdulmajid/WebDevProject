@@ -1,4 +1,4 @@
-import axios from "@/plugins/axios";
+import axios from "@/api/axios.js";
 
 export const login = async (email, password) => {
     try {

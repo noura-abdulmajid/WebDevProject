@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import { login } from "@/api/users";
+import { login } from "@/scripts/LoginScript.js";
 
 export default {
   data() {

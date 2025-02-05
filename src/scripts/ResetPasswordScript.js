@@ -1,10 +1,9 @@
-import axios from "../api/axiosClient.js";
+import axiosClient from "../api/axiosClient";
 
 export default {
     data() {
         return {
             token: "",
-            email: "",
             password: "",
             confirmPassword: "",
             loading: false,
@@ -16,8 +15,6 @@ export default {
         // Extract token from the URL
         const urlParams = new URLSearchParams(window.location.search);
         this.token = urlParams.get("token");
-        this.email = urlParams.get("email");
-
     },
     methods: {
         async handlePasswordReset() {
@@ -32,11 +29,9 @@ export default {
             }
 
             try {
-                const response = await axios.post("/api/DashShoe/reset-password", {
-                    email: this.email,
+                const response = await axiosClient.post("/reset-password", {
                     token: this.token,
                     password: this.password,
-                    password_confirmation: this.confirmPassword,
                 });
 
                 this.message = response.data.message || "Your password has been reset.";
