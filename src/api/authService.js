@@ -1,5 +1,3 @@
-import axios from "./axiosClient.js";
-
 export const registerUser = async (userData) => {
     return axios.post("/register", userData);
 };

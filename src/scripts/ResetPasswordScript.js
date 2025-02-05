@@ -1,4 +1,4 @@
-import axiosClient from "../api/axiosClient";
+import axios from "../api/axios";
 
 export default {
     data() {
@@ -29,7 +29,7 @@ export default {
             }
 
             try {
-                const response = await axiosClient.post("/reset-password", {
+                const response = await axios.post("/reset-password", {
                     token: this.token,
                     password: this.password,
                 });

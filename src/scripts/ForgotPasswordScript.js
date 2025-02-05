@@ -1,4 +1,4 @@
-import axiosClient from "../api/axiosClient";
+import axios from "../api/axios";
 
 export default {
     data() {
@@ -24,7 +24,7 @@ export default {
             }
 
             try {
-                const response = await axiosClient.post("/forgot-password", {
+                const response = await axios.post("/forgot-password", {
                     email: this.email,
                     recaptcha_token: recaptchaResponse, // Send reCAPTCHA token
                 });
