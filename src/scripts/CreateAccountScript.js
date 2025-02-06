@@ -1,44 +1,57 @@
-import { registerUser } from "../api/authService";
+import axios from "@/api/axiosClient.js";
 
 export default {
     data() {
         return {
-            name: "",
+            firstName: "",
+            surname: "",
             email: "",
             password: "",
             confirmPassword: "",
+            telNo: "",
+            shippingAddress: "",
+            billingAddress: "",
             loading: false,
-            error: null,
-            success: null,
+            error: "",
+            success: "",
         };
     },
     methods: {
         async handleRegister() {
-            this.error = null;
-            this.success = null;
+            this.loading = true;
+            this.error = "";
+            this.success = "";
 
-            // Validate Password Match
             if (this.password !== this.confirmPassword) {
                 this.error = "Passwords do not match.";
+                this.loading = false;
                 return;
             }
 
-            this.loading = true;
-
             try {
-                await registerUser({
-                    name: this.name,
-                    email: this.email,
+                const registrationData = {
+                    first_name: this.firstName,
+                    surname: this.surname,
+                    email_address: this.email,
                     password: this.password,
-                });
+                    tel_no: this.telNo,
+                    shipping_address: this.shippingAddress,
+                    billing_address: this.billingAddress,
+                    date_joined: new Date().toISOString(),
+                };
 
-                this.success = "Your account has been created successfully!";
-                setTimeout(() => {
-                    this.$router.push("/login"); // Redirect to login page after success
-                }, 2000);
-            } catch (err) {
-                this.error = err.response?.data?.message || "Registration failed.";
-            } finally {
+                const response = await axios.post("/api/DashShoe/register", registrationData);
+
+                if (response.status === 201 && response.data.message === "Customer registered successfully") {
+                    alert("Customer registered successfully!");
+                    this.$router.push("/login");
+                } else {
+                    this.error = "Unexpected server response.";
+                }
+
+                this.loading = false;
+            } catch (e) {
+                this.error = e.response?.data?.message || "An error occurred.";
                 this.loading = false;
             }
         },

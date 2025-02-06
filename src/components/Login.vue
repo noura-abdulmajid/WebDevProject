@@ -47,37 +47,8 @@
 </template>
 
 <script>
-import { login } from "@/scripts/LoginScript.js";
+import LoginScript from "@/scripts/LoginScript.js";
 
-export default {
-  data() {
-    return {
-      email: "",
-      password: "",
-      rememberMe: false,
-      loading: false,
-      error: null,
-    };
-  },
-  methods: {
-    async handleLogin() {
-      this.loading = true;
-      this.error = null;
-
-      try {
-        const data = await login(this.email, this.password);
-
-        if (data.user.role === "admin") {
-          this.$router.push("/admin-dashboard");
-        } else {
-          this.$router.push("/customer-dashboard");
-        }
-      } catch (error) {
-        this.error = error.response?.data?.message || "Login failed!";
-      } finally {
-        this.loading = false;
-      }
-    },
-  },
-};
+export default LoginScript;
 </script>
+<style src="../styles/LoginStyle.css"></style>

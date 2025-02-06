@@ -15,8 +15,7 @@
           />
         </div>
 
-        <!-- Google reCAPTCHA -->
-        <div class="g-recaptcha" data-sitekey="your-site-key"></div>
+        <div id="recaptcha-container"></div>
 
         <button type="submit" class="reset-button" :disabled="loading">
           {{ loading ? "Sending Reset Link..." : "Send Reset Link" }}
