@@ -1,4 +1,4 @@
-import axiosClient from "../api/axiosClient";
+import axios from "@/api/axiosClient.js";
 
 export default {
     data() {
@@ -13,28 +13,48 @@ export default {
     methods: {
         async handleLogin() {
             this.loading = true;
+            this.error = null;
+
             try {
-                const response = await axiosClient.post("/login", {
-                    email: this.email,
-                    password: this.password,
-                });
+                const data = await this.login(this.email, this.password);
 
-                const result = response.data;
-
-                // Store the token and role in localStorage
-                localStorage.setItem("token", result.token);
-                localStorage.setItem("role", result.user.role);
-
-                // Redirect based on role
-                if (result.user.role === "admin") {
-                    this.$router.push("/admin-dashboard");
-                } else {
-                    this.$router.push("/customer-dashboard");
-                }
-            } catch (err) {
-                this.error = err.response?.data?.message || "Login failed.";
+                this.$router.push("/customer-dashboard");
+            } catch (error) {
+                alert(error.response?.data?.message || "Login failed!");
             } finally {
                 this.loading = false;
+            }
+        },
+
+        async login(email, password) {
+            try {
+                const response = await axios.post("/api/DashShoe/login", {
+                    email,
+                    password,
+                });
+
+                const data = response.data;
+
+                if (!data.access_token) {
+                    throw new Error("Access token is missing in login response!");
+                }
+
+                localStorage.setItem("jwt", data.access_token);
+                localStorage.setItem("token_type", data.token_type);
+                localStorage.setItem("user_id", data.user?.C_ID);
+                localStorage.setItem("user_email", data.user?.email_address);
+
+                return data;
+            } catch (error) {
+                const status = error.response?.status || "Unknown";
+
+                if ([404, 422, 401].includes(status)) {
+                    alert("Invalid username or password. Please try again.");
+                } else {
+                    alert("Unexpected login error occurred!");
+                }
+
+                throw error;
             }
         },
     },
