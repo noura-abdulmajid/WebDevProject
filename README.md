@@ -81,5 +81,20 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 - php artisan serve
   Start a local development server at `http://127.0.0.1:8000`.
 - lsof -i :8000
-  Check which process is using port 8000 and resolve conflicts if php artisan serve fails.
+  Check which process is using port 8000 and resolve conflicts if php artisan serve fails. 
+- curl -X GET -H "Accept: application/json" http://127.0.0.1:8080/api/DashShoe/test
+
+## Startup instructions
+First, in .env
+CACHE_STORE=database
+change
+CACHE_STORE=file
+If there is no vendor folder, it must be installed
+composer install --no-dev --optimize-autoloader
+and clear the cache
+php artisan config:clear
+php artisan cache:clear
+php artisan config:cache
+Then change cache_store back.
+CACHE_STORE=database
 

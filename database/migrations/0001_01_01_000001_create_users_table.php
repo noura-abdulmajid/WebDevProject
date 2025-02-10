@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('first_name');
             $table->string('surname');
             $table->string('email_address')->unique();
+            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->unsignedBigInteger('tel_no')->nullable();
             $table->text('shipping_address')->nullable();

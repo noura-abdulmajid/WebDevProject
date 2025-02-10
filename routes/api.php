@@ -4,6 +4,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\ForgetPasswordController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MessageController;
+use App\Http\Controllers\SiteReviewController;
 
 Route::prefix('DashShoe')->group(function () {
 
@@ -30,6 +32,10 @@ Route::prefix('DashShoe')->group(function () {
             return response()->json(['message' => 'Admin Test Route Works!']);
         })->name('admin.test');
     });
+    //Contact
+    Route::post('/contact-us', [MessageController::class, 'store'])->name('contact_us');
+    //Site
+    Route::post('/site-review', [SiteReviewController::class, 'store'])->name('site_review');
 
     // Test route
     Route::get('test', function () {
