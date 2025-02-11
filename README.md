@@ -67,6 +67,8 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 
 
 ## Useful Commands
+
+
 - php artisan migrate
   Run all migration files to create or modify database tables.
 
@@ -85,6 +87,8 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 - curl -X GET -H "Accept: application/json" http://127.0.0.1:8080/api/DashShoe/test
 
 ## Startup instructions
+rm -rf vendor
+rm composer.lock
 First, in .env
 CACHE_STORE=database
 change
