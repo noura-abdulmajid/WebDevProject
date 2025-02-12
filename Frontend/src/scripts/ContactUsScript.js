@@ -3,14 +3,21 @@ import axios from "@/api/axiosClient.js";
 export default {
     data() {
         return {
-            firstName: "",
-            lastName: "",
-            email: "",
-            message: "",
+            formData: {
+                firstName: "",
+                lastName: "",
+                email: "",
+                message: "",
+            },
             loading: false,
             error: "",
             success: "",
         };
+    },
+    mounted() {
+        if (!this.formData || !this.formData.firstName) {
+            this.resetForm();
+        }
     },
     methods: {
         async submitForm() {
@@ -18,67 +25,76 @@ export default {
             this.error = "";
             this.success = "";
 
-            if (!this.firstName || !this.lastName || !this.email || !this.message) {
-                this.error = "All fields are required.";
-                alert(this.error);
-                this.loading = false;
+            if (!this.validateForm()) {
+                this.handleError("All fields are required.");
                 return;
             }
 
             try {
-                const headers = {
-                    "Content-Type": "application/json",
-                };
-
-                const formData = {
-                    first_name: this.firstName,
-                    last_name: this.lastName,
-                    email: this.email,
-                    message: this.message,
-                };
-
-                const response = await axios.post("/DashShoe/contact-us", formData, { headers });
+                const response = await axios.post("/DashShoe/contact-us", this.formatFormData(), {
+                    headers: { "Content-Type": "application/json" },
+                });
 
                 if (response.status === 200 && response.data.success) {
-                    const successMessage = response.data.message || "Your form has been submitted successfully.";
-                    alert(successMessage);
-                    this.success = successMessage;
-                    this.resetForm();
+                    this.handleSuccess(response.data.message || "Your form has been submitted successfully.");
                 } else {
-                    const errorMessage = response.data.message || "Unexpected server response.";
-                    alert(errorMessage);
-                    this.error = errorMessage;
+                    this.handleError(response.data.message || "Unexpected server response.");
                 }
             } catch (e) {
-                if (e.response) {
-                    if (e.response.status === 422) {
-                        const validationMessage = "Validation failed. Please check your input.";
-                        alert(validationMessage);
-                        this.error = validationMessage;
-                        this.validationErrors = e.response.data.errors || {};
-                    } else if (e.response.status === 500) {
-                        const serverErrorMessage = e.response.data.message || "A server error occurred. Please try again later.";
-                        alert(serverErrorMessage);
-                        this.error = serverErrorMessage;
-                    } else {
-                        const genericErrorMessage = e.response.data.message || "An error occurred. Please try again.";
-                        alert(genericErrorMessage);
-                        this.error = genericErrorMessage;
-                    }
-                } else {
-                    const networkErrorMessage = "A network error occurred. Please check your connection and try again.";
-                    alert(networkErrorMessage);
-                    this.error = networkErrorMessage;
-                }
+                this.handleRequestError(e);
             } finally {
                 this.loading = false;
             }
         },
+        validateForm() {
+            const { firstName, lastName, email, message } = this.formData;
+            return firstName && lastName && email && message;
+        },
+        formatFormData() {
+            const { firstName, lastName, email, message } = this.formData;
+            return {
+                first_name: firstName,
+                last_name: lastName,
+                email: email,
+                message: message,
+            };
+        },
+        handleSuccess(message) {
+            alert(message);
+            this.success = message;
+            this.resetForm();
+        },
+        handleError(message) {
+            alert(message);
+            this.error = message;
+            this.loading = false;
+        },
+        handleRequestError(e) {
+            if (e.response) {
+                const status = e.response.status;
+                const errorMessage = e.response.data.message || "An error occurred. Please try again.";
+                switch (status) {
+                    case 422:
+                        this.handleError("Validation failed. Please check your input.");
+                        break;
+                    case 500:
+                        this.handleError(errorMessage || "A server error occurred. Please try again later.");
+                        break;
+                    default:
+                        this.handleError(errorMessage);
+                        break;
+                }
+            } else {
+                this.handleError("A network error occurred. Please check your connection and try again.");
+            }
+        },
         resetForm() {
-            this.firstName = "";
-            this.lastName = "";
-            this.email = "";
-            this.message = "";
+            this.formData = {
+                firstName: "",
+                lastName: "",
+                email: "",
+                message: "",
+            };
         },
     },
 };
