@@ -3,7 +3,6 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\Models\ProductReview;
 
 return new class extends Migration
 {
@@ -12,15 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        //Table to hold product reviews.
-        Schema::create('product_reviews', function (Blueprint $table) {
+        Schema::create('cart', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('product_id');
-            $table->unsignedBigInteger('customer_id');
-            $table->text('title');
-            $table->integer('rating');
-            $table->text('review_body');
             $table->timestamps();
+            $table->integer('product_id');
+            $table->integer('size');
+            $table->integer('quantity');
+            $table->integer('price');
         });
     }
 
@@ -29,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('product_reviews');
+        Schema::dropIfExists('cart');
     }
 };

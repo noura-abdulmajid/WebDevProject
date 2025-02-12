@@ -7,7 +7,7 @@
     @foreach ($products as $product)
         <h2> <a href=" {{route('products.show', $product->id)}}">{{ $product->name }}</a></h2>
         <p> {{ $product ->photo}}</p>
-        <p>{{ $product -> price }}</p>
+        <p>£{{ $product -> price }}</p>
         <img src="{{asset('images/shoes/'.$product->photo_ref)}}" width = "150px" height="150px" alt = "Image">
 
     @endforeach

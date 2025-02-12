@@ -1,9 +1,9 @@
+
 <?php
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\Models\ProductReview;
 
 return new class extends Migration
 {
@@ -12,14 +12,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        //Table to hold product reviews.
-        Schema::create('product_reviews', function (Blueprint $table) {
+        //Table to store favourite items for each customer
+        Schema::create('favourites', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('customer_id');
-            $table->text('title');
-            $table->integer('rating');
-            $table->text('review_body');
+            $table->unsignedBigInteger('product_id');
             $table->timestamps();
         });
     }
@@ -29,6 +26,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('product_reviews');
+        Schema::dropIfExists('favourites');
     }
 };
+
+

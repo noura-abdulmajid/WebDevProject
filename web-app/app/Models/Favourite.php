@@ -4,10 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ProductReview extends Model
+class Favourite extends Model
 {
+    protected $table = 'favourites';
     //
-    protected $table = 'product_reviews';
-
-
 }

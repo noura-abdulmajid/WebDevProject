@@ -18,7 +18,7 @@ return new class extends Migration
             $table->text('description');
             $table->set('categories', ['boots', 'trainers', 'sandals', 'loafers', 'workwear', 'smart shoes', 'occassionwear']);
             $table->set('colours', ['blue', 'green', 'red', 'yellow', 'purple', 'white', 'black', 'pink', 'neutral', 'brown', 'tan']);
-            $table->binary('photo');
+            $table->text('photo_ref');
             $table->set('sizes', [3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9]);
             $table->decimal('price', 9, 2);
             $table->boolean('sustainability');
