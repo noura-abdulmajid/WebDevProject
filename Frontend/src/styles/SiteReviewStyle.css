@@ -1,0 +1,79 @@
+body {
+    font-family: "Roboto", sans-serif;
+    background: linear-gradient(to right, #e6c9a8, #f0d5b7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    width: 95%;
+    max-width: 500px;
+    text-align: center;
+    margin: auto;
+}
+
+.wrapper {
+    padding: 30px;
+    background: #fff;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    border-radius: 15px;
+    width: 100%;
+}
+
+.form-review {
+    text-align: left;
+    margin-bottom: 25px;
+}
+
+.form-review label {
+    display: block;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.form-review input {
+    width: calc(100% - 20px);
+    padding: 14px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+    margin: 0 auto;
+    display: block;
+}
+
+.star-rating {
+    display: flex;
+    justify-content: center;
+    font-size: 30px;
+    gap: 10px;
+    cursor: pointer;
+    color: #ddd;
+    transition: color 0.3s ease;
+}
+
+.star-rating .star:hover,
+.star-rating .star:hover ~ .star {
+    color: gold;
+}
+
+button {
+    width: 100%;
+    padding: 14px;
+    font-size: 18px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+}

@@ -1,0 +1,145 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.contact-body {
+    background-color: #D4CEC5;
+    font-size: 20px;
+    font-family: "Roboto", sans-serif;
+    text-align: center;
+    position: relative;
+}
+
+.contact-logo {
+    width: 250px;
+    height: auto;
+    position: absolute;
+    top: 20px;
+    left: 10px;
+}
+
+.contact-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 60px 60px 40px 60px;
+    margin-bottom: 20px;
+}
+
+.contact-wrapper {
+    background-color: whitesmoke;
+    max-width: 800px;
+    width: 100%;
+    border-radius: 20px;
+    padding: 20px;
+}
+
+.contact-header h1 {
+    font-size: xx-large;
+    margin-bottom: 20px;
+}
+
+.contact-split {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.contact-form-split {
+    flex: 1;
+    width: 100%;
+}
+
+.contact-label {
+    display: block;
+    margin-bottom: 20px;
+    font-size: 1em;
+}
+
+.contact-input[type="text"],
+.contact-input[type="email"],
+.contact-textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    font-size: large;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+}
+
+.contact-textarea {
+    resize: vertical;
+    width: 100%;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+
+.contact-button {
+    background-color: #D4CEC5;
+    padding: 10px 20px;
+    font-size: large;
+    cursor: pointer;
+    width: 290px;
+}
+
+.contact-required {
+    color: black;
+    font-size: medium;
+}
+
+.contact-form-review {
+    padding: 40px;
+}
+
+.contact-rating {
+    padding: 30px;
+}
+
+.contact-star {
+    cursor: pointer;
+    font-size: large;
+    width: 290px;
+}
+
+@media (max-width: 768px) {
+    .contact-body {
+        font-size: 16px;
+    }
+
+    .contact-container {
+        padding: 20px;
+    }
+
+    .contact-wrapper {
+        padding: 15px;
+    }
+
+    .contact-header h1 {
+        font-size: x-large;
+    }
+
+    .contact-split {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .contact-button {
+        width: 100%;
+    }
+
+    .contact-form-review {
+        padding: 20px;
+    }
+
+    .contact-rating {
+        padding: 15px;
+    }
+
+    .contact-star {
+        width: 100%;
+    }
+}

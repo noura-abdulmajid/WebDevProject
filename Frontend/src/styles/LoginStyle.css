@@ -1,0 +1,136 @@
+/* Centering Wrapper */
+.login-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 450px;
+}
+
+/* Ensure Form Labels are Left-Aligned */
+.form-group {
+  width: 100%;
+  text-align: left;
+  margin-bottom: 10px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: bold;
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 5px;
+  text-align: left; /* Left-align text */
+}
+
+/* Login Container */
+.login-container {
+  width: 100%;
+  padding: 30px;
+  border-radius: 12px;
+  background-color: white;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Input Fields */
+.input-field {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+  background-color: #f9f9f9;
+  margin-top: 5px;
+}
+
+/* Remember Me */
+.remember-me {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.remember-me input {
+  margin-right: 8px;
+}
+
+/* Login Button */
+.login-button {
+  width: 100%;
+  padding: 14px;
+  margin-top: 15px;
+  background: linear-gradient(135deg, #42a5f5, #1e88e5);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.login-button:hover {
+  background: linear-gradient(135deg, #2196f3, #1565c0);
+}
+
+/* Links (Forgot Password & Create Account) */
+.login-links {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  width: 100%;
+  margin-top: 15px;
+}
+
+.login-links a {
+  color: #1565c0;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.login-links a:hover {
+  text-decoration: underline;
+}
+
+/* Footer Text */
+.footer-text {
+  font-size: 12px;
+  color: #666;
+  margin-top: 10px;
+}
+
+.footer-text a {
+  color: #1565c0;
+  text-decoration: none;
+}
+
+.footer-text a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .login-container {
+    width: 90%;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-container {
+    width: 95%;
+  }
+
+  .input-field {
+    font-size: 14px;
+  }
+
+  .login-button {
+    font-size: 16px;
+  }
+}
