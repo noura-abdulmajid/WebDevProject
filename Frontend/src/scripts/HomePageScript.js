@@ -1,3 +1,5 @@
+import axios from "axios";
+
 export default {
     data() {
         return {
@@ -20,8 +22,30 @@ export default {
             this.carouselIndex =
                 (this.carouselIndex - 1 + this.images.length) % this.images.length;
         },
+        async logHomeVisit() {
+            try {
+                await axios.post(
+                    "http://127.0.0.1:8000/api/DashShoe/log-visit",
+                    {
+                        page: "Homepage-page",
+                        timestamp: new Date().toISOString(),
+                    },
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    }
+                );
+            } catch (error) {
+                console.error("Failed to log user visit:", error);
+            }
+        },
+
     },
     mounted() {
+
         setInterval(this.nextImage, 3000);
+
+        this.logHomeVisit();
     },
 };

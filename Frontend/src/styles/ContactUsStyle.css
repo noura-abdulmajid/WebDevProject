@@ -6,22 +6,10 @@ body {
     font-family: 'Roboto', sans-serif;
 }
 
-header {
-    padding: 20px;
-    background-color: #d4cec5;
-}
-
 .logo-container {
     width: 200px;
     padding: 20px;
 }
-
-.logo {
-    margin-left: -700px;
-    max-width: 200px;
-    height: auto;
-}
-
 
 .main-container {
     width: 1000px;
@@ -31,7 +19,6 @@ header {
     gap: 30px;
     height: auto;
 }
-
 
 .form-container {
     flex: 1;

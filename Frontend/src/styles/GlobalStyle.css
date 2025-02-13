@@ -7,13 +7,22 @@
     box-sizing: border-box;
 }
 
-body, html {
-    min-height: 100vh;
+html, body {
     margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100vh;
+    background: var(--background-color);
+    font-family: var(--font-family);
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--background-color);
-    font-family: var(--font-family);
-    overflow: auto;
+}
+
+.main-container {
+    width: 100%;
+    max-width: 1320px;
+    min-height: 100vh;
+    margin: 0 auto;
+    background: white;
 }
