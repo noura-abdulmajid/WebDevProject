@@ -20,7 +20,7 @@ export default {
 
                 this.$router.push("/customer-dashboard");
             } catch (error) {
-                alert(error.response?.data?.message || "Login failed!");
+                //alert(error.response?.data?.message || "Login failed!");
             } finally {
                 this.loading = false;
             }

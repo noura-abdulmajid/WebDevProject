@@ -5,12 +5,13 @@ import Fix from "@/components/Fix.vue";
 import CreateAccount from "@/components/CreateAccount.vue";
 import ForgotPassword from "@/components/ForgotPassword.vue";
 import ResetPassword from "@/components/ResetPassword.vue";
-import CustomerProfile from "@/components/CustomerProfile.vue";
 import AdminDashboard from "@/components/AdminDashboard.vue";
 import ContactUs from "@/components/ContactUs.vue";
 import SiteReview from "@/components/SiteReview.vue";
 import AdminUsers from "@/components/AdminUsers.vue";
 import AdminProducts from "@/components/AdminProducts.vue";
+import AdminCustomers from "@/components/AdminCustomers.vue";
+import AdminCustomerProfile from "@/components/AdminCustomerProfile.vue";
 import AdminOrders from "@/components/AdminOrders.vue";
 import AdminSettings from "@/components/AdminSettings.vue";
 import Forbidden from "@/components/Forbidden.vue";
@@ -20,6 +21,8 @@ import MenCollection from "@/components/MenCollection.vue";
 import WomenCollection from "@/components/WomenCollection.vue";
 import ShoppingCart from "@/components/ShoppingCart.vue";
 import Checkout from "@/components/Checkout.vue";
+// ✅ Customer Pages (Require Authentication)
+import CustomerProfile from "@/components/CustomerProfile.vue";
 
 
 const routes = [
@@ -42,11 +45,14 @@ const routes = [
     {path: "/forbidden", component: Forbidden},
     {path: "/admin-login", component: AdminLogin, meta: {guest: true}},
 
-    {path: "/admin-dashboard", component: AdminDashboard, meta: {requiresAuth: true, role: "admin"}},
-    {path: "/admin-users", component: AdminUsers, meta: {requiresAuth: true, role: "admin"}},
-    {path: "/admin-products", component: AdminProducts, meta: {requiresAuth: true, role: "admin"}},
-    {path: "/admin-orders", component: AdminOrders, meta: {requiresAuth: true, role: "admin"}},
-    {path: "/admin-settings", component: AdminSettings, meta: {requiresAuth: true, role: "admin"}},
+    {path: "/admin-dashboard", component: AdminDashboard, meta: {requiresAuth: true, role: ["admin", "super_admin"]}},
+    {path: "/admin-users", component: AdminUsers, meta: {requiresAuth: true, role: ["admin", "super_admin"]}},
+    {path: "/admin-products", component: AdminProducts, meta: {requiresAuth: true, role: ["admin", "super_admin"]}},
+    {path: "/admin-orders", component: AdminOrders, meta: {requiresAuth: true, role: ["admin", "super_admin"]}},
+    {path: "/admin-settings", component: AdminSettings, meta: {requiresAuth: true, role: ["admin", "super_admin"]}},
+    {path: "/admin-customers", component: AdminCustomers, meta: {requiresAuth: true, role: ["admin", "super_admin"]}},
+    {path: "/admin-customers/:id", component: AdminCustomerProfile, meta: {requiresAuth: true, role: ["admin", "super_admin"]}},
+
 
     {path: "/customer-dashboard", component: CustomerProfile, meta: {requiresAuth: true, role: "customer"}},
 
@@ -61,19 +67,34 @@ router.beforeEach((to, from, next) => {
     const token = localStorage.getItem("jwt");
     let role = null;
 
+    console.log("Navigating to: " + to.path);
+    console.log("Route meta.requiresAuth: " + to.meta.requiresAuth);
+    console.log("Token status: " + (token ? "Exists" : "Missing"));
+
     if (token) {
         try {
-            const payload = JSON.parse(atob(token.split('.')[1]));
+            const tokenParts = token.split('.');
+            if (tokenParts.length !== 3) {
+                throw new Error("Invalid JWT structure, expected 3 parts.");
+            }
+
+            const payload = JSON.parse(atob(tokenParts[1])); // 解碼 payload
+            console.log("Decoded Payload:", payload);
+
             if (payload.exp * 1000 > Date.now()) {
                 role = payload.role;
             } else {
-                localStorage.removeItem("jwt"); // Remove expired token
+                console.warn("Token expired. Removing token...");
+                localStorage.removeItem("jwt");
+                alert("Your session has expired. Please login again.");
             }
         } catch (e) {
-            console.error("Invalid JWT:", e);
+            console.error("Invalid JWT token:", e.message);
             localStorage.removeItem("jwt");
         }
     }
+
+
 
     if (to.meta.requiresAuth && !token) {
         alert("Please log in to access this page.");
