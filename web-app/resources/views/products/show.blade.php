@@ -1,5 +1,11 @@
 <x-layout>
 
+    <!--
+    tutorial credits for product display and pagination: https://www.youtube.com/watch?v=Yi1NfLkflyU
+    tutorial credits for displaying product images: https://www.youtube.com/watch?v=IHrlw_5DGtk
+    tutorial credits for retrieving information from a form: https://www.youtube.com/watch?v=Yi1NfLkflyU
+    -->
+
     <!-- details for this product are displayed here -->
     <h1> {{$product->name}}</h1>
     <img src="{{asset('images/shoes/'.$product->photo_ref)}}" width = "400px" height="400px" alt = "Image">
@@ -21,6 +27,7 @@
 
 
     <!-- Form to review product -->
+
     <br><h4>Review product</h4>
     <form method = "post" action ="{{route('products.save_review', $product->id)}}">
         @csrf

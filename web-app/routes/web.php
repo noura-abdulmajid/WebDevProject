@@ -5,6 +5,7 @@ use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
 use App\Http\Controllers\ProductController;
+use function Pest\Laravel\get;
 use function Pest\Laravel\post;
 
 Route::get('/', function () {
@@ -23,6 +24,27 @@ Route::post('/products/{id}/save', [ProductController::class, 'save_review'])
     -> name('products.save_review');
 
 
-
 Route::post('/products/{id}/favourite', [ProductController::class, 'favourite'])
     -> name('products.favourite');
+
+
+Route::get("/products/search", [ProductController::class, 'search'])
+    -> name('products.search');
+
+
+/*
+Route::get("sort_products", [ProductController::class, 'sort'])
+    -> name('products.sort');
+*/
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

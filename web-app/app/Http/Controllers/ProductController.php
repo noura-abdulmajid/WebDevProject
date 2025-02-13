@@ -7,13 +7,32 @@ use App\Models\Favourite;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Route;
+use App\Models\Category;
+use Illuminate\Database\Eloquent\Collection;
 
-class ProductController extends Controller
-{
+/*
+ * tutorial credits for search functionality: https://www.youtube.com/watch?v=R58XZ8pAXoE
+ * tutorial credits for product display and pagination: https://www.youtube.com/watch?v=Yi1NfLkflyU
+ * tutorial credits for displaying product images: https://www.youtube.com/watch?v=IHrlw_5DGtk
+ * tutorial credits for retrieving information from a form: https://www.youtube.com/watch?v=Yi1NfLkflyU
+ */
+
+class ProductController extends Controller {
     //displays all products
+
     public function index() {
 
-        return view('products.index', ['products' => Product::paginate(10)]);
+        $products = Product::orderBy('created_at', 'DESC');
+
+        //check if there is a search
+        //if there is, query database using search value
+        if(request()->has('search')) {
+            $products = $products->where('name', 'like', '%' . request()->get('search','') . '%');
+        }
+
+        return view('products.index', ['products' => $products->paginate(10)]);
+
     }
 
     //displays page for an individual item
@@ -58,4 +77,13 @@ class ProductController extends Controller
         return redirect()->route('products.show', $favourite->product_id);
 
     }
+
+
+
+    /*
+    public function sort(Request $request) {
+
+    }
+
+    */
 }
