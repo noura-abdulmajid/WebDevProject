@@ -1,9 +1,9 @@
 <script setup>
-import summarypage from './components/summary page.vue'
+import shoppingcart from './components/summary page.vue'
 </script>
 
 <template>
-<summarypage/>
+<shoppingcart/>
 </template>
 
 <style scoped>
