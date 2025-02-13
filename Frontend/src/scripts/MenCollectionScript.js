@@ -93,13 +93,11 @@ export default {
             }
 
             Cookies.set("cart", JSON.stringify(cart), { expires: 7 });
-
-            this.cartCount = cart.reduce((total, item) => total + item.quantity, 0);
+            this.cartCount = cart.length;
         },
-
         updateCartCountFromCookie() {
             const cart = JSON.parse(Cookies.get("cart") || "[]");
-            this.cartCount = cart.reduce((total, item) => total + item.quantity, 0);
+            this.cartCount = cart.length;
         },
     },
     mounted() {
