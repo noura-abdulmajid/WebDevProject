@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart;
 use App\Models\ProductReview;
 use App\Models\Favourite;
 use Illuminate\Http\Request;
@@ -107,6 +108,24 @@ class ProductController extends Controller {
         $favourite->save(); //New favourite gets saved in the database.
         return redirect()->route('products.show', $favourite->product_id);
 
+    }
+
+    //Functionality to add purchased product to Cart (via adding it into cart table)
+    public function add_to_cart (Request $request) {
+        $cart = new Cart;
+
+        $product = Product::find($request -> input('product_id'));
+
+
+        $cart -> product_id = $request -> input('product_id');
+        $cart -> size = $request -> input('size');
+        $cart -> colour = $request -> input('colour');
+        $cart -> quantity = 1; //will have to cause this to increment
+        $cart -> price = $product -> price;
+
+        //add to cart
+        $cart -> save();
+        return redirect()->route('products.show', $cart -> product_id);
     }
 
 }

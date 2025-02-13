@@ -13,20 +13,14 @@
     <!-- product search functionality -->
     <!-- search bar -->
 
-    <div class="card">
-        <div class="card-header pb-0 border-0">
-            <h5 class="">Search</h5>
-        </div>
-        <div class="card-body">
-            <form action="{{route('products.index')}}" method="GET">
-                @csrf
-                <input name = "search" placeholder="..." class="form-control w-100" type="text" id="search">
-                <button class="btn btn-dark mt-2"> Search </button>
+    <h5>Search</h5>
+    <form action="{{route('products.index')}}" method="GET">
+        @csrf
+        <input name = "search" placeholder="..." type="text" id="search">
+        <button> Search </button>
 
 
-            </form>
-        </div>
-    </div>
+    </form>
 
     <!-- search results-->
     <div id="searchresult"></div>
@@ -36,7 +30,7 @@
     <form method="GET" action="{{route('products.index')}}">
         @csrf
         <!-- <input type="hidden" name="url" id="url" value="{$url}}"> -->
-        <select class="select-box select-box--transparent-b-2" name="sort" id="sort">  <!-- select element defines drop down list -->
+        <select name="sort" id="sort">  <!-- select element defines drop down list -->
             <option selected>Sort By: Newest Items</option>
             <option value = "lowest_price">Sort By: Price, low to high</option>
             <option value = "highest_price">Sort By: Price, high to low</option>
@@ -44,7 +38,7 @@
             <option value = "least_recently_added">Sort By: Least recently added</option>
             <option value = "top_sustainability">Top sustainability picks</option>
         </select>
-        <button class ="btn btn-dark mt-2"> Sort </button>
+        <button> Sort </button>
     </form>
 
 
@@ -57,7 +51,7 @@
     @foreach ($products as $product)
         <h2> <a href=" {{route('products.show', $product->id)}}">{{ $product->name }}</a></h2>
         <p> {{ $product ->photo}}</p>
-        <p>£{{ $product -> price }}</p>
+        <p> £{{ $product -> price }}</p>
         <img src="{{asset('images/shoes/'.$product->photo_ref)}}" width = "150px" height="150px" alt = "Image">
 
     @endforeach
