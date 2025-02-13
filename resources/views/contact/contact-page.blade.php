@@ -16,7 +16,7 @@
 
     <div class="logo">
 
-        <img src="{{ asset('images/logo.png') }}">
+        <img src="{{ asset('images/logo.png') }}" alt="logo">
 
     </div>
 

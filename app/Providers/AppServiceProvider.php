@@ -2,10 +2,12 @@
 
 namespace App\Providers;
 
+use App\Models\Customer;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
+use Laravel\Cashier\Cashier;
 
 
 class AppServiceProvider extends ServiceProvider
@@ -23,6 +25,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Cashier::useCustomerModel(Customer::class);
         // Check whether the database test status has been recorded in the cache
         if (!Cache::has('db_tested')) {
             try {

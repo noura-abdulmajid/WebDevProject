@@ -14,12 +14,12 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class);
+            //$table->foreignIdFor(User::class);
             $table->dateTime('order_date');
             $table->text('shipping_address');
-            $table->double('subtotal');
-            $table->double('delivery_charge');
-            $table->double('total_payment');
+            $table->decimal('subtotal', 6, 2);
+            $table->decimal('delivery_charge', 6, 2);
+            $table->decimal('total_payment', 6, 2);
             //$table->set('payment_status');
             $table->timestamps();
         });
