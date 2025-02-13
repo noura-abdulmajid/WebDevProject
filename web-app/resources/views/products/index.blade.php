@@ -33,6 +33,22 @@
 
 
     <!-- product sort functionality -->
+    <form method="GET" action="{{route('products.index')}}">
+        @csrf
+        <!-- <input type="hidden" name="url" id="url" value="{$url}}"> -->
+        <select class="select-box select-box--transparent-b-2" name="sort" id="sort">  <!-- select element defines drop down list -->
+            <option selected>Sort By: Newest Items</option>
+            <option value = "lowest_price">Sort By: Price, low to high</option>
+            <option value = "highest_price">Sort By: Price, high to low</option>
+            <option value = "recently_added">Sort By: Recently added</option>
+            <option value = "least_recently_added">Sort By: Least recently added</option>
+            <option value = "top_sustainability">Top sustainability picks</option>
+        </select>
+        <button class ="btn btn-dark mt-2"> Sort </button>
+    </form>
+
+
+
 
 
 

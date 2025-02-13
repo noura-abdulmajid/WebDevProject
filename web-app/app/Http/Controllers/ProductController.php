@@ -19,23 +19,52 @@ use Illuminate\Database\Eloquent\Collection;
  */
 
 class ProductController extends Controller {
-    //displays all products
 
+    //Displays product index page (main product page)
     public function index() {
 
-        $products = Product::orderBy('created_at', 'DESC');
+        //Products are displayed ordered by lowest price by default
+        $products = Product::orderBy('price', 'ASC');
 
-        //check if there is a search
-        //if there is, query database using search value
+        //SEARCH FUNCTIONALITY
+        //check if there is a search request: if there is, query database using search value
         if(request()->has('search')) {
             $products = $products->where('name', 'like', '%' . request()->get('search','') . '%');
         }
 
+        //SORT FUNCTIONALITY
+        //check if there is a sort request, if there is, order items depending on selected option
+        if(request()->has('sort')) {
+
+            switch (request()->get('sort')) {
+                case 'recently_added':
+                    $products = Product::orderBy('created_at', 'DESC');
+                    break;
+                case 'least_recently_added':
+                    $products = Product::orderBy('created_at', 'ASC');
+                    break;
+                case 'lowest_price':
+                    $products = Product::orderBy('price', 'ASC');
+                    break;
+                case 'highest_price':
+                    $products = Product::orderBy('price', 'DESC');
+                    break;
+                case 'top_sustainability':
+                    $products = Product::orderBy('sustainability', 'DESC');
+                    break;
+                default:
+                    $products = Product::orderBy('price', 'DESC');
+                    break;
+            }
+
+        }
+
+        //return view with X products per page
         return view('products.index', ['products' => $products->paginate(10)]);
 
     }
 
-    //displays page for an individual item
+    //Displays page showing details for an individual item
     public function show(string $id) {
 
         $product = Product::find($id);
@@ -49,6 +78,7 @@ class ProductController extends Controller {
         return view('products.show', $data);
     }
 
+    //Functionality to save individual product reviews
     public function save_review (Request $request)  {
 
         $productReview = new ProductReview;
@@ -64,6 +94,7 @@ class ProductController extends Controller {
 
     }
 
+    //Functionality to add item to favourites
     public function favourite (Request $request) {
 
         $favourite = new Favourite;
@@ -78,12 +109,4 @@ class ProductController extends Controller {
 
     }
 
-
-
-    /*
-    public function sort(Request $request) {
-
-    }
-
-    */
 }
