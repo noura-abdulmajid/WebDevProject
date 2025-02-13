@@ -6,9 +6,14 @@ use App\Http\Controllers\ForgetPasswordController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\SiteReviewController;
+use App\Http\Controllers\LogVisitController;
+use App\Http\Controllers\CheckoutController;
 
 Route::prefix('DashShoe')->group(function () {
-
+    //Visit
+    Route::post('/log-visit', [LogVisitController::class, 'visit'])->name('visit');
+    //Checkout
+    Route::post('/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
     // User routes
     Route::post('register', [AuthController::class, 'register'])->name('register');
     Route::post('login', [AuthController::class, 'login'])->name('login');

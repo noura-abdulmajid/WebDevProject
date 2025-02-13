@@ -2,7 +2,7 @@
   <div>
     <header>
       <div class="logo-container">
-        <img src="/src/image/dashshoe.png" class="logo" alt="Company Logo">
+        <img src="/src/image/logo%20three.png" class="logo" alt="Company Logo">
       </div>
     </header>
     <div class="main-container">

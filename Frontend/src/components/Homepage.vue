@@ -7,30 +7,30 @@
       <nav>
         <ul>
           <li>
-            <a href="/">HOME</a>
+            <a>HOME</a>
             <ul class="dropdown">
               <li><a href="/">Home Page</a></li>
             </ul>
           </li>
           <li>
-            <a href="#">ABOUT</a>
+            <a>ABOUT</a>
             <ul class="dropdown">
               <li><a href="#">Our Mission</a></li>
             </ul>
           </li>
           <li>
-            <a href="#">SHOPPING</a>
+            <a>SHOPPING</a>
             <ul class="dropdown">
-              <li><a href="#">New Arrivals</a></li>
+              <!--              <li><a href="#">New Arrivals</a></li>-->
               <li><a href="/WomenCollection">Women's</a></li>
               <li><a href="/MenCollection">Men's</a></li>
               <li><a href="/ChildrenCollection">Children</a></li>
             </ul>
           </li>
           <li>
-            <a href="/contact">CONTACT</a>
+            <a>CONTACT</a>
             <ul class="dropdown">
-              <li><a href="#">Contact Us</a></li>
+              <li><a href="/contact">Contact Us</a></li>
             </ul>
           </li>
           <li>
