@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Women's Collection</title>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.js"></script>
+
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #EDE4DA;
+    }
+
+
+    .header-title {
+      text-align: center;
+      padding: 10px;
+      font-size: 30px;
+      font-weight: 600;
+      color: #333;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+      background-color: #EDE4DA;
+    }
+    .logo img {
+      width: 150px;
+      background-color: transparent;
+      mix-blend-mode: multiply;
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 30px;
+      padding: 0;
+      margin: 0;
+    }
+    nav a {
+      text-decoration: none;
+      color: rgb(131, 117, 117);
+      font-size: 18px;
+    }
+
+    
+    .search-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-left: auto;
+      margin-right: 20px;
+    }
+    .search-bar input {
+      padding: 8px;
+      width: 200px;
+      border: 1px solid #ffffffd8;
+      border-radius: 10px;
+      font-family: inherit;
+    }
+    .search-bar button {
+      padding: 8px 12px;
+      background: #4D382D;
+      color: rgb(255, 254, 254);
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      font-family: inherit;
+      font-size: 14px;
+
+    }
+
+    .banner {
+      background-color: #4D382D;
+      color: white;
+      padding: 40px;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .banner h1 {
+      font-size: 28px;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+    .shop-button {
+      background: white;
+      color: black;
+      padding: 10px 20px;
+      border: 2px solid black;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .banner.container {
+      width: 90%;
+      margin: auto;
+    }
+    .banner img {
+      max-width: 300px;
+      height: auto;
+      border-radius: 5px;
+    }
+
+    .filter-container {
+      width: 90%;
+      margin: 20px auto 0 auto;
+      display: flex;
+      align-items: center;
+      position: relative;
+    }
+    .filter-container button {
+      background-color: #4D382D;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+    }
+    .filter-container button:hover {
+      background-color: #3a2b22;
+    }
+    .filter-dropdown {
+      position: absolute;
+      top: 55px;
+      left: 0;
+      background-color: white;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      z-index: 10;
+      min-width: 200px;
+    }
+    .filter-dropdown label {
+      display: block;
+      margin-bottom: 10px;
+    }
+    .filter-dropdown select {
+      width: 100%;
+      padding: 8px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-family: inherit;
+    }
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      padding: 20px 0;
+      width: 90%;
+      margin: auto;
+    }
+    .product {
+      background: white;
+      padding: 15px;
+      text-align: center;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .product img {
+      width: 100%;
+      height: auto;
+      border-radius: 5px;
+    }
+    .product h3 {
+      font-size: 16px;
+      margin: 10px 0;
+      color: #333;
+    }
+    .price {
+      font-weight: bold;
+      color: #555;
+    }
+    .size-select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-family: inherit;
+    }
+    .add-cart {
+      background: black;
+      color: white;
+      padding: 8px 10px;
+      border: none;
+      cursor: pointer;
+      margin-top: 10px;
+      width: 100%;
+      font-family: inherit;
+      border-radius: 5px;
+    }
+    .add-cart:hover {
+      background: #333;
+    }
+
+
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+    }
+    .modal-content {
+      background: white;
+      padding: 20px;
+      width: 90%;
+      max-width: 600px;
+      border-radius: 5px;
+      position: relative;
+    }
+    .close-modal {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: #4D382D;
+      color: white;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 3px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .modal-image {
+      width: 100%;
+      max-width: 300px;
+      border-radius: 5px;
+      transition: transform 0.2s ease;
+    }
+    .modal-image:hover {
+      transform: scale(1.1);
+    }
+    .modal-price {
+      font-weight: bold;
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+
+    <div class="logo">
+      <img src="logo three.png" alt="DASH Shoe Logo">
+    </div>
+
+    <nav>
+      <ul>
+        <li><a href="#">HOME</a></li>
+        <li><a href="#">ABOUT</a></li>
+        <li><a href="#">SHOPPING</a></li>
+        <li><a href="#">CONTACT</a></li>
+      </ul>
+    </nav>
+
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Search for shoes...">
+     
+      <button>Search</button>
+    </div>
+  </header>
+
+
+  <div class="header-title">Women's Collection</div>
+
+
+  <div class="banner container">
+    <div>
+      <h1>Discover our latest arrivals and top picks</h1>
+      <button class="shop-button">Shop Now</button>
+    </div>
+    <div>
+      <img src="resized banner.png" alt="Illustration">
+    </div>
+  </div>
+
+
+  <div id="app">
+
+    <div class="filter-container">
+      <button @click="showDropdown = !showDropdown">Filter Options</button>
+      <div v-if="showDropdown" class="filter-dropdown">
+        <label>
+          <select v-model="selectedFilter">
+            <option value="">Select Filter</option>
+            <option value="category">Category</option>
+            <option value="color">Color</option>
+          </select>
+        </label>
+
+
+        <label v-if="selectedFilter === 'category'">
+          <select v-model="selectedCategory">
+            <option value="">All Categories</option>
+            <option 
+              v-for="cat in categories"
+              :key="cat"
+              :value="cat"
+            >
+              {{ cat }}
+            </option>
+          </select>
+        </label>
+
+
+        <label v-if="selectedFilter === 'color'">
+          <select v-model="selectedColor">
+            <option value="">All Colors</option>
+            <option 
+              v-for="col in colors"
+              :key="col"
+              :value="col"
+            >
+              {{ col }}
+            </option>
+          </select>
+        </label>
+      </div>
+    </div>
+
+    <div class="products container">
+      <div 
+        class="product"
+        v-for="prod in filteredProducts"
+        :key="prod.name"
+        @click="openProduct(prod)"
+      >
+        <img :src="prod.image" :alt="prod.name">
+        <h3>{{ prod.name }}</h3>
+        <p class="price">£{{ prod.price }}</p>
+
+        <select 
+          class="size-select" 
+          v-model="prod.selectedSize"
+        >
+          <option value="">Select UK Size</option>
+          <option 
+            v-for="size in prod.sizes"
+            :key="size"
+            :value="size"
+          >
+            {{ size }}
+          </option>
+        </select>
+
+        <button class="add-cart">Add to Cart</button>
+      </div>
+    </div>
+
+
+    <div 
+      class="modal-overlay"
+      v-if="selectedProduct"
+      @click.self="closeModal"
+    >
+      <div class="modal-content">
+        <button class="close-modal" @click="closeModal">Close</button>
+        
+        <h2>{{ selectedProduct.name }}</h2>
+        <img 
+          :src="selectedProduct.image" 
+          alt="Detail Image"
+          class="modal-image"
+        >
+        <p class="modal-price">£{{ selectedProduct.price }}</p>
+        <p>{{ selectedProduct.description }}</p>
+
+     
+        <select 
+          class="size-select"
+          v-model="selectedSize"
+          style="margin-top: 10px;"
+        >
+          <option value="">Select UK Size</option>
+          <option 
+            v-for="size in selectedProduct.sizes"
+            :key="size"
+            :value="size"
+          >
+            {{ size }}
+          </option>
+        </select>
+
+        <button 
+          class="add-cart"
+          style="margin-top: 15px;"
+          @click="modalAddToCart"
+        >
+          Add to Cart
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const app = Vue.createApp({
+      data() {
+        return {
+          showDropdown: false,
+          selectedFilter: '',
+          selectedCategory: '',
+          selectedColor: '',
+          selectedSize: '',
+          selectedProduct: null, 
+          categories: ['Trainers', 'Heels', 'Boots', 'Loafers', 'Ballerinas'],
+          colors: ['Black', 'Red', 'Silver', 'Printed', 'Pink'],
+
+          products: [
+            {
+              name: 'Heart Trainers',
+              price: 40,
+              image: 'heart trainers.jpeg',
+              category: 'Trainers',
+              color: 'Pink',
+              sizes: ['3', '4', '5', '6', '7', '8'],
+              description: 'Cute heart-themed trainers for everyday style.'
+            },
+            {
+              name: 'Black Trainers',
+              price: 82,
+              image: 'black trainers womens.jpeg',
+              category: 'Trainers',
+              color: 'Black',
+              sizes: ['3', '4', '5', '6', '7', '8'],
+              description: 'Sleek black trainers, perfect for running errands or hitting the gym.'
+            },
+            {
+              name: 'Black Shoes',
+              price: 60,
+              image: 'smart shoes .jpeg',
+              category: 'Loafers',
+              color: 'Black',
+              sizes: ['3', '4', '5', '6', '7', '8'],
+              description: 'Classy black shoes for smart or business-casual occasions.'
+            },
+            {
+              name: 'Red Shoes',
+              price: 25,
+              image: 'red shoes.jpeg',
+              category: 'Heels',
+              color: 'Red',
+              sizes: ['3', '4', '5', '6', '7', '8'],
+              description: 'Bright red shoes that add a pop of color to any outfit.'
+            },
+            {
+              name: 'Silver Shoes',
+              price: 55,
+              image: 'silver loafers.jpeg',
+              category: 'Loafers',
+              color: 'Silver',
+              sizes: ['3', '4', '5', '6', '7', '8'],
+              description: 'Eye-catching silver loafers to elevate your look.'
+            },
+            {
+              name: 'Studded Ballerina Flats',
+              price: 65,
+              image: 'Studded ballerinas.jpeg',
+              category: 'Ballerinas',
+              color: 'Black',
+              sizes: ['3', '4', '5', '6', '7', '8'],
+              description: 'Stylish flats with studded details, combining comfort and flair.'
+            },
+            {
+              name: 'Black Boots',
+              price: 70,
+              image: 'boots.jpeg',
+              category: 'Boots',
+              color: 'Black',
+              sizes: ['3', '4', '5', '6', '7', '8'],
+              description: 'Versatile black boots for cooler weather or a bold statement.'
+            },
+            {
+              name: 'Printed Shoes',
+              price: 50,
+              image: 'printed shoes.jpeg',
+              category: 'Loafers',
+              color: 'Printed',
+              sizes: ['3', '4', '5', '6', '7', '8'],
+              description: 'Fun printed design that stands out in any crowd.'
+            },
+          ],
+        };
+      },
+      computed: {
+        filteredProducts() {
+          return this.products.filter((prod) => {
+      
+            const catMatch = this.selectedCategory
+              ? prod.category === this.selectedCategory
+              : true;
+
+       
+            const colMatch = this.selectedColor
+              ? prod.color.toLowerCase() === this.selectedColor.toLowerCase()
+              : true;
+
+            return catMatch && colMatch;
+          });
+        },
+      },
+      methods: {
+      
+
+        openProduct(prod) {
+          this.selectedProduct = prod;
+          this.selectedSize = '';
+        },
+        closeModal() {
+          this.selectedProduct = null;
+          this.selectedSize = '';
+        },
+        modalAddToCart() {
+          if (!this.selectedSize) {
+            alert('Please select a size before adding to cart.');
+            return;
+          }
+          alert(`Added ${this.selectedProduct.name} (UK size ${this.selectedSize}) to cart!`);
+          this.closeModal();
+        },
+      },
+    });
+
+    app.mount('#app');
+  </script>
+</body>
+</html>
