@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Children's collection</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #EDE4DA;
+        }
+        .container {
+            width: 90%;
+            margin: auto;
+        }
+        .header {
+            text-align: center;
+            padding: 10px;
+            font-size: 40px;
+            font-weight: 600;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background-color: #EDE4DA;
+            color: white;
+        }
+        .logo img {
+            width: 150px;
+            background-color: transparent;
+            mix-blend-mode: multiply;
+        }
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 30px;
+            padding: 0;
+            margin: 0;
+        }
+        nav a {
+            text-decoration: none;
+            color: rgb(131, 117, 117);
+            font-size: 18px;
+        }
+        .banner {
+            background-color: #4D382D;
+            color: white;
+            padding: 40px;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .banner h1 {
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .shop-button {
+            background: white;
+            color: black;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            border: 2px solid black;
+        }
+        .products {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            padding: 20px 0;
+        }
+        .product {
+            background: white;
+            padding: 15px;
+            text-align: center;
+            border-radius: 5px;
+        }
+        .product img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+        .product h3 {
+            font-size: 16px;
+            margin: 10px 0;
+        }
+        .price {
+            font-weight: bold;
+        }
+        .add-cart {
+            background: black;
+            color: white;
+            padding: 8px 10px;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+            display: block;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="logo three.png" alt="DASH Shoe Logo">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#">HOME</a></li>
+                <li><a href="#">ABOUT</a></li>
+                <li><a href="#">SHOPPING</a></li>
+                <li><a href="#">CONTACT</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="header">Children's Collection</div>
+    <div class="banner container">
+        <div>
+            <h1>Discover our latest arrivals and top picks</h1>
+            <button class="shop-button">Shop Now</button>
+        </div>
+        <div>
+            <img src="Childrens banner 2 resized.png" alt="Illustration">
+        </div>
+    </div>
+    <div class="products container">
+        <div class="product">
+            <img src="mini platforms.jpeg" alt="Mini platforms">
+            <h3>Mini platforms</h3>
+            <p class="price">£40</p>
+            <button class="add-cart">Add to Cart</button>
+        </div>
+        <div class="product">
+            <img src="pink kids trainers.jpeg" alt="Pink Trainers">
+            <h3>Pink trainers</h3>
+            <p class="price">£82</p>
+            <button class="add-cart">Add to Cart</button>
+        </div>
+        <div class="product">
+            <img src="Red wellies.jpeg" alt="Red wellies">
+            <h3>Red wellies </h3>
+            <p class="price">£60</p>
+            <button class="add-cart">Add to Cart</button>
+        </div>
+        <div class="product">
+            <img src="glitter boots.jpeg" alt="Glitter boots">
+            <h3>Glitter bootd</h3>
+            <p class="price">£25</p>
+            <button class="add-cart">Add to Cart</button>
+        </div>
+        <div class="product">
+            <img src="0" alt="Black Shoes">
+            <h3>Black Shoes</h3>
+            <p class="price">£55</p>
+            <button class="add-cart">Add to Cart</button>
+        </div>
+        <div class="product">
+            <img src="black sandals.jpeg" alt="Black sandals">
+            <h3>Black sandals</h3>
+            <p class="price">£65</p>
+            <button class="add-cart">Add to Cart</button>
+        </div>
+        <div class="product">
+            <img src="https://via.placeholder.com/200" alt="Sport Sneakers">
+            <h3>Sport Sneakers</h3>
+            <p class="price">£70</p>
+            <button class="add-cart">Add to Cart</button>
+        </div>
+        <div class="product">
+            <img src="https://via.placeholder.com/200" alt="Brown Loafers">
+            <h3>Brown Loafers</h3>
+            <p class="price">£50</p>
+            <button class="add-cart">Add to Cart</button>
+        </div>
+    </div>
+</body>
+</html>
