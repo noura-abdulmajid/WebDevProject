@@ -1,8 +1,17 @@
 # Welcome to WebDevProject! 
+Thank you for visiting our full-stack web development project page! 
 
 ## <ins> Use of GitHub by Team 1 </ins>
- * Within Team 1, each team member works on their own branch.
+ * Each team member works on their own individual branch.
 
- * Moreover, there is a develoment branch where features from different team members are combined.
+ * Moreover, there is a develoment branch, where features from different team members are combined and added.
 
- * Additionally, there is a main branch, to which working versions of the website are merged/ pushed at regular intervals.
+ * Additionally, there is a main branch, to which working versions of the website are merged/ pushed from the development branch at regular intervals.
+
+## <ins> Contents </ins>
+This repository contains the following:
+ * Code from both the back-end and front-end parts of the website.
+   
+ * A file to document any dependencies: _Dependencies.txt_.
+   
+ * A folder for database schema diagrams, and code that may be used to render these diagrams on dbdiagram.io.
