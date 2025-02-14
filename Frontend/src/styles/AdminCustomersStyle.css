@@ -1,0 +1,151 @@
+/* 🌟 Full Page Layout */
+.admin-dashboard {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background: #f4f7fc;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* 🌟 Sidebar */
+.sidebar {
+    width: 15vw;
+    height: 100vh;
+    background: linear-gradient(135deg, #2c3e50, #34495e);
+    color: white;
+    padding: 20px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* 🌟 Sidebar Links */
+.nav-links {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+}
+
+.nav-links li {
+    margin: 15px 0;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    padding: 12px;
+    display: block;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.nav-links a:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
+}
+
+.nav-links .active {
+    background: rgba(255, 255, 255, 0.3);
+    font-weight: bold;
+}
+
+/* 🌟 Main Content */
+.content {
+    width: 80vw;
+    margin-left: 17vw;
+    padding: 25px;
+    overflow-y: auto;
+}
+
+/* 🌟 Customers Table */
+.customers-table {
+    width: 100%;
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+}
+
+/* 🌟 Table Styling */
+.customers-table table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 10px;
+}
+
+.customers-table th {
+    background: #2c3e50;
+    color: white;
+    padding: 12px;
+    text-align: left;
+    font-weight: bold;
+}
+
+.customers-table td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.customers-table tr:hover {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+/* 🌟 Search Bar */
+.search-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.search-container input {
+    width: 3000px;
+    padding: 12px 15px;
+    border: 2px solid #ccc;
+    border-radius: 8px 0 0 8px;
+    font-size: 16px;
+    outline: none;
+}
+
+/* 🌟 Search Button Styled as Image */
+.search-container button {
+    width: 50px;  /* Adjust width to match the image */
+    height: 46px; /* Adjust height to match input */
+    border: none;
+    border-radius: 0 8px 8px 0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.search-container button:hover {
+    opacity: 0.8;
+}
+
+/* 🌟 Buttons */
+.action-buttons button {
+    padding: 8px 15px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.action-buttons .view {
+    background: #3498db;
+    color: white;
+}
+
+.action-buttons .delete {
+    background: #e74c3c;
+    color: white;
+}
+
+.action-buttons button:hover {
+    opacity: 0.8;
+}

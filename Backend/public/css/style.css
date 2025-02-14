@@ -1,0 +1,134 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    background-color: #D4CEC5;
+    font-size: 20px;
+    font-family: "Roboto", sans-serif;
+    text-align: center;   
+}
+.logo{
+    width: 250px;
+    height: auto;
+    left:0px;
+}
+.container{
+    display: flex;
+    justify-content: center;
+    padding: 40px 60px;
+    margin-bottom: 20px;
+}
+.wrapper{
+    background-color: whitesmoke;
+    max-width: 800px;
+    width: 100%;
+    border-radius: 20px;
+    padding: 20px;
+}
+
+h1{
+    font-size: xx-large;
+    margin-bottom: 20px;  
+}
+
+.split{
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.form-split{
+    flex: 1;
+    width: 100%;
+}
+
+label{
+    display: block;
+    margin-bottom: 20px;
+    font-size: 1em;
+}
+
+input[type="text"],
+input[type="email"],
+textarea{
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    font-size: large;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+}
+
+textarea{
+    resize: vertical;
+    width: 100%;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+
+button{
+    background-color: #D4CEC5;
+    padding :10px 20px;
+    font-size: large;
+    cursor: pointer;
+    width: 290px;
+}
+
+.required{
+    color: black;
+    font-size: medium;
+}
+
+.form-review{
+    padding: 40px;
+}
+
+.rating{
+    padding: 30px;
+}
+.star{
+    cursor: pointer;
+    font-size: large;
+    cursor: pointer;
+    width: 290px;
+}
+@media (max-width: 768px){
+.body {
+        font-size: 16px;
+    }
+.container {
+        padding: 20px;
+    }
+
+.wrapper {
+        padding: 15px;
+    }
+
+h1 {
+        font-size: x-large;
+    }
+
+.split {
+        flex-direction: column; 
+        gap: 10px; 
+    }
+
+.button {
+        width: 100%;
+    }
+
+.form-review {
+        padding: 20px;
+    }
+
+.rating {
+        padding: 15px;
+}
+
+.star {
+        width: 100%;
+    }
+}
