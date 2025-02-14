@@ -1,5 +1,7 @@
 # Welcome to WebDevProject! 
 Thank you for visiting our full-stack web development project page! 
+![E-commerce: mini shopping cart next to a laptop](https://www.freeimages.com/photo/shopping-bags-and-computer-mouse-on-computer-screen-2277837)  
+Image credits: freeimages.com/photographer/Dynamic Graphics Group
 
 ## <ins> Use of GitHub by Team 1 </ins>
  * Each team member works on their own individual branch.
