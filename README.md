@@ -18,4 +18,4 @@ This repository contains the following:
  * A folder for database schema diagrams, and code that may be used to render these diagrams on dbdiagram.io.
 
 ## <ins> Team Members </ins>
-Noura
+ * Noura
