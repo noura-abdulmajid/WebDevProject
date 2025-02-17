@@ -1,1 +1,4 @@
 /Backend/vendor/
+.idea/php.xml
+.idea/phpunit.xml
+
