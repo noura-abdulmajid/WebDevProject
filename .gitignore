@@ -1,4 +1,13 @@
 /Backend/vendor/
-.idea/php.xml
-.idea/phpunit.xml
 
+.DS_Store
+**/.DS_Store
+
+.idea/
+.idea/**
+
+Frontend/dist/.DS_Store
+Frontend/src/.DS_Store
+Frontend/src/image/.DS_Store
+
+*.iml
