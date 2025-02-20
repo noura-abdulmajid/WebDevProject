@@ -1,0 +1,28 @@
+:root {
+    --background-color: #8b8276;
+    --font-family: "Arial", sans-serif;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100vh;
+    background: var(--background-color);
+    font-family: var(--font-family);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.main-container {
+    width: 100%;
+    max-width: 1320px;
+    min-height: 100vh;
+    margin: 0 auto;
+    background: white;
+}
