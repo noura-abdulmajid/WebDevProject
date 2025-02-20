@@ -1,4 +1,4 @@
-/* 🌟 Full Page Layout */
+/* Full Page Layout */
 .admin-dashboard {
     display: flex;
     width: 100vw;
@@ -8,7 +8,7 @@
     font-family: 'Poppins', sans-serif;
 }
 
-/* 🌟 Sidebar */
+/* Sidebar */
 .sidebar {
     width: 15vw;
     height: 100vh;
@@ -23,7 +23,7 @@
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
 }
 
-/* 🌟 Sidebar Links */
+/*Sidebar Links */
 .nav-links {
     list-style: none;
     padding: 0;
@@ -62,7 +62,7 @@
     overflow-y: auto;
 }
 
-/* 🌟 Customers Table */
+/* Customers Table */
 .customers-table {
     width: 100%;
     background: white;
@@ -72,7 +72,7 @@
     overflow: hidden;
 }
 
-/* 🌟 Table Styling */
+/* Table Styling */
 .customers-table table {
     width: 100%;
     border-collapse: collapse;
@@ -96,12 +96,12 @@
     background: rgba(0, 0, 0, 0.05);
 }
 
-/* 🌟 Search Bar */
+/* Search Bar */
 .search-container {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 20px 0;
+    margin: 30px 0;
 }
 
 .search-container input {
@@ -113,10 +113,10 @@
     outline: none;
 }
 
-/* 🌟 Search Button Styled as Image */
+/* Search Button Styled*/
 .search-container button {
-    width: 50px;  /* Adjust width to match the image */
-    height: 46px; /* Adjust height to match input */
+    width: 50px;
+    height: 46px;
     border: none;
     border-radius: 0 8px 8px 0;
     cursor: pointer;
@@ -127,7 +127,7 @@
     opacity: 0.8;
 }
 
-/* 🌟 Buttons */
+/* Buttons */
 .action-buttons button {
     padding: 8px 15px;
     border-radius: 6px;

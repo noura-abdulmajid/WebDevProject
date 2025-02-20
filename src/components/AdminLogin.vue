@@ -43,3 +43,4 @@ export default AdminLoginScript;
 </script>
 
 <style scoped src="../styles/AdminLoginStyle.css"></style>
+<style scoped src="../styles/GlobalStyle.css"></style>

@@ -5,12 +5,13 @@ export default {
         return {
             firstName: "",
             surname: "",
-            email: "",
+            emailName: "", //Only Email Name input
+            emailProvider: "@gmail.com", // Default provider
             password: "",
             confirmPassword: "",
-            telNo: "",
+            /*telNo: "",
             shippingAddress: "",
-            billingAddress: "",
+            billingAddress: "",*/ //Decrease Fills
             loading: false,
             error: "",
             success: "",
@@ -28,15 +29,18 @@ export default {
                 return;
             }
 
+            // Combine email name & provider
+            const fullEmail = this.emailName.trim() + this.emailProvider;
+
             try {
                 const registrationData = {
                     first_name: this.firstName,
                     surname: this.surname,
-                    email_address: this.email,
+                    email_address: fullEmail,
                     password: this.password,
-                    tel_no: this.telNo,
+                    /*tel_no: this.telNo,
                     shipping_address: this.shippingAddress,
-                    billing_address: this.billingAddress,
+                    billing_address: this.billingAddress,*/
                     date_joined: new Date().toISOString(),
                 };
 

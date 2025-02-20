@@ -1,7 +1,7 @@
 <template>
   <div class="login-wrapper">
     <div class="login-container">
-      <h1>Login Now</h1>
+      <h1>Login</h1>
       <form @submit.prevent="handleLogin">
         <div class="form-group">
           <label for="email">Username *</label>
@@ -51,4 +51,5 @@ import LoginScript from "@/scripts/LoginScript.js";
 
 export default LoginScript;
 </script>
+<style src="../styles/GlobalStyle.css"></style>
 <style src="../styles/LoginStyle.css"></style>

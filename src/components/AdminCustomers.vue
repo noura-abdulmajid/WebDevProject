@@ -22,6 +22,18 @@
         <button @click="showAddCustomerForm = true" class="add-btn">+ Add Customers</button>
       </div>
 
+      <!-- ✅ Add Customer Modal -->
+      <div v-if="showAddCustomerForm" class="modal">
+        <div class="modal-content">
+          <h2>Add New Customer</h2>
+          <input type="text" v-model="newCustomer.name" placeholder="Full Name" />
+          <input type="email" v-model="newCustomer.email" placeholder="Email" />
+          <input type="text" v-model="newCustomer.phone" placeholder="Phone" />
+          <button @click="addCustomer">Save</button>
+          <button @click="showAddCustomerForm = false">Cancel</button>
+        </div>
+      </div>
+
       <!-- ✅ Customers Table (Always Visible) -->
       <table class="customers-table">
         <thead>
@@ -64,4 +76,5 @@
 </template>
 
 <script src="../scripts/AdminCustomersScript.js"></script>
+<style scoped src="../styles/GlobalStyle.css"></style>
 <style scoped src="../styles/AdminCustomersStyle.css"></style>

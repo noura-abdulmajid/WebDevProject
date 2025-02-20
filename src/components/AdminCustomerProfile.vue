@@ -74,4 +74,5 @@
 </template>
 
 <script src="../scripts/AdminCustomerProfileScript.js"></script>
+<style scoped src="../styles/GlobalStyle.css"></style>
 <style scoped src="../styles/AdminCustomerProfileStyle.css"></style>

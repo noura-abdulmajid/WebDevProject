@@ -1,15 +1,26 @@
-/* Full Page Styling */
+/* 🌟 Use Global Variables */
+:root {
+  --primary-color: #4a4a4a; /* Darker shade for better contrast */
+  --secondary-color: #605a52; /* Softened neutral color */
+  --accent-color: #3498db; /* Highlight color */
+  --button-hover: #2980b9; /* Darker shade on hover */
+  --border-color: #b0a99f; /* Slightly darker for better contrast */
+  --input-bg: #f5f5f5;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+/* 🌟 Full Page Styling */
 body, html {
   height: 100%;
   margin: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #eab676, #eeeee4);
-  font-family: "Arial", sans-serif;
+  background: var(--background-color);
+  font-family: var(--font-family);
 }
 
-/* Centering Wrapper */
+/* 🌟 Centering Wrapper */
 .login-wrapper {
   display: flex;
   flex-direction: column;
@@ -19,29 +30,13 @@ body, html {
   max-width: 450px;
 }
 
-/* Ensure Form Labels are Left-Aligned */
-.form-group {
-  width: 100%;
-  text-align: left;
-  margin-bottom: 10px;
-}
-
-.form-group label {
-  display: block;
-  font-weight: bold;
-  font-size: 14px;
-  color: #333;
-  margin-bottom: 5px;
-  text-align: left; /* Left-align text */
-}
-
-/* Login Container */
+/* 🌟 Login Container */
 .login-container {
   width: 100%;
-  padding: 30px;
+  padding: 40px;
   border-radius: 12px;
-  background-color: white;
-  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+  background: white;
+  box-shadow: 0 3px 10px var(--shadow-color);
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -49,74 +44,100 @@ body, html {
   align-items: center;
 }
 
-/* Input Fields */
+/* 🌟 Form Groups */
+.form-group {
+  width: 100%;
+  text-align: left;
+  margin-bottom: 18px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: bold;
+  font-size: 14px;
+  color: var(--primary-color);
+  margin-bottom: 5px;
+}
+
+/* 🌟 Input Fields */
 .input-field {
   width: 100%;
   padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
   font-size: 16px;
-  background-color: #f9f9f9;
-  margin-top: 5px;
+  background-color: var(--input-bg);
+  transition: all 0.3s ease;
 }
 
-/* Remember Me */
+.input-field:focus {
+  border-color: var(--accent-color);
+  background-color: #ffffff;
+  box-shadow: 0px 0px 6px rgba(52, 152, 219, 0.3);
+}
+
+/* 🌟 Remember Me */
 .remember-me {
   display: flex;
   align-items: center;
   width: 100%;
-  margin-top: 10px;
+  margin-top: 12px;
 }
 
 .remember-me input {
   margin-right: 8px;
 }
 
-/* Login Button */
+/* 🌟 Login Button */
 .login-button {
   width: 100%;
   padding: 14px;
-  margin-top: 15px;
-  background: linear-gradient(135deg, #42a5f5, #1e88e5);
+  margin-top: 18px;
+  background: var(--accent-color);
   color: white;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
   font-size: 18px;
   font-weight: bold;
+  transition: all 0.3s ease;
 }
 
 .login-button:hover {
-  background: linear-gradient(135deg, #2196f3, #1565c0);
+  background: var(--button-hover);
+  transform: translateY(-2px);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.12);
 }
 
-/* Links (Forgot Password & Create Account) */
+/* 🌟 Links (Forgot Password & Create Account) */
 .login-links {
   display: flex;
   justify-content: space-between;
   width: 100%;
-  margin-top: 15px;
+  margin-top: 18px;
 }
 
 .login-links a {
-  color: #1565c0;
+  color: var(--accent-color);
   text-decoration: none;
   font-size: 14px;
+  transition: all 0.3s ease;
 }
 
 .login-links a:hover {
   text-decoration: underline;
+  color: var(--button-hover);
 }
 
-/* Footer Text */
+/* 🌟 Footer Text */
 .footer-text {
   font-size: 12px;
-  color: #666;
-  margin-top: 10px;
+  color: var(--secondary-color);
+  margin-top: 12px;
 }
 
 .footer-text a {
-  color: #1565c0;
+  color: var(--accent-color);
   text-decoration: none;
 }
 
@@ -124,20 +145,22 @@ body, html {
   text-decoration: underline;
 }
 
-/* Responsive Design */
+/* 🌟 Responsive Design */
 @media (max-width: 768px) {
   .login-container {
-    width: 90%;
+    width: 85%;
+    padding: 35px;
   }
 }
 
 @media (max-width: 480px) {
   .login-container {
     width: 95%;
+    padding: 30px;
   }
 
   .input-field {
-    font-size: 14px;
+    font-size: 15px;
   }
 
   .login-button {

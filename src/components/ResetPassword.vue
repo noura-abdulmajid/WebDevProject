@@ -46,5 +46,5 @@
 import ResetPasswordScript from "../scripts/ResetPasswordScript.js";
 export default ResetPasswordScript;
 </script>
-
+<style scoped src="../styles/GlobalStyle.css"></style>
 <style scoped src="../styles/ResetPasswordStyle.css"></style>
