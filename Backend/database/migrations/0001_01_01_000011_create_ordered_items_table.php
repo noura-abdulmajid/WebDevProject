@@ -13,8 +13,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('ordered_items', function (Blueprint $table) {
-            $table->id('O_ID');
-            $table->foreignIdFor(Order::class, 'order_id');
+            $table->id('OI_ID');
+            $table->unsignedBigInteger('O_ID');
             //$table->foreignIdFor(Inventory::class, 'inventory_id');
             $table->integer('quantity');
             $table->timestamps();

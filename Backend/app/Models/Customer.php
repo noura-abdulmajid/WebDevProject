@@ -52,9 +52,4 @@ class Customer extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(Order::class, 'customer_id', 'C_ID');
     }
-
-    public function payments()
-    {
-        return $this->hasMany(Payment::class, 'customer_id', 'C_ID');
-    }
 }
