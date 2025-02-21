@@ -13,11 +13,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('ordered_items', function (Blueprint $table) {
-            $table->id('ordered_item_id');
+            $table->id('O_ID');
             $table->foreignIdFor(Order::class, 'order_id');
             //$table->foreignIdFor(Inventory::class, 'inventory_id');
             $table->integer('quantity');
             $table->timestamps();
+
+            $table->foreign('O_ID')->references('O_ID')->on('orders')->onDelete('cascade');
         });
     }
 

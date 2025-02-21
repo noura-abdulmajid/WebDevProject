@@ -12,11 +12,8 @@ class Customer extends Authenticatable implements JWTSubject
     use HasFactory, Notifiable;
 
     protected $table = 'customers';
-
     protected $primaryKey = 'C_ID';
-
     public $incrementing = true;
-
     protected $keyType = 'int';
 
     protected $fillable = [

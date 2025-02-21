@@ -11,7 +11,9 @@ class AdminUser extends Authenticatable implements JWTSubject
     use Notifiable;
 
     protected $table = 'admin_users';
-
+    protected $primaryKey = 'A_ID';
+    public $incrementing = true;
+    protected $keyType = 'int';
     public const ROLE_ADMIN = 'admin';
     public const ROLE_SUPER_ADMIN = 'super_admin';
 

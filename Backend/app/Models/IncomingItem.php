@@ -5,13 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class SiteReview extends Model
+class IncomingItem extends Model
 {
     use HasFactory;
 
-    protected $table = 'site_reviews';
-    protected $primaryKey = 'C_ID';
+    protected $table = 'incoming_items';
+    protected $primaryKey = 'INI_ID';
+
     public $incrementing = true;
     protected $keyType = 'int';
-    protected $guarded = [];
 }
