@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\AdminAuthController;
+use App\Http\Controllers\CustomersController;
+use App\Http\Controllers\AdminUsersController;
 use App\Http\Controllers\ForgetPasswordController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MessageController;
@@ -15,11 +15,11 @@ Route::prefix('DashShoe')->group(function () {
     //Checkout
     Route::post('/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
     // User routes
-    Route::post('register', [AuthController::class, 'register'])->name('register');
-    Route::post('login', [AuthController::class, 'login'])->name('login');
-    Route::post('logout', [AuthController::class, 'logout'])->name('logout');
-    Route::get('/profile', [AuthController::class, 'getProfile'])->name('profile.get');
-    Route::put('/profile', [AuthController::class, 'updateProfile'])->name('profile.update');
+    Route::post('register', [CustomersController::class, 'register'])->name('register');
+    Route::post('login', [CustomersController::class, 'login'])->name('login');
+    Route::post('logout', [CustomersController::class, 'logout'])->name('logout');
+    Route::get('/profile', [CustomersController::class, 'getProfile'])->name('profile.get');
+    Route::put('/profile', [CustomersController::class, 'updateProfile'])->name('profile.update');
 
     // Forgot password and reset password
     Route::post('forgot-password', [ForgetPasswordController::class, 'forgotPassword'])->name('auth.forgot_password');
@@ -27,11 +27,11 @@ Route::prefix('DashShoe')->group(function () {
 
     // Admin routes
     Route::prefix('admin')->group(function () {
-        Route::post('login', [AdminAuthController::class, 'login'])->name('admin.login');
-        Route::post('logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
-        Route::get('/get_users', [AdminAuthController::class, 'getAllUsers'])->name('admin.users.get');
-        Route::delete('/delete_user/{id}', [AdminAuthController::class, 'deleteUser'])->name('admin.user.delete');
-        Route::put('/update_user/{id}', [AdminAuthController::class, 'updateUser'])->name('admin.update_user');
+        Route::post('login', [AdminUsersController::class, 'login'])->name('admin.login');
+        Route::post('logout', [AdminUsersController::class, 'logout'])->name('admin.logout');
+        Route::get('/get_users', [AdminUsersController::class, 'getAllUsers'])->name('admin.users.get');
+        Route::delete('/delete_user/{id}', [AdminUsersController::class, 'deleteUser'])->name('admin.user.delete');
+        Route::put('/update_user/{id}', [AdminUsersController::class, 'updateUser'])->name('admin.update_user');
 
         Route::get('test', function () {
             return response()->json(['message' => 'Admin Test Route Works!']);

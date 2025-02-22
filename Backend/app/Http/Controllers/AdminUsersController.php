@@ -8,13 +8,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use App\Models\AdminUser;
+use App\Models\AdminUsers;
+use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 
-class AdminAuthController extends Controller
+class AdminUsersController extends Controller
 {
     public function login(Request $request)
     {
-        Log::info('Admin Login Request Received.');
+        Log::info('Admin Login Request Received.......');
 
         $validator = Validator::make($request->all(), [
             'email' => 'required|email',
@@ -27,7 +28,7 @@ class AdminAuthController extends Controller
         }
 
         $credentials = $request->only('email', 'password');
-        $admin = AdminUser::where('email', $credentials['email'])->first();
+        $admin = AdminUsers::where('email', $credentials['email'])->first();
 
         if (!$admin) {
             Log::warning('Admin Not Found: ' . $credentials['email']);
@@ -188,7 +189,7 @@ class AdminAuthController extends Controller
             return response()->json(['error' => 'Token authentication failed'], 500);
         }
     }
-    private function hasAdminRole($admin, $allowedRoles = [AdminUser::ROLE_ADMIN, AdminUser::ROLE_SUPER_ADMIN]): bool
+    private function hasAdminRole($admin, $allowedRoles = [AdminUsers::ROLE_ADMIN, AdminUsers::ROLE_SUPER_ADMIN]): bool
     {
         return in_array(optional($admin)->role, $allowedRoles);
     }

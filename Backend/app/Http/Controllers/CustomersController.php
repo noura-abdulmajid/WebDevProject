@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\Customer;
 use Illuminate\Support\Facades\Log;
 
-class AuthController extends Controller
+class CustomersController extends Controller
 {
     public function login(Request $request)
     {

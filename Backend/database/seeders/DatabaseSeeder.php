@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\AdminUser;
+use App\Models\AdminUsers;
 use App\Models\Customer;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]);
 
-        AdminUser::factory()->create([
+        AdminUsers::factory()->create([
             'username' => 'admin',
             'email' => 'admin@example.com',
             'password' => bcrypt('admin_password'),
