@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Models\AdminUsers;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
+use App\Models\Products;
 
 class AdminUsersController extends Controller
 {
@@ -189,6 +190,34 @@ class AdminUsersController extends Controller
             return response()->json(['error' => 'Token authentication failed'], 500);
         }
     }
+
+    public function getProducts(Request $request)
+    {
+        $admin = $this->validateAdminToken();
+        if ($admin instanceof \Illuminate\Http\JsonResponse) {
+            return $admin;
+        }
+
+        if (!$this->hasAdminRole($admin)) {
+            return response()->json(['error' => 'Unauthorized: You do not have the required admin role.'], 403);
+        }
+
+        $products = Products::select('P_ID', 'p_name', 'description', 'categories', 'colours', 'photo', 'price', 'overall_stock_status')
+            ->paginate(10);
+
+        Log::info('All products retrieved successfully by admin: ' . $admin->email);
+
+        return response()->json([
+            'message' => 'All products retrieved successfully.',
+            'products' => $products->items(),
+            'pagination' => [
+                'total' => $products->total(),
+                'current_page' => $products->currentPage(),
+                'last_page' => $products->lastPage(),
+            ],
+        ], 200);
+    }
+
     private function hasAdminRole($admin, $allowedRoles = [AdminUsers::ROLE_ADMIN, AdminUsers::ROLE_SUPER_ADMIN]): bool
     {
         return in_array(optional($admin)->role, $allowedRoles);
