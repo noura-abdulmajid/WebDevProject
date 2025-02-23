@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { logoutUser } from "../api/authService";
+import { logoutUser } from "@/services/authService";
 import { useRouter } from "vue-router";
 import { ref, onMounted } from "vue";
 

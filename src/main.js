@@ -1,4 +1,4 @@
-import "./styles/GlobalStyle.css";  // login styles
+import "@/styles/GlobalStyle.css";  // login styles
 
 import { createApp } from "vue";
 import App from "./App.vue";

@@ -45,5 +45,9 @@
   </div>
 </template>
 
-<script src="../scripts/AdminDashboardScript.js"></script>
+<script>
+import AdminDashboardScript from "../scripts/AdminDashboardScript.js";
+export default AdminDashboardScript;
+</script>
+<style scoped src="../styles/GlobalStyle.css"></style>
 <style scoped src="../styles/AdminDashboardStyle.css"></style>
