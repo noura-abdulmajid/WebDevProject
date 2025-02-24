@@ -54,14 +54,14 @@ export default {
          * Navigates to the view order page.
          */
         const viewOrder = (orderId) => {
-            router.push(`/admin/orders/view/${orderId}`);
+            router.push(`/admin-orders/view/${orderId}`);
         };
 
         /**
          * Navigates to the edit order page.
          */
         const editOrder = (orderId) => {
-            router.push(`/admin/orders/edit/${orderId}`);
+            router.push(`/admin-orders/edit/${orderId}`);
         };
 
         /**
@@ -70,7 +70,7 @@ export default {
         const deleteOrder = async (orderId) => {
             if (!confirm("Are you sure you want to delete this order?")) return;
             try {
-                await axiosClient.delete(`/admin/orders/${orderId}`);
+                await axiosClient.delete(`/admin-orders/${orderId}`);
                 orders.value = orders.value.filter(order => order.id !== orderId);
             } catch (err) {
                 console.error("Error deleting order:", err);

@@ -1,26 +1,27 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 // Guest Pages (No authentication required)
-import Login from "@/components/Login.vue";
-import AdminLogin from "@/components/AdminLogin.vue";
-import Fix from "@/components/Fix.vue";
-import CreateAccount from "@/components/CreateAccount.vue";
-import ForgotPassword from "@/components/ForgotPassword.vue";
-import ResetPassword from "@/components/ResetPassword.vue";
+import Login from "@/components/pages/auth/Login.vue";
+import AdminLogin from "@/components/pages/auth/AdminLogin.vue";
+import Fix from "@/components/pages/maintenance/Fix.vue";
+import CreateAccount from "@/components/pages/auth/Register.vue";
+import ForgotPassword from "@/components/pages/auth/ForgotPassword.vue";
+import ResetPassword from "@/components/pages/auth/ResetPassword.vue";
 
 // Admin Pages (Require Authentication)
-import AdminDashboard from "@/components/AdminDashboard.vue";
-import AdminCustomers from "@/components/AdminCustomers.vue";
-import AdminCustomerProfile from "@/components/AdminCustomerProfile.vue";
-import AdminProducts from "@/components/AdminProducts.vue";
-import AdminOrders from "@/components/AdminOrders.vue";
-import AdminSettings from "@/components/AdminSettings.vue";
+import AdminLayout from "@/components/layouts/AdminLayout.vue";
+import AdminDashboard from "@/components/pages/admin/Dashboard.vue";
+import AdminCustomers from "@/components/pages/admin/Customers.vue";
+import AdminCustomerProfile from "@/components/pages/admin/CustomerProfile.vue";
+import AdminProducts from "@/components/pages/admin/Products.vue";
+import AdminOrders from "@/components/pages/admin/Orders.vue";
+import AdminSettings from "@/components/pages/admin/Settings.vue";
 
 // Customer Pages (Require Authentication)
-import CustomerProfile from "@/components/CustomerProfile.vue";
+import CustomerProfile from "@/components/pages/admin/CustomerProfile.vue";
 
 // Forbidden Page
-import Forbidden from "@/components/Forbidden.vue";
+import Forbidden from "@/components/pages/maintenance/Forbidden.vue";
 
 const routes = [
     { path: "/", redirect: "/login" },
@@ -33,13 +34,20 @@ const routes = [
     { path: "/forgot-password", component: ForgotPassword, meta: { guest: true } },
     { path: "/reset-password", component: ResetPassword, meta: { guest: true } },
 
-    // Admin Routes (Require Authentication - Change `guest: true` later)
-    { path: "/admin-dashboard", component: AdminDashboard, meta: { guest: true } }, //meta: { requiresAuth: true, role: "admin" } },
-    { path: "/admin-customers", component: AdminCustomers, meta: { guest: true } }, //meta: { requiresAuth: true, role: "admin" } },
-    { path: "/admin-customers/:id", component: AdminCustomerProfile, meta: { guest: true } }, //meta: { requiresAuth: true, role: "admin" } },// Customer Detail Page
-    { path: "/admin-products", component: AdminProducts, meta: { guest: true } },//meta: { requiresAuth: true, role: "admin" } },
-    { path: "/admin-orders", component: AdminOrders, meta: { guest: true } },//meta: { requiresAuth: true, role: "admin" } },
-    { path: "/admin-settings", component: AdminSettings, meta: { guest: true } },//meta: { requiresAuth: true, role: "admin" } },
+    {
+        path: "/admin",
+        component: AdminLayout, // Wrap all admin pages inside AdminLayout
+        children: [
+            // Admin Routes (Require Authentication - Change `guest: true` later)
+            {path: "/admin-dashboard", component: AdminDashboard, meta: {guest: true}}, //meta: { requiresAuth: true, role: "admin" } },
+            {path: "/admin-customers", component: AdminCustomers, meta: {guest: true}}, //meta: { requiresAuth: true, role: "admin" } },
+            {path: "/admin-customers/view/:id", component: AdminCustomerProfile, meta: {guest: true}}, //meta: { requiresAuth: true, role: "admin" } },// Customer Detail Page
+            {path: "/admin-customers/edit/:id", component: AdminCustomerProfile, meta: {guest: true}}, //meta: { requiresAuth: true, role: "admin" } },
+            {path: "/admin-products", component: AdminProducts, meta: {guest: true}},//meta: { requiresAuth: true, role: "admin" } },
+            {path: "/admin-orders", component: AdminOrders, meta: {guest: true}},//meta: { requiresAuth: true, role: "admin" } },
+            {path: "/admin-settings", component: AdminSettings, meta: {guest: true}},//meta: { requiresAuth: true, role: "admin" } },
+        ],
+    },
 
     // Customer Routes (Require Authentication)
     { path: "/customer-dashboard", component: CustomerProfile, meta: { requiresAuth: true, role: "customer" } },
