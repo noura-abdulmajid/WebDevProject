@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Customer;
 
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Customer;
 use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
+
 
 class CustomersController extends Controller
 {
@@ -52,14 +54,14 @@ class CustomersController extends Controller
             'access_token' => $token,
             'token_type' => 'Bearer',
             'expires_in' => auth('api')->factory()->getTTL() * 60,
-            'user' => $user->only(['C_ID', 'first_name', 'surname', 'email_address', 'tel_no', 'shipping_address']),
+            'user' => $user->only(['C_ID', 'first_name', 'surname', 'email_address', 'tel_no', 'shipping_address','billing_address']),
         ]);
 
         return response()->json([
             'access_token' => $token,
             'token_type' => 'Bearer',
             'expires_in' => auth('api')->factory()->getTTL() * 60,
-            'user' => $user->only(['C_ID', 'first_name', 'surname', 'email_address', 'tel_no', 'shipping_address']),
+            'user' => $user->only(['C_ID', 'first_name', 'surname', 'email_address', 'tel_no', 'shipping_address','billing_address']),
         ]);
 
     }
@@ -72,10 +74,7 @@ class CustomersController extends Controller
             'first_name' => 'required|string|max:255',
             'surname' => 'required|string|max:255',
             'email_address' => 'required|string|email|max:255|unique:customers',
-            'password' => 'required|string|min:6',
-            'tel_no' => 'nullable|numeric',
-            'shipping_address' => 'nullable|string|max:255',
-            'billing_address' => 'nullable|string|max:255',
+            'password' => 'required|string|min:6'
         ]);
 
         if ($validator->fails()) {
@@ -87,9 +86,6 @@ class CustomersController extends Controller
             'surname' => $request->surname,
             'email_address' => $request->email_address,
             'password' => bcrypt($request->password),
-            'tel_no' => $request->tel_no,
-            'shipping_address' => $request->shipping_address,
-            'billing_address' => $request->billing_address,
         ]);
 
         info('New Customer Registered:', [
@@ -103,7 +99,7 @@ class CustomersController extends Controller
 
         return response()->json([
             'message' => 'Customer registered successfully',
-            'user' => $user->only(['C_ID', 'first_name', 'surname', 'email_address', 'tel_no', 'shipping_address']),
+            'user' => $user->only(['C_ID', 'first_name', 'surname', 'email_address']),
             'access_token' => $token,
             'token_type' => 'Bearer',
             'expires_in' => auth('api')->factory()->getTTL() * 60,
@@ -143,64 +139,5 @@ class CustomersController extends Controller
         }
     }
 
-    public function getProfile()
-    {
-        try {
-            $user = auth('api')->user();
-            if (!$user) {
-                Log::warning('Invalid token or customer not authenticated.');
-                return response()->json(['error' => 'Invalid token or customer not authenticated.'], 401);
-            }
 
-            Log::info('Customer profile retrieved successfully: ' . $user->email_address);
-
-            return response()->json([
-                'message' => 'Customer profile retrieved successfully.',
-                'user' => $user->only(['C_ID', 'first_name', 'surname', 'email_address', 'tel_no', 'shipping_address']),
-            ], 200);
-        } catch (\Exception $e) {
-            Log::error('An error occurred while retrieving the customer profile: ' . $e->getMessage());
-            return response()->json(['error' => 'An error occurred while retrieving the customer profile.'], 500);
-        }
-    }
-
-    public function updateProfile(Request $request)
-    {
-        try {
-            Log::info('Attempting to update customer profile...');
-
-            $user = auth('api')->user();
-            if (!$user) {
-                Log::warning('Invalid token or customer not authenticated.');
-                return response()->json(['error' => 'Invalid token or customer not authenticated.'], 401);
-            }
-
-            $validatedData = $request->validate([
-                'first_name' => 'nullable|string|max:255',
-                'surname' => 'nullable|string|max:255',
-                'email_address' => 'nullable|email|unique:customers,email_address,' . $user->C_ID,
-                'tel_no' => 'nullable|numeric',
-                'shipping_address' => 'nullable|string|max:255',
-                'billing_address' => 'nullable|string|max:255',
-            ]);
-
-            $user->update($validatedData);
-
-            Log::info('Customer profile updated successfully: ' . $user->email_address);
-
-            return response()->json([
-                'message' => 'Customer profile updated successfully.',
-                'user' => $user->only(['C_ID', 'first_name', 'surname', 'email_address', 'tel_no', 'shipping_address']),
-            ], 200);
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            Log::warning('Validation error: ' . $e->getMessage());
-            return response()->json(['error' => 'Validation error.', 'details' => $e->errors()], 422);
-        } catch (\Exception $e) {
-            Log::error('An error occurred while updating the customer profile: ' . $e->getMessage());
-            return response()->json([
-                'error' => 'An error occurred while updating the customer profile.',
-                'message' => $e->getMessage(),
-            ], 500);
-        }
-    }
 }

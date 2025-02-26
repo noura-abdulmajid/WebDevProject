@@ -35,7 +35,6 @@ class Customer extends Authenticatable implements JWTSubject
     protected $casts = [
         'email_verified_at' => 'datetime',
         'date_joined' => 'datetime',
-        'password' => 'hashed',
     ];
 
     public function getJWTIdentifier(): mixed

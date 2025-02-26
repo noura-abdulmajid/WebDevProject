@@ -5,23 +5,22 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Cart extends Model
+class OrderedItems extends Model
 {
     use HasFactory;
 
-    protected $table = 'carts';
-    protected $primaryKey = 'cart_ID';
+    protected $table = 'ordered_items';
+    protected $primaryKey = 'OI_ID';
     public $incrementing = true;
     protected $keyType = 'int';
 
     protected $fillable = [
-        'P_ID',
-        'size',
+        'O_ID',
         'quantity',
     ];
 
-    public function product()
+    public function order()
     {
-        return $this->belongsTo(Products::class, 'P_ID', 'P_ID');
+        return $this->belongsTo(Order::class, 'O_ID', 'O_ID');
     }
 }

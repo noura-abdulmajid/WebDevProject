@@ -6,19 +6,16 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('customers', function (Blueprint $table) {
-            $table->id('C_ID');
+            $table->bigIncrements('C_ID');
             $table->string('first_name');
             $table->string('surname');
             $table->string('email_address')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->unsignedBigInteger('tel_no')->nullable();
+            $table->string('tel_no', 15)->nullable();
             $table->text('shipping_address')->nullable();
             $table->text('billing_address')->nullable();
             $table->timestamp('date_joined')->useCurrent();
@@ -28,7 +25,7 @@ return new class extends Migration
 
         Schema::create('sessions', function (Blueprint $table) {
             $table->string('id')->primary();
-            $table->foreignId('user_id')->nullable()->index();
+            $table->foreignId('user_id')->nullable()->constrained('customers', 'C_ID')->cascadeOnDelete();
             $table->string('ip_address', 45)->nullable();
             $table->text('user_agent')->nullable();
             $table->longText('payload');
@@ -36,12 +33,9 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('customers');
         Schema::dropIfExists('sessions');
+        Schema::dropIfExists('customers');
     }
 };

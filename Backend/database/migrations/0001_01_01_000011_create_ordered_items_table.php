@@ -13,7 +13,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('ordered_items', function (Blueprint $table) {
-            $table->id('OI_ID');
+            $table->bigIncrements('OI_ID');
             $table->unsignedBigInteger('O_ID');
             //$table->foreignIdFor(Inventory::class, 'inventory_id');
             $table->integer('quantity');

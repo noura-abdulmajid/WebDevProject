@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\CustomersController;
-use App\Http\Controllers\AdminUsersController;
+use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\ForgetPasswordController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MessageController;
