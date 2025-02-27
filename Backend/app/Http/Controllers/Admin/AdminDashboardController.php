@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Models\AdminUsers;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 
 class AdminDashboardController extends Controller
 {
@@ -38,17 +39,48 @@ class AdminDashboardController extends Controller
 
         $users = $query->get();
 
+        foreach ($users as &$user) {
+            $customerId = $user->C_ID;
+            $orders = DB::table('orders')
+                ->leftJoin('shipped', 'orders.O_ID', '=', 'shipped.O_ID')
+                ->selectRaw("
+                SUM(CASE WHEN shipped.delivery_status IN ('pending', 'shipped') THEN 1 ELSE 0 END) as ongoing_orders,
+                SUM(CASE WHEN shipped.delivery_status = 'delivered' THEN 1 ELSE 0 END) as completed_orders,
+                SUM(orders.total_payment) as total_spent
+            ")
+                ->where('orders.C_ID', $customerId)
+                ->first();
+
+            $user->orders_summary = [
+                'ongoing' => $orders->ongoing_orders ?? 0,
+                'completed' => $orders->completed_orders ?? 0,
+                'total_spent' => $orders->total_spent ?? 0.0,
+            ];
+
+            // Debug
+//            Log::info('Order statistics for user', [
+//                'customer_id' => $customerId,
+//                'ongoing_orders' => $orders->ongoing_orders ?? 0,
+//                'completed_orders' => $orders->completed_orders ?? 0,
+//                'total_spent' => $orders->total_spent ?? 0.0,
+//            ]);
+
+        }
+
+
         Log::info('Admin ' . $admin->email . ' retrieved all users successfully.', [
             'admin_id' => $admin->id,
             'search_query' => $search,
             'total_users_found' => $users->count(),
         ]);
 
+
         return response()->json([
             'message' => 'All users retrieved successfully.',
             'customers' => $users
         ], 200);
     }
+
     public function deleteUser($id)
     {
         $admin = $this->validateAdminToken();
@@ -70,6 +102,7 @@ class AdminDashboardController extends Controller
 
         return response()->json(['message' => 'User successfully deleted.'], 200);
     }
+
     public function updateUser(Request $request, $id)
     {
         $admin = $this->validateAdminToken();
@@ -104,6 +137,7 @@ class AdminDashboardController extends Controller
             'user' => $user,
         ], 200);
     }
+
     public function dashboardStats()
     {
         Log::info('Dashboard statistics ......');

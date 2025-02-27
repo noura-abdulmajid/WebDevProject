@@ -40,15 +40,6 @@ abstract class Controller
     {
         try {
             $customer = auth('api')->user();
-            $payload = JWTAuth::parseToken()->payload();
-            Log::info('Decoded Token Payload:', $payload->toArray());
-
-            if ($customer) {
-                Log::info('Customer authenticated successfully:', ['C_ID' => $customer->C_ID]);
-            } else {
-                Log::warning('Invalid token, no user authenticated.');
-            }
-
             if (!$customer) {
                 throw new HttpResponseException(
                     response()->json(['error' => 'Invalid token or customer not authenticated.'], 401)

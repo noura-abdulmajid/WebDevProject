@@ -58,7 +58,7 @@ class CustomerProfileController extends Controller {
             $validatedData = $request->validate([
                 'first_name' => 'nullable|string|max:255',
                 'surname' => 'nullable|string|max:255',
-                'email_address' => 'nullable|email|unique:customers,email_address,' . $user->C_ID,
+                'email_address' => 'nullable|email|unique:customers,email_address,' . $user->C_ID . ',C_ID',
                 'tel_no' => 'nullable|numeric',
                 'shipping_address' => 'nullable|string|max:255',
                 'billing_address' => 'nullable|string|max:255',
