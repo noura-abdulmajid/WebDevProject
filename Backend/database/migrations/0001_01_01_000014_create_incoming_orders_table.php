@@ -20,7 +20,7 @@ return new class extends Migration
             $table->set('status', ['pending', 'shipped', 'delivered', 'canceled'])->default('pending');
             $table->date('arrival_date')->nullable();
 
-            $table->foreign('ordered_by')->references('A_ID')->on('admin_users')->onDelete('cascade');
+            $table->foreign('ordered_by')->references('A_ID')->on('admin_user')->onDelete('cascade');
         });
     }
 

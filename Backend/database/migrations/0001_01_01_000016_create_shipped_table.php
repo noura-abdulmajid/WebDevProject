@@ -20,7 +20,7 @@ return new class extends Migration
             $table->set('delivery_status', ['pending', 'shipped', 'delivered', 'canceled'])->default('pending');
 
             $table->foreign('O_ID')->references('O_ID')->on('orders')->onDelete('cascade');
-            $table->foreign('shipped_by')->references('A_ID')->on('admin_users')->onDelete('cascade');
+            $table->foreign('shipped_by')->references('A_ID')->on('admin_user')->onDelete('cascade');
         });
     }
 
