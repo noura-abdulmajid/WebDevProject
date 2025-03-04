@@ -1,4 +1,6 @@
 /Backend/vendor/
+/Frontend/node_modules/
+/Frontend/public/
 
 .DS_Store
 **/.DS_Store
