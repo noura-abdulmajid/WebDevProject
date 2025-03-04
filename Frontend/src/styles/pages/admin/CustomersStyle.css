@@ -1,0 +1,189 @@
+/* Full Page forms */
+.admin-dashboard {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background: #f4f7fc;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Main Content */
+.content {
+    width: 80vw;
+    margin-left: 1vw;
+    padding: 25px;
+    overflow-y: auto;
+    height: calc(100vh - 50px);
+}
+
+/* Customers Table */
+.customers-table {
+    width: 100%;
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    overflow: auto;
+    max-height: calc(100vh - 200px);
+}
+
+/* Table Styling */
+.customers-table table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 10px;
+}
+
+.customers-table th {
+    background: #2c3e50;
+    color: white;
+    padding: 12px;
+    text-align: left;
+    font-weight: bold;
+}
+
+.action-buttons {
+    white-space: nowrap;
+    flex-direction: column;
+    width: 150px;
+}
+.action-buttons button {
+    margin-right: 4px;
+    flex-shrink: 0;
+}
+
+.customers-table td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.customers-table tr:hover {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+/*  Top Bar: Search Box & Buttons */
+.top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+/* Search Bar Container */
+.search-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+/* Search Input */
+.search-container input {
+    flex: 1;
+    max-width: 500px;
+    padding: 12px 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px 0 0 8px;
+    font-size: 16px;
+    background: #f9f9f9;
+}
+
+.search-container input:focus {
+    border-color: #3498db;
+    background-color: white;
+}
+
+/* Search Button*/
+.search-container button {
+    width: 50px;
+    height: 46px;
+    border: none;
+    border-radius: 0 8px 8px 0;
+    cursor: pointer;
+    background: #3498db;
+    color: white;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: nowrap;
+}
+
+
+.search-container button:hover {
+    background: #2980b9;
+}
+
+/* Button Group */
+.button-group {
+    display: flex;
+}
+
+/* Add Customer Button*/
+.add-customer-btn {
+    background: #3498db;
+    color: white;
+    padding: 14px 24px;
+    border: none;
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 160px;
+    height: 46px;
+}
+
+.add-customer-btn:hover {
+    background: #2980b9;
+    transform: translateY(-2px);
+}
+
+/* Bulk Delete Button (Rectangle) */
+.bulk-delete-btn {
+    background: #e74c3c;
+    color: white;
+    padding: 14px 24px;
+    border: none;
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 160px; /* Set consistent width */
+    height: 46px; /* Matches search button */
+}
+
+.bulk-delete-btn:disabled {
+    background: #c4c4c4;
+    cursor: not-allowed;
+}
+
+.bulk-delete-btn:hover:not(:disabled) {
+    background: #c0392b;
+    transform: translateY(-2px);
+}
+
+.tooltip {
+    cursor: pointer;
+    color: blue;
+    text-decoration: underline;
+}
+
+.tooltip:hover::after {
+    content: attr(title);
+    position: absolute;
+    background-color: #333;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    z-index: 1000;
+}

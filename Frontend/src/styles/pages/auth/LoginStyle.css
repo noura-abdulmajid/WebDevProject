@@ -1,0 +1,148 @@
+/* 🌟 Centering Wrapper */
+.login-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 450px;
+}
+
+/* 🌟 Login Container */
+.login-container {
+  width: 100%;
+  padding: 40px;
+  border-radius: 12px;
+  background: white;
+  box-shadow: 0 3px 10px var(--shadow-color);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 🌟 Form Groups */
+.form-group {
+  width: 100%;
+  text-align: left;
+  margin-bottom: 18px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: bold;
+  font-size: 14px;
+  color: var(--primary-color);
+  margin-bottom: 5px;
+}
+
+/* 🌟 Input Fields */
+.input-field {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 16px;
+  background-color: var(--input-bg);
+  transition: all 0.3s ease;
+}
+
+.input-field:focus {
+  border-color: var(--accent-color);
+  background-color: #ffffff;
+  box-shadow: 0px 0px 6px rgba(52, 152, 219, 0.3);
+}
+
+/* 🌟 Remember Me */
+.remember-me {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-top: 12px;
+}
+
+.remember-me input {
+  margin-right: 8px;
+}
+
+/* 🌟 Login Button */
+.login-button {
+  width: 100%;
+  padding: 14px;
+  margin-top: 18px;
+  background: var(--accent-color);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.login-button:hover {
+  background: var(--button-hover);
+  transform: translateY(-2px);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.12);
+}
+
+/* 🌟 Links (Forgot Password & Create Account) */
+.login-links {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 18px;
+  gap: 20px;
+}
+
+.login-links a {
+  color: var(--accent-color);
+  text-decoration: none;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.login-links a:hover {
+  text-decoration: underline;
+  color: var(--button-hover);
+}
+
+/* 🌟 Footer Text */
+.footer-text {
+  font-size: 12px;
+  color: var(--secondary-color);
+  margin-top: 12px;
+}
+
+.footer-text a {
+  color: var(--accent-color);
+  text-decoration: none;
+}
+
+.footer-text a:hover {
+  text-decoration: underline;
+}
+
+/* 🌟 Responsive Design */
+@media (max-width: 768px) {
+  .login-container {
+    width: 85%;
+    padding: 35px;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-container {
+    width: 95%;
+    padding: 30px;
+  }
+
+  .input-field {
+    font-size: 15px;
+  }
+
+  .login-button {
+    font-size: 16px;
+  }
+}

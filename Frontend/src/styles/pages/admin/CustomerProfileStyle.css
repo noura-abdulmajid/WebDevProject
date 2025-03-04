@@ -1,0 +1,142 @@
+/* ✅ Customer Profile Box */
+.customer-profile {
+    padding: 25px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin: auto;
+}
+
+/* ✅ Customer Details Section */
+.customer-details {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.08);
+}
+
+.customer-details h3 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.customer-details p {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 8px;
+}
+
+/* ✅ Order Table */
+.order-table {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.order-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.order-table th {
+    background: #2c3e50;
+    color: white;
+    padding: 12px;
+    text-align: left;
+}
+
+.order-table td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+}
+
+.order-table tr:hover {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+/* ✅ Error Message */
+.error-message {
+    color: red;
+    font-weight: bold;
+    font-size: 14px;
+    text-align: center;
+    margin-top: 10px;
+}
+
+/* ✅ Button Container */
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+/* ✅ Back & Edit Buttons */
+.back-button, .edit-button {
+    flex: 1;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+/* ✅ Back Button */
+.back-button {
+    background: #3498db;
+    color: white;
+}
+
+.back-button:hover {
+    background: #2980b9;
+    transform: translateY(-2px);
+}
+
+/* ✅ Edit Button */
+.edit-button {
+    background: #f39c12;
+    color: white;
+}
+
+.edit-button:hover {
+    background: #e67e22;
+    transform: translateY(-2px);
+}
+
+/* ✅ Responsive Design */
+@media (max-width: 768px) {
+    .customer-profile {
+        padding: 20px;
+    }
+
+    .order-table th, .order-table td {
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    .button-group {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 480px) {
+    .customer-profile {
+        padding: 15px;
+    }
+
+    .customer-details {
+        padding: 15px;
+    }
+
+    .order-table th, .order-table td {
+        padding: 8px;
+        font-size: 13px;
+    }
+}
