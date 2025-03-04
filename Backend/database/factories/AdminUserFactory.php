@@ -4,7 +4,6 @@ namespace Database\Factories;
 
 use App\Models\AdminUser;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 
 class AdminUserFactory extends Factory
 {
@@ -15,10 +14,11 @@ class AdminUserFactory extends Factory
         return [
             'username' => $this->faker->userName(),
             'email' => $this->faker->unique()->safeEmail(),
-            'email_verified_at' => now(),
             'password' => bcrypt('admin123'),
-            'role' => 'admin',
-            'remember_token' => Str::random(10),
+            'role' => $this->faker->randomElement(['super_admin', 'editor', 'moderator']),
+            'first_name' => $this->faker->firstName(),
+            'surname' => $this->faker->lastName(),
+            'date_joined' => now()
         ];
     }
 }
