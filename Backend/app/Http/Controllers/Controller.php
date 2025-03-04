@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 use Illuminate\Support\Facades\Log;
-use App\Models\AdminUsers;
+use App\Models\AdminUser;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 
@@ -34,7 +34,7 @@ abstract class Controller
     //Check the Admin Role
     protected function hasAdminRole($admin)
     {
-        return in_array(optional($admin)->role, [AdminUsers::ROLE_ADMIN, AdminUsers::ROLE_SUPER_ADMIN]);
+        return in_array(optional($admin)->role, [AdminUser::ROLE_ADMIN, AdminUser::ROLE_SUPER_ADMIN]);
     }
     protected function validateCustomerToken()
     {

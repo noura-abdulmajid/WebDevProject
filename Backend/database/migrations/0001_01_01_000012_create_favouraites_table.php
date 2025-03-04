@@ -16,6 +16,8 @@ return new class extends Migration
             $table->unsignedBigInteger('C_ID');
             $table->unsignedBigInteger('P_ID');
             $table->timestamp('added')->useCurrent();
+            $table->timestamps();
+
 
             $table->foreign('C_ID')->references('C_ID')->on('customers')->onDelete('cascade');
             $table->foreign('P_ID')->references('P_ID')->on('products')->onDelete('cascade');

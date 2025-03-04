@@ -46,7 +46,7 @@ return [
 
         'admin_api' => [
             'driver' => 'jwt',
-            'provider' => 'admin_users',
+            'provider' => 'admin_user',
         ],
     ],
 
@@ -71,9 +71,9 @@ return [
 
 
         // User provider for admin users
-        'admin_users' => [
+        'admin_user' => [
             'driver' => 'eloquent',
-            'model' => App\Models\AdminUsers::class,
+            'model' => App\Models\AdminUser::class,
         ],
     ],
 

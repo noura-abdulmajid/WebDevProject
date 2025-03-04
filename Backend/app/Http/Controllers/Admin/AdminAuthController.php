@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\AdminUsers;
+use App\Models\AdminUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
@@ -28,7 +28,7 @@ class AdminAuthController extends Controller
         }
 
         $credentials = $request->only('email', 'password');
-        $admin = AdminUsers::where('email', $credentials['email'])->first();
+        $admin = AdminUser::where('email', $credentials['email'])->first();
 
         if (!$admin) {
             Log::warning('Admin Not Found: ' . $credentials['email']);

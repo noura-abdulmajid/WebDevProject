@@ -10,7 +10,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('admin_users', function (Blueprint $table) {
+        Schema::create('admin_user', function (Blueprint $table) {
             $table->bigIncrements('A_ID');
             $table->string('username', 255)->unique();
             $table->string('email', 255)->unique();
@@ -23,7 +23,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        DB::table('admin_users')->insert([
+        DB::table('admin_user')->insert([
             [
                 'username' => 'admin',
                 'email' => 'admin@example.com',
@@ -41,6 +41,7 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('admin_users');
+        Schema::dropIfExists('admin_user');
     }
 };
+

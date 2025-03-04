@@ -5,12 +5,14 @@ namespace App\Models;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class AdminUsers extends Authenticatable implements JWTSubject
+class AdminUser extends Authenticatable implements JWTSubject
 {
     use Notifiable;
+    use HasFactory;
 
-    protected $table = 'admin_users';
+    protected $table = 'admin_user';
     protected $primaryKey = 'A_ID';
     public $incrementing = true;
     protected $keyType = 'int';

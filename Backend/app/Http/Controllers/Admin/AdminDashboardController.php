@@ -7,7 +7,7 @@ use App\Models\Products;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use App\Models\AdminUsers;
+use App\Models\AdminUser;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 

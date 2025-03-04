@@ -36,6 +36,6 @@ class Shipped extends Model
 
     public function admin()
     {
-        return $this->belongsTo(AdminUsers::class, 'shipped_by', 'A_ID');
+        return $this->belongsTo(AdminUser::class, 'shipped_by', 'A_ID');
     }
 }

@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\AdminUser;
 
 class DatabaseSeeder extends Seeder
 {
@@ -12,7 +11,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // 调用其他 Seeders
         $this->call([
             CustomerSeeder::class,
             ProductsSeeder::class,
@@ -22,10 +20,7 @@ class DatabaseSeeder extends Seeder
             OrdersSeeder::class,
             OrderedItemsSeeder::class,
             FavouriteSeeder::class,
-        ]);
-
-        AdminUser::factory()->count(10)->create([
-            'role' => AdminUser::ROLE_ADMIN,
+            AdminUserSeeder::class,
         ]);
     }
 }
