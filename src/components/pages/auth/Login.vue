@@ -51,5 +51,4 @@ import LoginScript from "@/scripts/pages/auth/LoginScript.js";
 
 export default LoginScript;
 </script>
-<style src="../../../styles/GlobalStyle.css"></style>
 <style src="../../../styles/pages/auth/LoginStyle.css"></style>

@@ -6,43 +6,49 @@
       <button @click="toggleSidebar" class="toggle-btn">☰</button>
       <ul class="nav-links">
         <li>
-          <router-link to="/admin-dashboard">
-            <img src="@/assets/image/icon/dashboard.png" class="sidebar-icon" />
+          <router-link :to="{ name: 'admin-dashboard' }">
+          <img src="@/assets/image/icon/dashboard.png" class="sidebar-icon" />
             <span v-if="!isSidebarCollapsed">Dashboard</span>
           </router-link>
         </li>
         <li>
-          <router-link to="/admin-customers">
+          <router-link :to="{ name: 'admin-customers' }">
             <img src="@/assets/image/icon/customer.png" class="sidebar-icon" />
             <span v-if="!isSidebarCollapsed">Customers</span>
           </router-link>
         </li>
         <li>
-          <router-link to="/admin-orders">
+          <router-link :to="{ name: 'admin-orders' }">
             <img src="@/assets/image/icon/orders.png" class="sidebar-icon" />
             <span v-if="!isSidebarCollapsed">Orders</span>
           </router-link>
         </li>
         <li>
-          <router-link to="/admin-payments">
+          <router-link :to="{ name: 'admin-payments' }">
             <img src="@/assets/image/icon/payment.png" class="sidebar-icon" />
-            <span v-if="!isSidebarCollapsed">Payments</span>
+            <span v-if="!isSidebarCollapsed">Refund</span>
           </router-link>
         </li>
         <li>
-          <router-link to="/admin-shipping">
+          <router-link :to="{ name: 'admin-shipping' }">
             <img src="@/assets/image/icon/shipping.png" class="sidebar-icon" />
             <span v-if="!isSidebarCollapsed">Shipping</span>
           </router-link>
         </li>
         <li>
-          <router-link to="/admin-products">
+          <router-link :to="{ name: 'admin-products' }">
             <img src="@/assets/image/icon/products.png" class="sidebar-icon" />
-            <span v-if="!isSidebarCollapsed">Products</span>
+            <span v-if="!isSidebarCollapsed">Inventory</span>
           </router-link>
         </li>
         <li>
-          <router-link to="/admin-settings">
+          <router-link :to="{ name: 'admin-site-reviews' }">
+            <img src="@/assets/image/icon/review.png" class="sidebar-icon" />
+            <span v-if="!isSidebarCollapsed">Site Reviews</span>
+          </router-link>
+        </li>
+        <li>
+          <router-link :to="{ name: 'admin-settings' }">
             <img src="@/assets/image/icon/settings.png" class="sidebar-icon" />
             <span v-if="!isSidebarCollapsed">Settings</span>
           </router-link>
@@ -60,6 +66,7 @@
       </div>
 
       <!-- Renders admin pages inside layout -->
+
       <router-view></router-view>
 
     </main>

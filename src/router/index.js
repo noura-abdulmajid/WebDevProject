@@ -1,59 +1,105 @@
-import { createRouter, createWebHistory } from "vue-router";
-
-// Guest Pages (No authentication required)
+import {createRouter, createWebHistory} from "vue-router";
+// Authentication Pages
 import Login from "@/components/pages/auth/Login.vue";
 import AdminLogin from "@/components/pages/auth/AdminLogin.vue";
-import Fix from "@/components/pages/maintenance/Fix.vue";
-import CreateAccount from "@/components/pages/auth/Register.vue";
+import Register from "@/components/pages/auth/Register.vue";
 import ForgotPassword from "@/components/pages/auth/ForgotPassword.vue";
 import ResetPassword from "@/components/pages/auth/ResetPassword.vue";
 
-// Admin Pages (Require Authentication)
-import AdminLayout from "@/components/layouts/AdminLayout.vue";
-import AdminDashboard from "@/components/pages/admin/Dashboard.vue";
-import AdminCustomers from "@/components/pages/admin/Customers.vue";
-import AdminCustomerProfile from "@/components/pages/admin/CustomerProfile.vue";
-import AdminProducts from "@/components/pages/admin/Products.vue";
-import AdminOrders from "@/components/pages/admin/Orders.vue";
-import AdminSettings from "@/components/pages/admin/Settings.vue";
-
-// Customer Pages (Require Authentication)
+// Admin Panel Pages
+import Dashboard from "@/components/pages/admin/Dashboard.vue";
+import Products from "@/components/pages/admin/Products.vue";
+import Customers from "@/components/pages/admin/Customers.vue";
 import CustomerProfile from "@/components/pages/admin/CustomerProfile.vue";
+import Orders from "@/components/pages/admin/Orders.vue";
+import Settings from "@/components/pages/admin/Settings.vue";
+import AdminUsers from "@/components/pages/admin/AdminUsers.vue";
+import payments from "@/components/pages/admin/refundprocessing.vue";
+import shipping from "@/components/pages/admin/shippings.vue";
+import SiteReviews from "@/components/pages/admin/SiteReviews.vue";
 
-// Forbidden Page
+// User Pages
+import ProfileSettings from "@/components/pages/user/ProfileSettings.vue";
+
+// Storefront Pages
+import Homepage from "@/components/pages/home/Homepage.vue";
+import ContactUs from "@/components/pages/home/ContactUs.vue";
+import SiteReview from "@/components/pages/home/SiteReview.vue";
+import ChildrenCollection from "@/components/pages/products/ChildrenCollection.vue";
+import MenCollection from "@/components/pages/products/MenCollection.vue";
+import WomenCollection from "@/components/pages/products/WomenCollection.vue";
+import ShoppingCart from "@/components/pages/cart/ShoppingCart.vue";
+import Checkout from "@/components/pages/cart/Checkout.vue";
+
+// Maintenance Pages
+import Fix from "@/components/pages/maintenance/Fix.vue";
 import Forbidden from "@/components/pages/maintenance/Forbidden.vue";
 
+// Layouts
+import AdminLayout from "@/components/layouts/AdminLayout.vue";
+import HomepageLayout from "@/components/layouts/HomepageLayout.vue";
+
+
+// Modals
+import AdminViewCustomerModal from "@/components/modals/AdminViewCustomerModal.vue";
+
+
 const routes = [
-    { path: "/", redirect: "/login" },
+    {path: "/", redirect: "/Homepage"},
 
-    // Guest Routes (No authentication required)
-    { path: "/login", component: Login, meta: { guest: true } },
-    { path: "/admin-login", component: AdminLogin, meta: { guest: true } },
-    { path: "/fix", component: Fix, meta: { guest: true } },
-    { path: "/register", component: CreateAccount, meta: { guest: true } },
-    { path: "/forgot-password", component: ForgotPassword, meta: { guest: true } },
-    { path: "/reset-password", component: ResetPassword, meta: { guest: true } },
-
+    // Public Pages
     {
-        path: "/admin",
-        component: AdminLayout, // Wrap all admin pages inside AdminLayout
+        path: "/",
+        component: HomepageLayout,
         children: [
-            // Admin Routes (Require Authentication - Change `guest: true` later)
-            {path: "/admin-dashboard", component: AdminDashboard, meta: {guest: true}}, //meta: { requiresAuth: true, role: "admin" } },
-            {path: "/admin-customers", component: AdminCustomers, meta: {guest: true}}, //meta: { requiresAuth: true, role: "admin" } },
-            {path: "/admin-customers/view/:id", component: AdminCustomerProfile, meta: {guest: true}}, //meta: { requiresAuth: true, role: "admin" } },// Customer Detail Page
-            {path: "/admin-customers/edit/:id", component: AdminCustomerProfile, meta: {guest: true}}, //meta: { requiresAuth: true, role: "admin" } },
-            {path: "/admin-products", component: AdminProducts, meta: {guest: true}},//meta: { requiresAuth: true, role: "admin" } },
-            {path: "/admin-orders", component: AdminOrders, meta: {guest: true}},//meta: { requiresAuth: true, role: "admin" } },
-            {path: "/admin-settings", component: AdminSettings, meta: {guest: true}},//meta: { requiresAuth: true, role: "admin" } },
+
+            {path: "/Homepage", component: Homepage},
+            {path: "/ChildrenCollection", component: ChildrenCollection},
+            {path: "/MenCollection", component: MenCollection},
+            {path: "/WomenCollection", component: WomenCollection},
+            {path: "/ShoppingCart", name: "ShoppingCart", component: ShoppingCart},
+            {path: "/Checkout", name: "Checkout", component: Checkout},
+            {path: "/contact", component: ContactUs},
+            {path: "/site-review", component: SiteReview},
+
+            // Guest Pages (No authentication required)
+            {path: "/login", name: "user-login", component: Login, meta: {guestOnly: true}},
+
+            {path: "/register", name: "user-register", component: Register, meta: {guestOnly: true}},
+            {path: "/forgot-password", name: "user-forgot-password", component: ForgotPassword, meta: {guestOnly: true}},
+            {path: "/reset-password", name: "user-reset-password", component: ResetPassword, meta: {guestOnly: true}},
+
+            // Customer Pages (Require authentication)
+            {path: "/customer-dashboard", component: ProfileSettings, meta: {requiresAuth: true, role: "customer"}},
         ],
     },
 
-    // Customer Routes (Require Authentication)
-    { path: "/customer-dashboard", component: CustomerProfile, meta: { requiresAuth: true, role: "customer" } },
+
+    {path: "/admin-login", name: "admin-login", component: AdminLogin, meta: {guestOnly: true}},
+    // Admin Pages (Require authentication) - Using AdminLayout
+    {
+        path: "/admin",
+        component: AdminLayout,
+        meta: {requiresAuth: true, role: ["admin", "super_admin"]},
+        children: [
+
+            {path: "dashboard", name: "admin-dashboard", component: Dashboard},
+            {path: "users", name: "admin-users", component: AdminUsers},
+            {path: "products", name: "admin-products", component: Products},
+            {path: "orders", name: "admin-orders", component: Orders},
+            {path: "settings", name: "admin-settings", component: Settings},
+            {path: "customers", name: "admin-customers", component: Customers},
+            {path: "customers/:id", name: "admin-customer-profile", component: CustomerProfile},
+            {path: "payments", name: "admin-payments", component: payments},
+            {path: "shipping", name: "admin-shipping", component: shipping},
+            {path: "site", name: "admin-site-reviews", component: SiteReviews},
+        ],
+    },
 
     // Forbidden Page
-    { path: "/forbidden", component: Forbidden },
+    {path: "/forbidden", component: Forbidden},
+    {path: "/fix", component: Fix, meta: {guestOnly: true}},
+
 ];
 
 const router = createRouter({
@@ -61,41 +107,48 @@ const router = createRouter({
     routes,
 });
 
-// Navigation Guards for Authentication & Authorization
 router.beforeEach((to, from, next) => {
     const token = localStorage.getItem("jwt");
-    let userRole = null;
+    let role = null;
+
+    console.log("Navigating to: " + to.path);
+    console.log("Route meta.requiresAuth: " + to.meta.requiresAuth);
+    console.log("Token status: " + (token ? "Exists" : "Missing"));
 
     if (token) {
         try {
-            const payload = JSON.parse(atob(token.split(".")[1])); // Decode JWT payload
-            if (payload.exp * 1000 > Date.now()) {
-                userRole = payload.role; // Set user role if token is valid
-            } else {
-                localStorage.removeItem("jwt"); // Remove expired token
+            const tokenParts = token.split('.');
+            if (tokenParts.length !== 3) {
+                throw new Error("Invalid JWT structure, expected 3 parts.");
             }
-        } catch (error) {
-            console.error("Invalid JWT:", error);
+
+            const payload = JSON.parse(atob(tokenParts[1])); // 解碼 payload
+            console.log("Decoded Payload:", payload);
+
+            if (payload.exp * 1000 > Date.now()) {
+                role = payload.role;
+            } else {
+                console.warn("Token expired. Removing token...");
+                localStorage.removeItem("jwt");
+                alert("Your session has expired. Please login again.");
+            }
+        } catch (e) {
+            console.error("Invalid JWT token:", e.message);
             localStorage.removeItem("jwt");
         }
     }
 
-    // Redirect if authentication is required but user is not logged in
-    if (to.meta.requiresAuth && !userRole) {
-        alert("Please log in to access this page.");
-        return next(to.meta.role === "admin" ? "/admin-login" : "/login");
-    }
 
-    // Redirect unauthorized users away from protected pages
-    if (to.meta.requiresAuth && to.meta.role !== userRole) {
+    if (to.meta.requiresAuth && !token) {
+        alert("Please log in to access this page.");
+        return next("/Homepage");
+    }
+    const noRedirectRoutes = ["/register", "/login", "/forgot-password", "/reset-password", "/contact", "/admin-login"];
+
+
+    if (to.meta.guestOnly && token && !noRedirectRoutes.includes(to.path)) {
         alert("You do not have permission to access this page.");
         return next("/forbidden");
-    }
-
-    // Redirect logged-in users away from guest pages
-    const guestPages = ["/register", "/login", "/forgot-password", "/reset-password"];
-    if (to.meta.guest && userRole && !guestPages.includes(to.path)) {
-        return next(userRole === "admin" ? "/admin-dashboard" : "/customer-dashboard");
     }
 
     next();
