@@ -32,7 +32,7 @@ export default {
             }
 
             try {
-                const response = await axios.post("/api/DashShoe/reset-password", {
+                const response = await axios.post("/DashShoe/reset-password", {
                     email: this.email,
                     token: this.token,
                     password: this.password,

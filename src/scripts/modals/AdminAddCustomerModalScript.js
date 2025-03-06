@@ -1,5 +1,6 @@
 import { ref, defineProps, defineEmits } from "vue";
 import axiosClient from "@/services/axiosClient.js";
+import apiConfig from "@/config/apiURL.js";
 
 export default {
     props: {
@@ -39,7 +40,7 @@ export default {
 
             try {
                 const fullEmail = newCustomer.value.emailName.trim() + newCustomer.value.emailProvider;
-                await axiosClient.post("/admin/customers", {
+                await axiosClient.post(apiConfig.auth.register, {
                     first_name: newCustomer.value.firstName,
                     surname: newCustomer.value.surname,
                     email_address: fullEmail,

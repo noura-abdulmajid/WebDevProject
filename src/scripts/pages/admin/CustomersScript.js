@@ -1,20 +1,27 @@
-import { ref, computed, onMounted } from "vue";
+import {ref, computed, onMounted} from "vue";
 import axiosClient from "@/services/axiosClient.js";
-import { useRouter } from "vue-router";
+import {useRouter} from "vue-router";
 import AdminAddCustomerModal from "@/components/modals/AdminAddCustomerModal.vue";
+import AdminViewCustomerModal from '@/components/modals/AdminViewCustomerModal.vue';
+import AdminDeleteCustomerModal from "@/components/modals/AdminDeleteCustomerModal.vue";
+import apiConfig from "@/config/apiURL.js";
 
 export default {
-    components: { AdminAddCustomerModal },
+    components: {AdminAddCustomerModal, AdminViewCustomerModal, AdminDeleteCustomerModal},
     setup() {
         const customers = ref([]);
         const searchQuery = ref("");
         const selectedCustomers = ref([]);
+        const customerToView = ref({});
+        const showDeleteModal = ref(false);
+        const customerToDelete = ref({});
         const selectAll = ref(false);
         const activeActionMenu = ref(null);
         const showModal = ref(false);
         const sortingCriteria = ref("name");
         const loading = ref(true);
         const error = ref(null);
+        const viewModalVisible = ref(false);
         const router = useRouter();
 
         /**
@@ -25,70 +32,72 @@ export default {
             loading.value = true;
             error.value = null;
             try {
-                const response = await axiosClient.get(`/admin/customers?search=${searchQuery.value}`);
-                customers.value = response.data.customers || [];
+                const response = await axiosClient.get(apiConfig.admin.customers, {
+                    params: {search: searchQuery.value},
+                });
+
+                customers.value = (response.data.customers || []).map((customer) => {
+
+                    const orders = customer.orders_summary || {};
+
+                    return {
+                        id: customer.C_ID,
+                        ...customer,
+                        orders: {
+                            ongoing: Number(orders.ongoing) || 0,
+                            completed: Number(orders.completed) || 0,
+                            total_spent: Number(orders.total_spent) || 0,
+                            total_orders: (Number(orders.ongoing) || 0) + (Number(orders.completed) || 0),
+                        },
+                    };
+                });
+
+                console.log("Mapped Customers:", customers.value);
                 localStorage.setItem("customers", JSON.stringify(customers.value));
             } catch (err) {
                 error.value = "Failed to load customers. Displaying last available data.";
                 console.error("Error fetching customers:", err);
-                customers.value = JSON.parse(localStorage.getItem("customers")) || [];
+
+
+                const localData = localStorage.getItem("customers");
+                customers.value = localData ? JSON.parse(localData) : [];
             } finally {
                 loading.value = false;
             }
         };
 
+
+        /**
+         * Get tooltips for customer order details.
+         */
+        const getOrderTooltip = (orders) => {
+            if (!orders) {
+                return "No order data available.";
+            }
+            const ongoing = orders.ongoing || 0;
+            const completed = orders.completed || 0;
+
+            return `Ongoing: ${ongoing}, Completed: ${completed}`;
+        };
+
+
+
         /**
          * Bulk delete selected customers.
-         * Ensures a confirmation prompt before deleting.
          */
         const bulkDeleteCustomers = async () => {
-            if (selectedCustomers.value.length === 0) return alert("No customers selected.");
-            if (!confirm("Are you sure you want to delete selected customers?")) return;
+            if (selectedCustomers.value.length === 0)
+                return alert("No customers selected.");
+            if (!confirm("Are you sure you want to delete selected customers?"))
+                return;
             try {
-                await axiosClient.delete("/admin/customers/bulk-delete", { data: { customers: selectedCustomers.value } });
-                alert("Selected customers deleted.");
-                selectedCustomers.value = [];
-                fetchCustomers();
+                for (const id of selectedCustomers.value) {
+                    await axiosClient.delete(apiConfig.admin.deleteUser(id));
+                    selectedCustomers.value = [];
+                    await fetchCustomers();
+                }
             } catch (error) {
                 console.error("Error deleting customers:", error);
-            }
-        };
-
-        /**
-         * Toggle the action menu for each customer.
-         */
-        const toggleActionMenu = (customerId) => {
-            activeActionMenu.value = activeActionMenu.value === customerId ? null : customerId;
-        };
-
-        /**
-         * Navigate to the customer details page.
-         */
-        const viewCustomer = (customerId) => {
-            if (!customerId) return;
-            router.push(`/admin/customers/${customerId}`);
-        };
-
-        /**
-         * Navigate to the customer edit page.
-         */
-        const editCustomer = (customerId) => {
-            if (!customerId) return;
-            router.push(`/admin/customers/edit/${customerId}`);
-        };
-
-        /**
-         * Deletes a single customer after confirmation.
-         */
-        const deleteCustomer = async (customerId) => {
-            if (!customerId) return;
-            if (!confirm("Are you sure you want to delete this customer?")) return;
-            try {
-                await axiosClient.delete(`/admin/customers/${customerId}`);
-                fetchCustomers();
-            } catch (err) {
-                console.error("Error deleting customer:", err);
-                alert("Unable to delete customer. Please try again.");
             }
         };
 
@@ -97,9 +106,11 @@ export default {
          */
         const sortedCustomers = computed(() => {
             return [...customers.value].sort((a, b) => {
-                if (sortingCriteria.value === "name") return a.name.localeCompare(b.name);
-                if (sortingCriteria.value === "amount_spent") return b.amount_spent - a.amount_spent;
-                if (sortingCriteria.value === "signupDate") return new Date(b.signupDate) - new Date(a.signupDate);
+                if (sortingCriteria.value === "name") {
+                    const nameA = `${a.first_name || ""} ${a.surname || ""}`.toLowerCase();
+                    const nameB = `${b.first_name || ""} ${b.surname || ""}`.toLowerCase();
+                    return nameA.localeCompare(nameB);
+                }
                 return 0;
             });
         });
@@ -108,27 +119,90 @@ export default {
          * Filter Customers based on search query.
          */
         const filteredCustomers = computed(() => {
-            return sortedCustomers.value.filter(customer =>
-                (customer.name?.toLowerCase() || "").includes(searchQuery.value.toLowerCase()) ||
-                (customer.email?.toLowerCase() || "").includes(searchQuery.value.toLowerCase()) ||
-                (customer.phone?.toLowerCase() || "").includes(searchQuery.value.toLowerCase())
-            );
+            const query = searchQuery.value.toLowerCase();
+            return sortedCustomers.value.filter((customer) => {
+                const fullName = `${customer.first_name || ""} ${
+                    customer.surname || ""
+                }`.toLowerCase();
+                return (
+                    fullName.includes(query) ||
+                    (customer.email_address?.toLowerCase() || "").includes(query) ||
+                    (customer.tel_no?.toString() || "").includes(query)
+                );
+            });
         });
 
         /**
          * Select all customers at once.
          */
         const toggleSelectAll = () => {
-            selectAll.value = !selectAll.value;
-            selectedCustomers.value = selectAll.value ? customers.value.map(customer => customer.id) : [];
+            selectedCustomers.value = selectAll.value
+                ? customers.value.map((customer) => customer.id)
+                : [];
         };
+
+        const viewCustomer = (customerId) => {
+            const userData = customers.value.find(c => c.C_ID === customerId);
+            if (userData) {
+                customerToView.value = userData;
+            }
+            console.log("Found userData", userData);
+
+            viewModalVisible.value = true;
+            console.log("viewModalVisible", viewModalVisible.value);
+
+        };
+
+        const editCustomer = (customerId) => {
+            router.push({name: 'admin-customer-profile', params: {id: customerId}});
+        };
+
+        const deleteCustomer = (customerId) => {
+            const found = customers.value.find((c) => c.id === customerId);
+            if (!found) return;
+
+            customerToDelete.value = found;
+            showDeleteModal.value = true;
+        };
+
+        const onConfirmDelete = async (customer) => {
+            showDeleteModal.value = false;
+            try {
+                await axiosClient.delete(apiConfig.admin.deleteUser(customer.id));
+                alert("Deleted successfully.");
+                await fetchCustomers();
+            } catch (err) {
+                console.error("Error deleting customer", err);
+            }
+        };
+
 
         onMounted(fetchCustomers);
 
         return {
-            customers, searchQuery, selectedCustomers, selectAll, activeActionMenu, showModal, sortingCriteria,
-            loading, error, fetchCustomers, bulkDeleteCustomers, toggleActionMenu, viewCustomer,
-            editCustomer, deleteCustomer, filteredCustomers, toggleSelectAll
+            customers,
+            searchQuery,
+            selectedCustomers,
+            viewModalVisible,
+            customerToView,
+            selectAll,
+            activeActionMenu,
+            showModal,
+            sortingCriteria,
+            loading,
+            error,
+            fetchCustomers,
+            bulkDeleteCustomers,
+            filteredCustomers,
+            toggleSelectAll,
+            viewCustomer,
+            editCustomer,
+            deleteCustomer,
+            showDeleteModal,
+            customerToDelete,
+            onConfirmDelete,
+            getOrderTooltip
+
         };
     },
 };

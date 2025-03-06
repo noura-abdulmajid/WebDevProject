@@ -1,6 +1,7 @@
 import { ref, onMounted } from "vue";
 import Chart from "chart.js/auto";
 import axiosClient from "@/services/axiosClient.js";
+import apiConfig from "@/config/apiURL.js";
 
 export default {
     setup() {
@@ -11,12 +12,13 @@ export default {
         // Fetch Admin Dashboard Stats
         const fetchStats = async () => {
             try {
-                const response = await axiosClient.get("/admin/stats");
-                totalUsers.value = response.data.totalUsers;
-                totalSales.value = response.data.totalSales;
-                totalOrders.value = response.data.totalOrders;
+                const response = await axiosClient.get(apiConfig.admin.dashboardStats);
+                const stats = response.data.stats;
+                totalUsers.value = stats.total_users;
+                totalSales.value = stats.total_sales;
+                totalOrders.value = stats.total_orders;
             } catch (error) {
-                console.error("Error fetching admin stats:", error);
+                console.error("Error fetching admin stats:", error.response?.data || error.message);
             }
         };
 
@@ -28,7 +30,7 @@ export default {
             new Chart(ctx, {
                 type: "line",
                 data: {
-                    labels: ["Jan", "Feb", "Mar", "Apr", "May"],
+                    labels: ["Jan", "Feb", "Mar", "Apr", "May","Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
                     datasets: [{
                         label: "Sales",
                         data: [50, 60, 70, 80, 100],

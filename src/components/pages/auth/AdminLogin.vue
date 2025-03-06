@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import AdminLoginScript from "../../../scripts/pages/auth/AdminLoginScript.js";
+import AdminLoginScript from "../../../scripts/pages/admin/AdminLoginScript.js";
 export default AdminLoginScript;
 </script>
 

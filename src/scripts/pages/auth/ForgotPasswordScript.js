@@ -74,7 +74,7 @@ export default {
             }
 
             try {
-                const response = await axios.post("/api/DashShoe/forgot-password", {
+                const response = await axios.post("/DashShoe/forgot-password", {
                     email: this.email,
                     recaptcha_token: fakeRecaptchaResponse,
                 });

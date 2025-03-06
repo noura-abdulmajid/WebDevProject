@@ -14,6 +14,7 @@
     margin-left: 1vw;
     padding: 25px;
     overflow-y: auto;
+    height: calc(100vh - 50px);
 }
 
 /* Customers Table */
@@ -23,7 +24,8 @@
     border-radius: 12px;
     padding: 20px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    overflow: hidden;
+    overflow: auto;
+    max-height: calc(100vh - 200px);
 }
 
 /* Table Styling */
@@ -41,6 +43,16 @@
     font-weight: bold;
 }
 
+.action-buttons {
+    white-space: nowrap;
+    flex-direction: column;
+    width: 150px;
+}
+.action-buttons button {
+    margin-right: 4px;
+    flex-shrink: 0;
+}
+
 .customers-table td {
     padding: 10px;
     border-bottom: 1px solid #ddd;
@@ -53,7 +65,6 @@
 /*  Top Bar: Search Box & Buttons */
 .top-bar {
     display: flex;
-    align-items: center;
     justify-content: space-between;
     gap: 15px;
     margin-bottom: 20px;
@@ -64,6 +75,7 @@
     display: flex;
     align-items: center;
     margin-bottom: 20px;
+    width: 505px;
 }
 
 /* Search Input */
@@ -95,7 +107,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 10px;
+    flex-wrap: nowrap;
 }
+
 
 .search-container button:hover {
     background: #2980b9;
@@ -104,7 +119,6 @@
 /* Button Group */
 .button-group {
     display: flex;
-    gap: 10px;
 }
 
 /* Add Customer Button*/
@@ -121,7 +135,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 160px;
+    width: 100px;
     height: 46px;
 }
 
@@ -144,8 +158,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 160px; /* Set consistent width */
-    height: 46px; /* Matches search button */
+    width: 100px;
+    height: 46px;
 }
 
 .bulk-delete-btn:disabled {
@@ -156,4 +170,20 @@
 .bulk-delete-btn:hover:not(:disabled) {
     background: #c0392b;
     transform: translateY(-2px);
+}
+
+.tooltip {
+    cursor: pointer;
+    color: blue;
+    text-decoration: underline;
+}
+
+.tooltip:hover::after {
+    content: attr(title);
+    position: absolute;
+    background-color: #333;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    z-index: 1000;
 }

@@ -20,7 +20,7 @@ export default {
 
                 this.$router.push("/customer-dashboard");
             } catch (error) {
-                alert(error.response?.data?.message || "Login failed!");
+                //alert(error.response?.data?.message || "Login failed!");
             } finally {
                 this.loading = false;
             }
@@ -28,10 +28,13 @@ export default {
 
         async login(email, password) {
             try {
-                const response = await axios.post("/api/DashShoe/login", {
-                    email,
-                    password,
-                });
+                const response = await axios.post(
+                    "/DashShoe/login",
+                    {
+                        email,
+                        password,
+                    });
+
 
                 const data = response.data;
 
@@ -43,6 +46,11 @@ export default {
                 localStorage.setItem("token_type", data.token_type);
                 localStorage.setItem("user_id", data.user?.C_ID);
                 localStorage.setItem("user_email", data.user?.email_address);
+                localStorage.setItem("user_first_name", data.user?.first_name);
+                localStorage.setItem("user_last_name", data.user?.surname);
+                localStorage.setItem("tel_no", data.user?.tel_no);
+                localStorage.setItem("shipping_address", data.user?.shipping_address);
+                localStorage.setItem("billing_address", data.user?.billing_address);
 
                 return data;
             } catch (error) {

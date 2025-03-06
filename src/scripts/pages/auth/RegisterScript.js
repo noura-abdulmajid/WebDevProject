@@ -5,13 +5,10 @@ export default {
         return {
             firstName: "",
             surname: "",
-            emailName: "", //Only Email Name input
-            emailProvider: "@gmail.com", // Default provider
+            email: "",
             password: "",
             confirmPassword: "",
-            /*telNo: "",
-            shippingAddress: "",
-            billingAddress: "",*/ //Decrease Fills
+            emailProvider: "",
             loading: false,
             error: "",
             success: "",
@@ -29,22 +26,20 @@ export default {
                 return;
             }
 
-            // Combine email name & provider
-            const fullEmail = this.emailName.trim() + this.emailProvider;
-
             try {
+                const fullEmail = this.emailName + this.emailProvider;
+
                 const registrationData = {
                     first_name: this.firstName,
                     surname: this.surname,
                     email_address: fullEmail,
                     password: this.password,
-                    /*tel_no: this.telNo,
-                    shipping_address: this.shippingAddress,
-                    billing_address: this.billingAddress,*/
                     date_joined: new Date().toISOString(),
                 };
+                //Debug
+                //alert(JSON.stringify(registrationData));
 
-                const response = await axios.post("/api/DashShoe/register", registrationData);
+                const response = await axios.post("/DashShoe/register", registrationData);
 
                 if (response.status === 201 && response.data.message === "Customer registered successfully") {
                     alert("Customer registered successfully!");

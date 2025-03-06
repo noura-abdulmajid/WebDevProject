@@ -15,7 +15,7 @@ export default {
          */
         const fetchCustomer = async () => {
             try {
-                const response = await axiosClient.get(`/admin-customers/${route.params.id}`);
+                const response = await axiosClient.get(`/admin/customers/${route.params.id}`);
                 customer.value = response.data.customer;
                 if (!customer.value) throw new Error("Customer not found.");
             } catch (err) {
@@ -31,7 +31,7 @@ export default {
          */
         const updateCustomer = async () => {
             try {
-                await axiosClient.put(`/admin-customers/${route.params.id}`, {
+                await axiosClient.put(`/admin/customers/${route.params.id}`, {
                     name: customer.value.name,
                     email: customer.value.email,
                     phone: customer.value.phone,
@@ -50,7 +50,7 @@ export default {
          * ✅ Navigate back to the customer profile.
          */
         const goBack = () => {
-            router.push(`/admin-customers/view/${route.params.id}`);
+            router.push(`/admin/customers/view/${route.params.id}`);
         };
 
         onMounted(fetchCustomer);

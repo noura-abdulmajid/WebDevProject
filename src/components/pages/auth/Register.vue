@@ -63,44 +63,6 @@
           />
         </div>
 
-
-<!--        <div class="form-group">-->
-<!--          <label for="tel_no">Phone Number *</label>-->
-<!--          <input-->
-<!--              type="tel"-->
-<!--              id="tel_no"-->
-<!--              v-model="telNo"-->
-<!--              class="input-field"-->
-<!--              placeholder="Enter your phone number"-->
-<!--              required-->
-<!--          />-->
-<!--        </div>-->
-
-<!--        <div class="form-group">-->
-<!--          <label for="shipping_address">Shipping Address *</label>-->
-<!--          <input-->
-<!--              type="text"-->
-<!--              id="shipping_address"-->
-<!--              v-model="shippingAddress"-->
-<!--              class="input-field"-->
-<!--              placeholder="Enter your shipping address"-->
-<!--              required-->
-<!--          />-->
-<!--        </div>-->
-
-<!--        <div class="form-group">-->
-<!--          <label for="billing_address">Billing Address *</label>-->
-<!--          <input-->
-<!--              type="text"-->
-<!--              id="billing_address"-->
-<!--              v-model="billingAddress"-->
-<!--              class="input-field"-->
-<!--              placeholder="Enter your billing address"-->
-<!--              required-->
-<!--          />-->
-<!--        </div>-->
-
-
         <button type="submit" class="register-button" :disabled="loading">
           {{ loading ? "Creating Account..." : "Create Account" }}
         </button>

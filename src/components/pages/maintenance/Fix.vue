@@ -1,6 +1,6 @@
 <template>
   <div class="maintenance-page">
-    <img src="/src/assets/image/logo/dashshoe.png" alt="DashShoe Store Logo" class="logo" />
+    <img src="/image/dashshoe.png" alt="DashShoe Store Logo" class="logo" />
     <h2>Website Under Maintenance</h2>
     <p>We are currently performing system maintenance. Please try again later.</p>
     <p>If you have any questions, please contact customer support.</p>
@@ -27,6 +27,8 @@ export default {
 .logo {
   max-width: 200px;
   margin-bottom: 20px;
+
+
   background-color: transparent;
   mix-blend-mode: multiply;
 }

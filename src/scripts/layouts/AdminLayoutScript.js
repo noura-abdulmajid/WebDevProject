@@ -32,9 +32,7 @@ export default {
             });
         });
 
-        onMounted(() => {
-            isSidebarCollapsed.value = localStorage.getItem("sidebarCollapsed") === "true";
-        });
+
 
         return { isSidebarCollapsed, toggleSidebar, breadcrumbs };
     },

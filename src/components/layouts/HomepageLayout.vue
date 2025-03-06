@@ -11,8 +11,8 @@
 
       <!-- Navigation Links -->
       <ul class="nav-links">
-        <li><a href="/MenCollection">Men</a></li>
-        <li><a href="/WomenCollection">Women</a></li>
+        <li><a href="/category/men">Men</a></li>
+        <li><a href="/category/women">Women</a></li>
         <li><a href="/category/kids">Kids</a></li>
         <li><a href="/category/brands">Brands</a></li>
         <li><a href="/offers">Offers</a></li>
@@ -33,7 +33,7 @@
           <a href="/favorites" class="icon">
             <img src="@/assets/image/icon/favourite.png" class="icon-img"/>
           </a>
-          <a href="/ShoppingCart" class="icon">
+          <a href="/cart" class="icon">
             <img src="@/assets/image/icon/cart.png" class="icon-img"/>
           </a>
         </div>
