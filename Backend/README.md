@@ -85,6 +85,15 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 - lsof -i :8000
   Check which process is using port 8000 and resolve conflicts if php artisan serve fails. 
 - curl -X GET -H "Accept: application/json" http://127.0.0.1:8080/api/DashShoe/test
+  
+- php artisan db:seed
+- php artisan db:seed --class=CustomerSeeder
+- php artisan db:seed --class=OrdersSeeder
+php artisan make:seeder OrdersSeeder
+php artisan make:seeder CustomerSeeder
+- php artisan migrate:refresh --seed
+
+php artisan make:factory OrderFactory --model=Order
 
 ## Startup instructions
 rm -rf vendor

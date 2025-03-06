@@ -2,11 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\AdminUser;
-use App\Models\Customer;
-use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,21 +12,19 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        $this->call([
+            AdminUserSeeder::class,
+            CustomerSeeder::class,
+            ProductsSeeder::class,
+            ShippedSeeder::class,
+            ShippedItemsSeeder::class,
+            InventorySeeder::class,
+            ContactSeeder::class,
+            OrdersSeeder::class,
+            OrderedItemsSeeder::class,
+            FavouriteSeeder::class
         ]);
 
-        AdminUser::factory()->create([
-            'username' => 'admin',
-            'email' => 'admin@example.com',
-            'password' => bcrypt('admin_password'),
-        ]);
-
-        $this->call(ProductSeeder::class);
-        $this->call(CartSeeder::class);
 
     }
 }

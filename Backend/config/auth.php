@@ -73,7 +73,7 @@ return [
         // User provider for admin users
         'admin_users' => [
             'driver' => 'eloquent',
-            'model' => App\Models\AdminUser::class,
+            'model' => App\Models\AdminUsers::class,
         ],
     ],
 

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Logs
 logs
 *.log
@@ -22,3 +23,18 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+=======
+/Backend/vendor/
+
+.DS_Store
+**/.DS_Store
+
+.idea/
+.idea/**
+
+Frontend/dist/.DS_Store
+Frontend/src/.DS_Store
+Frontend/src/image/.DS_Store
+
+*.iml
+>>>>>>> 10080a938eef1e1f888c085ea3d98a1578afe3f1
