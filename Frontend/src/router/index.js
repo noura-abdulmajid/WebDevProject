@@ -21,12 +21,16 @@ import MenCollection from "@/components/MenCollection.vue";
 import WomenCollection from "@/components/WomenCollection.vue";
 import ShoppingCart from "@/components/ShoppingCart.vue";
 import Checkout from "@/components/Checkout.vue";
+//import ProductDetail from "@/components/productview.vue";
+//import ProductDetail from "@/components/productview.vue";
 // ✅ Customer Pages (Require Authentication)
 import CustomerProfile from "@/components/CustomerProfile.vue";
+import Newpage from "@/components/newpage.vue";
 
 
 const routes = [
     {path: "/", redirect: "/Homepage"},
+    {path: "/Newpage", component: Newpage},
     {path: "/Homepage", component: Homepage},
     {path: "/ChildrenCollection", component: ChildrenCollection},
     {path: "/MenCollection", component: MenCollection},
@@ -43,6 +47,7 @@ const routes = [
     {path: "/contact", component: ContactUs},
     {path: "/site-review", component: SiteReview},
     {path: "/forbidden", component: Forbidden},
+
     {path: "/admin-login", component: AdminLogin, meta: {guest: true}},
 
     {path: "/admin-dashboard", component: AdminDashboard, meta: {requiresAuth: true, role: ["admin", "super_admin"]}},
