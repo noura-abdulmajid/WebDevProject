@@ -21,6 +21,8 @@ import MenCollection from "@/components/MenCollection.vue";
 import WomenCollection from "@/components/WomenCollection.vue";
 import ShoppingCart from "@/components/ShoppingCart.vue";
 import Checkout from "@/components/Checkout.vue";
+import sustainability from "@/components/sustainabilty.vue"
+import newarrivals from "@/components/newarrivals.vue"
 //import ProductDetail from "@/components/productview.vue";
 //import ProductDetail from "@/components/productview.vue";
 // ✅ Customer Pages (Require Authentication)
@@ -47,6 +49,8 @@ const routes = [
     {path: "/contact", component: ContactUs},
     {path: "/site-review", component: SiteReview},
     {path: "/forbidden", component: Forbidden},
+    {path: "/sustainability", component: sustainability},
+    {path: "/newarrivals", component: newarrivals},
 
     {path: "/admin-login", component: AdminLogin, meta: {guest: true}},
 
