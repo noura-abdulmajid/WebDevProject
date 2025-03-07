@@ -3,7 +3,7 @@
     <div class="main-content">
       <ProfileHeader/>
       <section class="profile-card">
-        <img src="/image/customer.png" alt="Profile banner" class="profile-banner"/>
+
         <div class="profile-card-content">
           <ProfileInfo :isEditing="isEditing" @toggle-edit="toggleEditMode"/>
           <PersonalDetailsForm :isEditing="isEditing" @save-profile="saveProfile" ref="profileForm"/>
