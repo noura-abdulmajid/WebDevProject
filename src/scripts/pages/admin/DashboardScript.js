@@ -14,7 +14,7 @@ export default {
             try {
                 const response = await axiosClient.get(apiConfig.admin.dashboardStats);
                 const stats = response.data.stats;
-                totalUsers.value = stats.total_users;
+                totalUsers.value = stats.total_users();
                 totalSales.value = stats.total_sales;
                 totalOrders.value = stats.total_orders;
             } catch (error) {
@@ -23,21 +23,20 @@ export default {
         };
 
         onMounted(() => {
-            fetchStats();
-
-            // Initialize Chart.js for performance visualization
-            const ctx = document.getElementById("salesChart").getContext("2d");
-            new Chart(ctx, {
-                type: "line",
-                data: {
-                    labels: ["Jan", "Feb", "Mar", "Apr", "May","Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-                    datasets: [{
-                        label: "Sales",
-                        data: [50, 60, 70, 80, 100],
-                        borderColor: "blue",
-                        fill: false
-                    }],
-                },
+            fetchStats().then(() => {
+                const ctx = document.getElementById("salesChart").getContext("2d");
+                new Chart(ctx, {
+                    type: "line",
+                    data: {
+                        labels: months,
+                        datasets: [{
+                            label: "Sales",
+                            data: salesData.value,
+                            borderColor: "blue",
+                            fill: false
+                        }],
+                    },
+                });
             });
         });
 
