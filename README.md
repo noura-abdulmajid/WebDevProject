@@ -1,6 +1,8 @@
 # Welcome to WebDevProject! 
-Thank you for visiting our full-stack web development project page! 
+Thank you for visiting our full-stack web development project page! We are building an e-commerce website that sells shoes to customers.
 
+## <ins> Tech Stack </ins>
+We are using Vue.js, Laravel (PHP) and Tailwind CSS. This is a modified version of the more popular VILT tack (Vue.js, Inertia, Laravel, Tailwind CSS). Instead of Inertia, our team is using RESTful APIs to decouple the frontend and the backend.
 
 ## <ins> Use of GitHub by Team 1 </ins>
  * Each team member works on their own <ins>***individual branch</ins> - please see individual branches for a more detailed list of contributions by each member***.
