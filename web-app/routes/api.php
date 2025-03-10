@@ -33,5 +33,7 @@ Route::post('/products/{id}/add_to_cart', [ProductController::class, 'add_to_car
     -> name('products.add_to_cart');
 
 
+/*
 Route::get("/products/search", [ProductController::class, 'search'])
     -> name('products.search');
+*/

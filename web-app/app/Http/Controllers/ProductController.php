@@ -7,6 +7,7 @@ use App\Models\ProductReview;
 use App\Models\Favourite;
 use Illuminate\Http\Request;
 use App\Models\Product;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Route;
@@ -23,11 +24,10 @@ use Illuminate\Database\Eloquent\Collection;
 class ProductController extends Controller {
 
     //Displays product index page (main product page)
-    public function index() {
+    public function index(Request $request) {
 
         //Products are displayed ordered by lowest price by default
-        //$products = Product::orderBy('price', 'ASC');
-        $products = Product::all()->first();
+        $products = Product::orderBy('price', 'ASC');
 
         //SEARCH FUNCTIONALITY
         //check if there is a search request: if there is, query database using search value
@@ -62,20 +62,21 @@ class ProductController extends Controller {
 
         }
 
-        //return view with X products per page
+        //return json format of all products in product table (after default order, sorting and searching are applied, if applicable)
+        $products = $products->get();
         return response()->json($products);
 
     }
 
-    //Displays page showing details for an individual item
+    //Displays page showing details for an individual item: details about product itself along with product reviews
     public function show(string $id) {
 
         $product = Product::find($id);
         $product_reviews = ProductReview::where('product_id', $id)->get();
 
         $data = [
-            'product' => $product,
-            'product_reviews' => $product_reviews,
+            'product' => $product, //details about given product itself
+            'product_reviews' => $product_reviews, //product reviews for given product
         ];
 
         return response()->json($data);
