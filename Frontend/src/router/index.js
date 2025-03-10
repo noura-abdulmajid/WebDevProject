@@ -22,8 +22,11 @@ import WomenCollection from "@/components/WomenCollection.vue";
 import ShoppingCart from "@/components/ShoppingCart.vue";
 import Checkout from "@/components/Checkout.vue";
 import AdminLayout from "@/components/layouts/AdminLayout.vue";
-import AdminViewCustomerModal from '@/components/modals/AdminViewCustomerModal.vue';
+import Favorites from "@/components/pages/user/Favorites.vue";
 import ProfileSettings from "@/components/pages/user/ProfileSettings.vue";
+import ProfileDetails from "@/components/pages/user/ProfileDetails.vue";
+import OrdersHistory from "@/components/pages/user/OrdersHistory.vue";
+
 
 const routes = [
     {path: "/", redirect: "/Homepage"},
@@ -47,7 +50,22 @@ const routes = [
     {path: "/fix", component: Fix, meta: {guestOnly: true}},
 
     // Customer Pages (Require authentication)
-    {path: "/customer-dashboard", component: ProfileSettings, meta: {requiresAuth: true, role: "customer"}},
+    {
+        path: "/customer-dashboard",
+        name: 'CustomerDashboard',
+        component: ProfileSettings,
+        meta: {requiresAuth: true, role: "customer"},
+        redirect: "/customer-dashboard/profile",
+        children: [
+            {path: "profile", name: "Profile", component: ProfileDetails},
+            {path: "favorites", name: "Favorites", component: Favorites},
+            {path: "orders-history", name: "OrdersHistory", component: OrdersHistory},
+        ],
+    },
+    {
+        path: "/:pathMatch(.*)*",
+        redirect: "/customer-dashboard",
+    },
 
     // Admin Pages (Require authentication) - Using AdminLayout
     {

@@ -6,11 +6,15 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 
 class CustomerProfileController extends Controller {
-    public function getProfile()
+    public function getProfile(Request $request)
     {
         try {
+            Log::info('Authorization Token:', ['token' => request()->header('Authorization')]);
+
             $user = $this->validateCustomerToken();
             if ($user instanceof JsonResponse) {
                 return $user;
@@ -110,4 +114,89 @@ class CustomerProfileController extends Controller {
             return !is_null($value);
         });
     }
+
+    /**
+     * Retrieve orders, ordered items, and shipment details for the authenticated customer.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getOrders()
+    {
+        try {
+            Log::info('Attempting to get orders ...');
+            // Validate the customer token and retrieve the authenticated customer
+            $user = $this->validateCustomerToken();
+            if ($user instanceof JsonResponse) {
+                return $user;
+            }
+
+            // Extract customer information (C_ID, first_name, surname) from the authenticated user
+            $C_ID = $user->C_ID;
+            $firstName = $user->first_name;
+            $surname = $user->surname;
+
+            // Log the retrieved customer details
+            Log::info('Customer retrieved:', [
+                'C_ID' => $C_ID,
+                'first_name' => $firstName,
+                'surname' => $surname,
+            ]);
+
+            // Query the orders table to retrieve all orders for the customer
+            $orders = DB::table('orders')
+                ->where('C_ID', $C_ID)
+                ->get();
+
+            // Check if any orders exist for the customer
+            if ($orders->isEmpty()) {
+                return response()->json([
+                    'message' => 'No orders found for the customer.',
+                ], 404); // Return 404 if no orders are found
+            }
+
+            // Initialize an array to store order details
+            $orderDetails = [];
+
+            // Loop through each order to collect related data (ordered items and shipment info)
+            foreach ($orders as $order) {
+                $O_ID = $order->O_ID;
+
+                // Retrieve all ordered items associated with the order
+                $orderedItems = DB::table('ordered_items')
+                    ->where('O_ID', $O_ID)
+                    ->get();
+
+                // Retrieve shipping details associated with the order
+                $shippedInfo = DB::table('shipped')
+                    ->where('O_ID', $O_ID)
+                    ->first();
+
+                // Append the order details, ordered items, and shipping info to the array
+                $orderDetails[] = [
+                    'order' => $order,
+                    'ordered_items' => $orderedItems,
+                    'shipped' => $shippedInfo,
+                ];
+            }
+
+            // Return a JSON response with the customer and order details
+            return response()->json([
+                'message' => 'Orders retrieved successfully.',
+                'customer' => [
+                    'C_ID' => $C_ID,
+                    'first_name' => $firstName,
+                    'surname' => $surname,
+                ],
+                'orders' => $orderDetails,
+            ], 200); // Return 200 status code for success
+        } catch (\Exception $e) {
+            // Log the error for debugging purposes
+            Log::error('Error retrieving orders: ' . $e->getMessage());
+
+            // Return a JSON response with error details and a 500 status code
+            return response()->json(['error' => 'An error occurred retrieving orders.'], 500);
+        }
+    }
+
 }

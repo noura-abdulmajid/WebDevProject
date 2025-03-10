@@ -11,8 +11,9 @@ export default {
 
     userProfile: {
         profile: "/DashShoe/profile",
-        getProfile: "/DashShoe/profile",
+        getProfile: "/DashShoe/profile/getProfile",
         updateProfile: "/DashShoe/profile",
+        ordersHistory: "/DashShoe/profile/order",
     },
 
     admin: {

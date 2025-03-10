@@ -11,8 +11,13 @@ Route::post('login', [CustomersController::class, 'login'])->name('login');
 Route::post('logout', [CustomersController::class, 'logout'])->name('logout');
 
 //User Profile
-Route::get('/profile', [CustomerProfileController::class, 'getProfile'])->name('profile.get');
-Route::put('/profile', [CustomerProfileController::class, 'updateProfile'])->name('profile.update');
+Route::prefix('profile')->group(function () {
+    Route::get('/getProfile', [CustomerProfileController::class, 'getProfile'])->name('profile.get');
+    Route::put('/', [CustomerProfileController::class, 'updateProfile'])->name('profile.update');
+
+    // Profile Orders
+    Route::get('/order', [CustomerProfileController::class, 'getOrders'])->name('profile.order.get');
+});
 
 // Forgot password and reset password
 Route::post('forgot-password', [ForgetPasswordController::class, 'forgotPassword'])->name('auth.forgot_password');

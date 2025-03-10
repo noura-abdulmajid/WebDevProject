@@ -1,12 +1,14 @@
 <template>
   <main class="profile-settings">
+    <aside class="sidebar">
+      <NavLinks />
+    </aside>
     <div class="main-content">
-      <ProfileHeader/>
+      <ProfileHeader />
       <section class="profile-card">
-        <img src="/image/userheader.png" alt="Profile banner" class="profile-banner"/>
+        <img src="/image/userheader.png" alt="Profile banner" class="profile-banner" />
         <div class="profile-card-content">
-          <ProfileInfo :isEditing="isEditing" @toggle-edit="toggleEditMode"/>
-          <PersonalDetailsForm :isEditing="isEditing" @save-profile="saveProfile" ref="profileForm"/>
+          <router-view />
         </div>
       </section>
     </div>
@@ -16,9 +18,8 @@
 <script>
 import ProfileHeader from "./ProfileHeader.vue";
 import ProfileInfo from "./ProfileInfo.vue";
+import NavLinks from "./NavLinks.vue";
 import PersonalDetailsForm from "./PersonalDetailsForm.vue";
-import axiosClient from "@/services/axiosClient.js";
-import apiConfig from "@/config/apiURL.js";
 
 export default {
   name: "ProfileSettings",
@@ -26,6 +27,7 @@ export default {
     ProfileHeader,
     ProfileInfo,
     PersonalDetailsForm,
+    NavLinks,
   },
   data() {
     return {
@@ -33,57 +35,27 @@ export default {
       userProfile: {},
     };
   },
-  methods: {
-    async loadUserProfile() {
-      try {
-        const response = await axiosClient.get(apiConfig.userProfile.getProfile);
-        this.userProfile = response.data;
-        this.$refs.profileForm && this.$refs.profileForm.setFormData(this.userProfile);
-        console.log("User profile loaded:", response.data);
-      } catch (error) {
-        console.error("Failed to load user profile:", error);
-      }
-    },
-
-
-    async toggleEditMode() {
-      if (this.isEditing) {
-        await this.saveProfile();
-      }
-      this.isEditing = !this.isEditing;
-    },
-
-    async saveProfile() {
-      try {
-        const updatedData = this.$refs.profileForm.getFormData();
-        const response = await axiosClient.put(apiConfig.userProfile.updateProfile, updatedData,
-            {
-              'Content-Type': 'application/json'
-            }
-        );
-        if (response.status === 200) {
-          alert("Profile updated successfully!");
-          await this.loadUserProfile();
-        }
-        console.log("Profile updated successfully:", response.data);
-      } catch (error) {
-        console.error("Failed to update profile:", error);
-      }
-    },
-  },
 };
 </script>
 
 <style scoped>
 .profile-settings {
-  background-color: rgba(249, 249, 249, 1);
+  background-color: #EDE4DA;
   display: flex;
   justify-content: center;
   padding-right: 0;
   align-items: center;
-  gap: 40px;
   overflow: hidden;
   flex-wrap: wrap;
+  height: 100vh;
+}
+
+.sidebar {
+  width: 100px;
+  height: auto;
+  flex-shrink: 0;
+  background-color: #EDE4DA;
+  padding: 16px 0;
 }
 
 .main-content {
@@ -93,8 +65,10 @@ export default {
   flex-grow: 1;
   flex-shrink: 0;
   flex-basis: 0;
+  border-radius: 20px;
   width: 100%;
   max-width: 1000px;
+  border-radius: 20px;
 }
 
 .profile-card {

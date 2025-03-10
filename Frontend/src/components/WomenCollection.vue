@@ -64,38 +64,46 @@
     </div>
 
     <div class="products container">
-      <div class="product" v-for="prod in filteredProducts" :key="prod.name" @click="openProduct(prod)">
-        <img :src="prod.image" :alt="prod.name"/>
+      <div class="product" v-for="prod in filteredProducts" :key="prod.name">
+
+        <div class="favorite-wrapper">
+          <button class="favorite-button" @click.stop="toggleFavorite(prod)">
+            <img
+                :src="prod.isFavorite ? '/image/line-md--heart-filled.png' : '/image/line-md--heart.png'"
+                alt="Favorite"
+                class="heart-icon"
+            />
+          </button>
+        </div>
+
+        <img :src="prod.image" :alt="prod.name" class="product-image" @click="openProduct(prod)" />
+
         <h3>{{ prod.name }}</h3>
         <p class="price">£{{ prod.price }}</p>
 
         <select class="size-select" v-model="prod.selectedSize">
           <option value="">Select UK Size</option>
-          <option v-for="size in prod.sizes" :key="size" :value="size">
-            {{ size }}
-          </option>
+          <option v-for="size in prod.sizes" :key="size" :value="size">{{ size }}</option>
         </select>
 
         <button class="add-cart" @click.stop="addToCart(prod)">Add to Cart</button>
       </div>
     </div>
 
+
     <div class="modal-overlay" v-if="selectedProduct" @click.self="closeModal">
       <div class="modal-content">
         <button class="close-modal" @click="closeModal">Close</button>
-
         <h2>{{ selectedProduct.name }}</h2>
         <img :src="selectedProduct.image" alt="Detail Image" class="modal-image"/>
         <p class="modal-price">£{{ selectedProduct.price }}</p>
         <p>{{ selectedProduct.description }}</p>
-
         <select class="size-select" v-model="selectedSize">
           <option value="">Select UK Size</option>
           <option v-for="size in selectedProduct.sizes" :key="size" :value="size">
             {{ size }}
           </option>
         </select>
-
         <button class="add-cart" @click="modalAddToCart">Add to Cart</button>
       </div>
     </div>
@@ -118,108 +126,129 @@ const categories = ref(["Trainers", "Heels", "Boots", "Loafers", "Ballerinas"]);
 const colors = ref(["Black", "Red", "Silver", "Printed", "Pink"]);
 
 const products = ref([]);
+const isFavoritesView = ref(false);
 
+const favorites = ref(JSON.parse(localStorage.getItem("favorites")) || []);
 const defaultProducts = [
   {
     name: 'Heart Trainers',
     price: 40,
-    image: '/src/image/banner.png',
+    image: '/image/banner.png',
     category: 'Trainers',
     color: 'Pink',
     sizes: ['3', '4', '5', '6', '7', '8'],
-    description: 'Cute heart-themed trainers for everyday style.'
+    isFavorite: false
   },
   {
     name: 'Black Trainers',
     price: 82,
-    image: '/src/image/banner.png',
+    image: '/image/banner.png',
     category: 'Trainers',
     color: 'Black',
     sizes: ['3', '4', '5', '6', '7', '8'],
-    description: 'Sleek black trainers, perfect for running errands or hitting the gym.'
+    isFavorite: false
   },
   {
     name: 'Black Shoes',
     price: 60,
-    image: '/src/image/banner.png',
+    image: '/image/banner.png',
     category: 'Loafers',
     color: 'Black',
     sizes: ['3', '4', '5', '6', '7', '8'],
-    description: 'Classy black shoes for smart or business-casual occasions.'
+    isFavorite: false
   },
   {
     name: 'Red Shoes',
     price: 25,
-    image: '/src/image/banner.png',
+    image: '/image/banner.png',
     category: 'Heels',
     color: 'Red',
     sizes: ['3', '4', '5', '6', '7', '8'],
-    description: 'Bright red shoes that add a pop of color to any outfit.'
+    isFavorite: false
   },
   {
     name: 'Silver Shoes',
     price: 55,
-    image: '/src/image/banner.png',
+    image: '/image/banner.png',
     category: 'Loafers',
     color: 'Silver',
     sizes: ['3', '4', '5', '6', '7', '8'],
-    description: 'Eye-catching silver loafers to elevate your look.'
+    isFavorite: false
   },
   {
     name: 'Studded Ballerina Flats',
     price: 65,
-    image: '/src/image/banner.png',
+    image: '/image/banner.png',
     category: 'Ballerinas',
     color: 'Black',
     sizes: ['3', '4', '5', '6', '7', '8'],
-    description: 'Stylish flats with studded details, combining comfort and flair.'
+    isFavorite: false
   },
   {
     name: 'Black Boots',
     price: 70,
-    image: '/src/image/banner.png',
+    image: '/image/banner.png',
     category: 'Boots',
     color: 'Black',
     sizes: ['3', '4', '5', '6', '7', '8'],
-    description: 'Versatile black boots for cooler weather or a bold statement.'
+    isFavorite: false
   },
   {
     name: 'Printed Shoes',
     price: 50,
-    image: '/src/image/banner.png',
+    image: '/image/banner.png',
     category: 'Loafers',
     color: 'Printed',
     sizes: ['3', '4', '5', '6', '7', '8'],
-    description: 'Fun printed design that stands out in any crowd.'
+    isFavorite: false
   },
 ];
+
+const toggleFavorite = (prod) => {
+  prod.isFavorite = !prod.isFavorite;
+  const updatedFavorites = products.value.filter(p => p.isFavorite);
+  favorites.value = updatedFavorites;
+  localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+};
 
 const fetchProducts = async () => {
   try {
     const response = await axiosClient.get("/DashShoe/test");
-    products.value = response.data;
+    products.value = response.data.map(prod => ({
+      ...prod,
+      isFavorite: favorites.value.some(fav => fav.name === prod.name),
+    }));
   } catch (error) {
     console.error("Error fetching products:", error);
-    products.value = defaultProducts;
+    products.value = defaultProducts.map(prod => ({
+      ...prod,
+      isFavorite: favorites.value.some(fav => fav.name === prod.name),
+    }));
   }
 };
 
 const postDefaultProducts = async () => {
   try {
-    const response = await axiosClient.post("/DashShoe/test", { products: defaultProducts });
-    alert("Default products added successfully!");
-    products.value = defaultProducts;
+    await axiosClient.post("/DashShoe/test", {products: defaultProducts});
+    console.log("Default products added successfully!");
   } catch (error) {
     console.error("Error adding default products:", error);
-    products.value = defaultProducts;
   }
 };
 
+onMounted(async () => {
+  await postDefaultProducts();
+  await fetchProducts();
+});
 
-onMounted(postDefaultProducts);
+const displayedProducts = computed(() => {
+  return isFavoritesView.value
+      ? products.value.filter(prod => prod.isFavorite)
+      : products.value;
+});
 
 const filteredProducts = computed(() => {
-  return products.value.filter((prod) => {
+  return displayedProducts.value.filter((prod) => {
     const categoryMatch = selectedCategory.value ? prod.category === selectedCategory.value : true;
     const colorMatch = selectedColor.value ? prod.color.toLowerCase() === selectedColor.value.toLowerCase() : true;
     const searchMatch = searchQuery.value
@@ -231,6 +260,10 @@ const filteredProducts = computed(() => {
 
 const searchProducts = () => {
   console.log("Searching for:", searchQuery.value);
+};
+
+const toggleFavoritesView = () => {
+  isFavoritesView.value = !isFavoritesView.value;
 };
 
 const openProduct = (prod) => {
@@ -262,15 +295,13 @@ const addToCart = (prod) => {
 </script>
 
 <style scoped>
-
-
+/* General Styles */
 body {
   font-family: 'Inter', sans-serif;
   margin: 0;
   padding: 0;
   background-color: #EDE4DA;
 }
-
 
 .header-title {
   text-align: center;
@@ -308,7 +339,6 @@ nav a {
   font-size: 18px;
 }
 
-
 .search-bar {
   display: flex;
   align-items: center;
@@ -334,7 +364,6 @@ nav a {
   border-radius: 5px;
   font-family: inherit;
   font-size: 14px;
-
 }
 
 .banner {
@@ -433,16 +462,47 @@ nav a {
 }
 
 .product {
+  position: relative;
   background: white;
   padding: 15px;
   text-align: center;
-  border-radius: 5px;
+  border-radius: 10px;
   cursor: pointer;
+  transition: transform 0.2s ease-in-out;
 }
 
-.product img {
+.product:hover {
+  transform: scale(1.02);
+}
+
+.favorite-wrapper {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1; /* 確保愛心浮於內容之上 */
+}
+
+.favorite-button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.favorite-button:hover {
+  transform: scale(1.1);
+}
+
+.heart-icon {
+  width: 26px;
+  height: 26px;
+}
+
+.product-image {
   width: 100%;
   height: auto;
+  max-height: 200px;
+  object-fit: cover;
   border-radius: 5px;
 }
 
@@ -481,6 +541,7 @@ nav a {
 .add-cart:hover {
   background: #333;
 }
+
 
 
 .modal-overlay {
