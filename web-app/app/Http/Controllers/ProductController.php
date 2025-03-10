@@ -7,6 +7,7 @@ use App\Models\ProductReview;
 use App\Models\Favourite;
 use Illuminate\Http\Request;
 use App\Models\Product;
+use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Route;
 use App\Models\Category;
@@ -25,7 +26,8 @@ class ProductController extends Controller {
     public function index() {
 
         //Products are displayed ordered by lowest price by default
-        $products = Product::orderBy('price', 'ASC');
+        //$products = Product::orderBy('price', 'ASC');
+        $products = Product::all()->first();
 
         //SEARCH FUNCTIONALITY
         //check if there is a search request: if there is, query database using search value
@@ -61,7 +63,7 @@ class ProductController extends Controller {
         }
 
         //return view with X products per page
-        return view('products.index', ['products' => $products->paginate(10)]);
+        return response()->json($products);
 
     }
 
@@ -76,7 +78,7 @@ class ProductController extends Controller {
             'product_reviews' => $product_reviews,
         ];
 
-        return view('products.show', $data);
+        return response()->json($data);
     }
 
     //Functionality to save individual product reviews
@@ -91,6 +93,8 @@ class ProductController extends Controller {
         $productReview->customer_id = 1; //needs to be extracted from customer when customer table is used in full application
 
         $productReview->save(); //New review gets saved in the database.
+
+        //After saving, redirects to individual product detail page for given product
         return redirect()->route('products.show', $productReview->product_id);
 
     }

@@ -8,7 +8,7 @@
     tutorial credits for retrieving information from a form: https://www.youtube.com/watch?v=Yi1NfLkflyU
     -->
 
-    <h1>Our Products</h1>
+    <h1>Our Products - Testing</h1>
 
     <!-- product search functionality -->
     <!-- search bar -->
