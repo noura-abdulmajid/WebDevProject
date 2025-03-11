@@ -1,13 +1,11 @@
 <?php
 
-use App\Http\Controllers\CustomersController;
-use App\Http\Controllers\AdminAuthController;
-use App\Http\Controllers\ForgetPasswordController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\SiteReviewController;
 use App\Http\Controllers\LogVisitController;
 use App\Http\Controllers\CheckoutController;
+use Illuminate\Support\Facades\Log;
 
 Route::prefix('DashShoe')->group(function () {
     require base_path('routes/api/customers.php');
