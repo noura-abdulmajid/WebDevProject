@@ -51,7 +51,6 @@ import AdminViewCustomerModal from "@/components/modals/AdminViewCustomerModal.v
 const routes = [
     {path: "/", redirect: "/Homepage"},
 
-
     // Public Pages
     {
         path: "/",
@@ -116,7 +115,7 @@ const routes = [
 
     // Forbidden Page
     {path: "/forbidden", component: Forbidden},
-
+    {path: "/fix", component: Fix, meta: {guestOnly: true}},
 ];
 
 const router = createRouter({
