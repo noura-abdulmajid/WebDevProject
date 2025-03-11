@@ -24,13 +24,13 @@
           </router-link>
         </li>
         <li>
-          <router-link to="/admin-payments">
+          <router-link to="{ name: 'admin-payments' }">
             <img src="@/assets/image/icon/payment.png" class="sidebar-icon" />
-            <span v-if="!isSidebarCollapsed">Payments</span>
+            <span v-if="!isSidebarCollapsed">Refund</span>
           </router-link>
         </li>
         <li>
-          <router-link to="/admin-shipping">
+          <router-link to="{ name: 'admin-shipping' }">
             <img src="@/assets/image/icon/shipping.png" class="sidebar-icon" />
             <span v-if="!isSidebarCollapsed">Shipping</span>
           </router-link>
@@ -38,7 +38,7 @@
         <li>
           <router-link :to="{ name: 'admin-products' }">
             <img src="@/assets/image/icon/products.png" class="sidebar-icon" />
-            <span v-if="!isSidebarCollapsed">Products</span>
+            <span v-if="!isSidebarCollapsed">Inventory</span>
           </router-link>
         </li>
         <li>

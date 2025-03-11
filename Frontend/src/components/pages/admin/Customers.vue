@@ -2,9 +2,11 @@
   <h1>Customers Management</h1>
 
   <!-- Search & Bulk Actions -->
+  <div class="top-bar">
   <div class="search-container">
     <input type="text" v-model="searchQuery" placeholder="Name, E-mail, Phone Number"/>
     <button @click="fetchCustomers">🔍</button>
+  </div>
 
     <div class="button-group">
       <button class="add-customer-btn" @click="showModal = true">
@@ -15,6 +17,7 @@
       </button>
     </div>
   </div>
+
 
 
   <!-- Add Customer Modal -->
@@ -55,7 +58,7 @@
             (Details)
           </span>
         </td>
-        <td>${{ customer.orders.total_spent.toFixed(2) }}</td>
+        <td>£{{ customer.orders.total_spent.toFixed(2) }}</td>
         <td class="action-buttons">
           <button @click="viewCustomer(customer.id)" class="view">👁️ View</button>
           <button @click="editCustomer(customer.id)" class="edit">✏️ Edit</button>

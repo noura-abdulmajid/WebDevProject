@@ -1,7 +1,8 @@
 <template>
 
+  <h1>Sales Dashboard</h1>
+
   <main class="content">
-    <h1>Admin Dashboard</h1>
 
     <!-- Show Loading Message When Fetching Data -->
     <p v-if="loading">Loading dashboard data...</p>
@@ -35,5 +36,5 @@
 import AdminDashboardScript from "../../../scripts/pages/admin/DashboardScript.js";
 export default AdminDashboardScript;
 </script>
-
+<style scoped src="../../../styles/GlobalStyle.css"></style>
 <style scoped src="../../../styles/pages/admin/DashboardStyle.css"></style>

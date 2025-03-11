@@ -65,7 +65,6 @@
 /*  Top Bar: Search Box & Buttons */
 .top-bar {
     display: flex;
-    align-items: center;
     justify-content: space-between;
     gap: 15px;
     margin-bottom: 20px;
@@ -76,6 +75,7 @@
     display: flex;
     align-items: center;
     margin-bottom: 20px;
+    width: 505px;
 }
 
 /* Search Input */
@@ -135,7 +135,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 160px;
+    width: 100px;
     height: 46px;
 }
 
@@ -158,8 +158,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 160px; /* Set consistent width */
-    height: 46px; /* Matches search button */
+    width: 100px;
+    height: 46px;
 }
 
 .bulk-delete-btn:disabled {

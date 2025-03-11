@@ -32,6 +32,8 @@ export default {
             });
         });
 
+
+
         return { isSidebarCollapsed, toggleSidebar, breadcrumbs };
     },
 };

@@ -1,53 +1,83 @@
+
 import {createRouter, createWebHistory} from "vue-router";
+// Authentication Pages
 import Login from "@/components/pages/auth/Login.vue";
 import AdminLogin from "@/components/pages/auth/AdminLogin.vue";
-import Fix from "@/components/pages/maintenance/Fix.vue";
 import Register from "@/components/pages/auth/Register.vue";
 import ForgotPassword from "@/components/pages/auth/ForgotPassword.vue";
 import ResetPassword from "@/components/pages/auth/ResetPassword.vue";
+
+// Admin Panel Pages
 import Dashboard from "@/components/pages/admin/Dashboard.vue";
-import ContactUs from "@/components/ContactUs.vue";
-import SiteReview from "@/components/SiteReview.vue";
-import AdminUsers from "@/components/AdminUsers.vue";
 import Products from "@/components/pages/admin/Products.vue";
 import Customers from "@/components/pages/admin/Customers.vue";
 import CustomerProfile from "@/components/pages/admin/CustomerProfile.vue";
 import Orders from "@/components/pages/admin/Orders.vue";
 import Settings from "@/components/pages/admin/Settings.vue";
-import Forbidden from "@/components/pages/maintenance/Forbidden.vue";
-import Homepage from "@/components/Homepage.vue";
-import ChildrenCollection from "@/components/ChildrenCollection.vue";
-import MenCollection from "@/components/MenCollection.vue";
-import WomenCollection from "@/components/WomenCollection.vue";
-import ShoppingCart from "@/components/ShoppingCart.vue";
-import Checkout from "@/components/Checkout.vue";
-import AdminLayout from "@/components/layouts/AdminLayout.vue";
-import Favorites from "@/components/pages/user/Favorites.vue";
+import AdminUsers from "@/components/pages/admin/AdminUsers.vue";
+import payments from "@/components/pages/admin/refundprocessing.vue";
+import shipping from "@/components/pages/admin/shippings.vue";
+import SiteReviews from "@/components/pages/admin/SiteReviews.vue";
+
+// User Pages
 import ProfileSettings from "@/components/pages/user/ProfileSettings.vue";
+import Favorites from "@/components/pages/user/Favorites.vue";
 import ProfileDetails from "@/components/pages/user/ProfileDetails.vue";
 import OrdersHistory from "@/components/pages/user/OrdersHistory.vue";
+
+// Storefront Pages
+import Homepage from "@/components/pages/home/Homepage.vue";
+import ContactUs from "@/components/pages/home/ContactUs.vue";
+import SiteReview from "@/components/pages/home/SiteReview.vue";
+import ChildrenCollection from "@/components/pages/products/ChildrenCollection.vue";
+import MenCollection from "@/components/pages/products/MenCollection.vue";
+import WomenCollection from "@/components/pages/products/WomenCollection.vue";
+import ShoppingCart from "@/components/pages/cart/ShoppingCart.vue";
+import Checkout from "@/components/pages/cart/Checkout.vue";
+
+// Maintenance Pages
+import Fix from "@/components/pages/maintenance/Fix.vue";
+import Forbidden from "@/components/pages/maintenance/Forbidden.vue";
+
+// Layouts
+import AdminLayout from "@/components/layouts/AdminLayout.vue";
+import HomepageLayout from "@/components/layouts/HomepageLayout.vue";
+
+
+// Modals
+import AdminViewCustomerModal from "@/components/modals/AdminViewCustomerModal.vue";
 
 
 const routes = [
     {path: "/", redirect: "/Homepage"},
 
-    // Public Pages
-    {path: "/Homepage", component: Homepage},
-    {path: "/ChildrenCollection", component: ChildrenCollection},
-    {path: "/MenCollection", component: MenCollection},
-    {path: "/WomenCollection", component: WomenCollection},
-    {path: "/ShoppingCart", name: "ShoppingCart", component: ShoppingCart},
-    {path: "/Checkout", name: "Checkout", component: Checkout},
-    {path: "/contact", component: ContactUs},
-    {path: "/site-review", component: SiteReview},
 
-    // Guest Pages (No authentication required)
-    {path: "/login", name: "user-login", component: Login, meta: {guestOnly: true}},
-    {path: "/admin-login", name: "admin-login", component: AdminLogin, meta: {guestOnly: true}},
-    {path: "/register", name: "user-register", component: Register, meta: {guestOnly: true}},
-    {path: "/forgot-password", name: "user-forgot-password", component: ForgotPassword, meta: {guestOnly: true}},
-    {path: "/reset-password", name: "user-reset-password", component: ResetPassword, meta: {guestOnly: true}},
-    {path: "/fix", component: Fix, meta: {guestOnly: true}},
+    // Public Pages
+    {
+        path: "/",
+        component: HomepageLayout,
+        children: [
+
+            {path: "/Homepage", component: Homepage},
+            {path: "/ChildrenCollection", component: ChildrenCollection},
+            {path: "/MenCollection", component: MenCollection},
+            {path: "/WomenCollection", component: WomenCollection},
+            {path: "/ShoppingCart", name: "ShoppingCart", component: ShoppingCart},
+            {path: "/Checkout", name: "Checkout", component: Checkout},
+            {path: "/contact", component: ContactUs},
+            {path: "/site-review", component: SiteReview},
+
+            // Guest Pages (No authentication required)
+            {path: "/login", name: "user-login", component: Login, meta: {guestOnly: true}},
+
+            {path: "/register", name: "user-register", component: Register, meta: {guestOnly: true}},
+            {path: "/forgot-password", name: "user-forgot-password", component: ForgotPassword, meta: {guestOnly: true}},
+            {path: "/reset-password", name: "user-reset-password", component: ResetPassword, meta: {guestOnly: true}},
+
+            // Customer Pages (Require authentication)
+            {path: "/customer-dashboard", component: ProfileSettings, meta: {requiresAuth: true, role: "customer"}},
+        ],
+    },
 
     // Customer Pages (Require authentication)
     {
