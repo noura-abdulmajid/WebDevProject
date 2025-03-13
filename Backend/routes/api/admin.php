@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminProductController;
+use App\Http\Controllers\Admin\AdminSiteReviewController;
 
 
 // Admin routes
@@ -24,6 +25,9 @@ Route::prefix('admin')->group(function () {
     Route::put('/update_product/{id}', [AdminProductController::class, 'updateProduct'])->name('admin.user.updateProduct');
     Route::delete('/delete_product/{id}', [AdminProductController::class, 'deleteProduct'])->name('admin.user.deleteProduct');
     Route::get('/get_product_categories', [AdminProductController::class, 'getProductCategories'])->name('admin.user.getProductCategories');
+
+    //
+    Route::get('/site_review', [AdminSiteReviewController::class, 'getSiteReview'])->name('admin.user.getSiteReview');
 
     //Test
     Route::get('test', function () {

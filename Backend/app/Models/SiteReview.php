@@ -10,8 +10,14 @@ class SiteReview extends Model
     use HasFactory;
 
     protected $table = 'site_reviews';
-    protected $primaryKey = 'C_ID';
+    protected $primaryKey = 'SR_ID';
     public $incrementing = true;
     protected $keyType = 'int';
-    protected $guarded = [];
+    protected $fillable = [
+        'review_email',
+        'review',
+        'rating',
+    ];
+
+    public $timestamps = true;
 }

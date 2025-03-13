@@ -1,26 +1,30 @@
-<template>
-  <div>
+<<template>
+  <div id="WomensWear">
     <header>
       <div class="logo">
-        <img src="/image/logo%20three.png" alt="DASH Shoe Logo"/>
+        <img src="" alt="DASH Shoe Logo">
       </div>
-
       <nav>
         <ul>
           <li><a href="#">HOME</a></li>
           <li><a href="#">ABOUT</a></li>
           <li><a href="#">SHOPPING</a></li>
+
           <li><a href="#">CONTACT</a></li>
         </ul>
       </nav>
-
       <div class="search-bar">
-        <input type="text" v-model="searchQuery" placeholder="Search for shoes..."/>
-        <button @click="searchProducts">Search</button>
+        <input
+            type="text"
+            id="searchInput"
+            v-model="searchTerm"
+            placeholder="Search for shoes..."
+        >
+        <button>Search</button>
       </div>
     </header>
 
-    <div class="header-title">Women's Collection</div>
+    <div class="header">Women's Collection</div>
 
     <div class="banner container">
       <div>
@@ -28,7 +32,7 @@
         <button class="shop-button">Shop Now</button>
       </div>
       <div>
-        <img src="/image/red%20heels.png" alt="Illustration"/>
+        <img src="" alt="Illustration">
       </div>
     </div>
 
@@ -42,7 +46,6 @@
             <option value="color">Color</option>
           </select>
         </label>
-
         <label v-if="selectedFilter === 'category'">
           <select v-model="selectedCategory">
             <option value="">All Categories</option>
@@ -51,7 +54,6 @@
             </option>
           </select>
         </label>
-
         <label v-if="selectedFilter === 'color'">
           <select v-model="selectedColor">
             <option value="">All Colors</option>
@@ -63,223 +65,188 @@
       </div>
     </div>
 
+    <div class="sort-container">
+      <label for="sort-select">Sort By:</label>
+      <select id="sort-select" v-model="selectedSort">
+        <option value="recommended">Recommended</option>
+        <option value="priceDesc">Price (High to Low)</option>
+        <option value="priceAsc">Price (Low to High)</option>
+        <option value="whatsNew">What's New</option>
+      </select>
+    </div>
+
     <div class="products container">
-      <div class="product" v-for="prod in filteredProducts" :key="prod.name" @click="openProduct(prod)">
-        <img :src="prod.image" :alt="prod.name"/>
+      <div
+          class="product"
+          v-for="prod in sortedProducts"
+          :key="prod.name"
+          @click="openProduct(prod)"
+      >
+        <img :src="prod.image" :alt="prod.name">
         <h3>{{ prod.name }}</h3>
         <p class="price">£{{ prod.price }}</p>
-
-        <select class="size-select" v-model="prod.selectedSize">
+        <select v-model="prod.selectedSize" class="size-select">
           <option value="">Select UK Size</option>
           <option v-for="size in prod.sizes" :key="size" :value="size">
             {{ size }}
           </option>
         </select>
-
-        <button class="add-cart" @click.stop="addToCart(prod)">Add to Cart</button>
+        <button class="add-cart">Add to Cart</button>
+        <!-- Favourite button with white background and brown heart -->
+        <button class="favourite-button" @click.stop="toggleFavourite(prod)">
+          {{ prod.isFavourite ? '♥' : '♡' }}
+        </button>
       </div>
     </div>
 
     <div class="modal-overlay" v-if="selectedProduct" @click.self="closeModal">
       <div class="modal-content">
         <button class="close-modal" @click="closeModal">Close</button>
-
         <h2>{{ selectedProduct.name }}</h2>
-        <img :src="selectedProduct.image" alt="Detail Image" class="modal-image"/>
+        <img :src="selectedProduct.image" alt="Detail Image" class="modal-image">
         <p class="modal-price">£{{ selectedProduct.price }}</p>
         <p>{{ selectedProduct.description }}</p>
-
-        <select class="size-select" v-model="selectedSize">
+        <select v-model="selectedSize" class="size-select" style="margin-top: 10px;">
           <option value="">Select UK Size</option>
           <option v-for="size in selectedProduct.sizes" :key="size" :value="size">
             {{ size }}
           </option>
         </select>
-
-        <button class="add-cart" @click="modalAddToCart">Add to Cart</button>
+        <button class="add-cart" style="margin-top: 15px;" @click="modalAddToCart">
+          Add to Cart
+        </button>
       </div>
     </div>
   </div>
 </template>
 
-<script setup>
-import {ref, computed, onMounted} from "vue";
-import axiosClient from "@/services/axiosClient.js";
-
-const showDropdown = ref(false);
-const selectedFilter = ref("");
-const selectedCategory = ref("");
-const selectedColor = ref("");
-const selectedSize = ref("");
-const selectedProduct = ref(null);
-const searchQuery = ref("");
-
-const categories = ref(["Trainers", "Heels", "Boots", "Loafers", "Ballerinas"]);
-const colors = ref(["Black", "Red", "Silver", "Printed", "Pink"]);
-
-const products = ref([]);
-
-const defaultProducts = [
-  {
-    name: 'Heart Trainers',
-    price: 40,
-    image: '/src/image/banner.png',
-    category: 'Trainers',
-    color: 'Pink',
-    sizes: ['3', '4', '5', '6', '7', '8'],
-    description: 'Cute heart-themed trainers for everyday style.'
+<script>
+export default {
+  name: 'WomensWear',
+  data() {
+    return {
+      showDropdown: false,
+      selectedFilter: '',
+      selectedCategory: '',
+      selectedColor: '',
+      selectedSort: 'recommended',
+      searchTerm: '',
+      selectedProduct: null,
+      selectedSize: '',
+      favourites: [],
+      categories: ['Sneakers', 'Boots', 'Sandals'],
+      colors: ['Red', 'Blue', 'Green', 'Black'],
+      products: [
+        {
+          name: 'Red Sneaker',
+          image: 'path/to/image1.jpg',
+          price: 50,
+          sizes: [5, 6, 7, 8],
+          description: 'A cool red sneaker.',
+          color: 'Red',
+          category: 'Sneakers',
+          isFavourite: false,
+          selectedSize: '',
+          dateAdded: '2025-03-01'
+        },
+        {
+          name: 'Black Boot',
+          image: 'path/to/image2.jpg',
+          price: 80,
+          sizes: [7, 8, 9, 10],
+          description: 'A sturdy black boot.',
+          color: 'Black',
+          category: 'Boots',
+          isFavourite: false,
+          selectedSize: '',
+          dateAdded: '2025-03-05'
+        },
+        {
+          name: 'Blue Sandal',
+          image: 'path/to/image3.jpg',
+          price: 40,
+          sizes: [4, 5, 6, 7],
+          description: 'A comfortable blue sandal.',
+          color: 'Blue',
+          category: 'Sandals',
+          isFavourite: false,
+          selectedSize: '',
+          dateAdded: '2025-03-03'
+        }
+      ]
+    }
   },
-  {
-    name: 'Black Trainers',
-    price: 82,
-    image: '/src/image/banner.png',
-    category: 'Trainers',
-    color: 'Black',
-    sizes: ['3', '4', '5', '6', '7', '8'],
-    description: 'Sleek black trainers, perfect for running errands or hitting the gym.'
+  computed: {
+    filteredProducts() {
+      return this.products.filter(prod => {
+        if (this.selectedCategory && prod.category !== this.selectedCategory) return false;
+        if (this.selectedColor && prod.color !== this.selectedColor) return false;
+        if (this.searchTerm) {
+          const search = this.searchTerm.toLowerCase();
+          return prod.name.toLowerCase().includes(search) ||
+              prod.description.toLowerCase().includes(search) ||
+              prod.color.toLowerCase().includes(search);
+        }
+        return true;
+      });
+    },
+    sortedProducts() {
+      let sorted = [...this.filteredProducts];
+      if (this.selectedSort === 'priceDesc') {
+        sorted.sort((a, b) => b.price - a.price);
+      } else if (this.selectedSort === 'priceAsc') {
+        sorted.sort((a, b) => a.price - b.price);
+      } else if (this.selectedSort === 'whatsNew') {
+        sorted.sort((a, b) => new Date(b.dateAdded) - new Date(a.dateAdded));
+      }
+      return sorted;
+    }
   },
-  {
-    name: 'Black Shoes',
-    price: 60,
-    image: '/src/image/banner.png',
-    category: 'Loafers',
-    color: 'Black',
-    sizes: ['3', '4', '5', '6', '7', '8'],
-    description: 'Classy black shoes for smart or business-casual occasions.'
-  },
-  {
-    name: 'Red Shoes',
-    price: 25,
-    image: '/src/image/banner.png',
-    category: 'Heels',
-    color: 'Red',
-    sizes: ['3', '4', '5', '6', '7', '8'],
-    description: 'Bright red shoes that add a pop of color to any outfit.'
-  },
-  {
-    name: 'Silver Shoes',
-    price: 55,
-    image: '/src/image/banner.png',
-    category: 'Loafers',
-    color: 'Silver',
-    sizes: ['3', '4', '5', '6', '7', '8'],
-    description: 'Eye-catching silver loafers to elevate your look.'
-  },
-  {
-    name: 'Studded Ballerina Flats',
-    price: 65,
-    image: '/src/image/banner.png',
-    category: 'Ballerinas',
-    color: 'Black',
-    sizes: ['3', '4', '5', '6', '7', '8'],
-    description: 'Stylish flats with studded details, combining comfort and flair.'
-  },
-  {
-    name: 'Black Boots',
-    price: 70,
-    image: '/src/image/banner.png',
-    category: 'Boots',
-    color: 'Black',
-    sizes: ['3', '4', '5', '6', '7', '8'],
-    description: 'Versatile black boots for cooler weather or a bold statement.'
-  },
-  {
-    name: 'Printed Shoes',
-    price: 50,
-    image: '/src/image/banner.png',
-    category: 'Loafers',
-    color: 'Printed',
-    sizes: ['3', '4', '5', '6', '7', '8'],
-    description: 'Fun printed design that stands out in any crowd.'
-  },
-];
-
-const fetchProducts = async () => {
-  try {
-    const response = await axiosClient.get("/DashShoe/test");
-    products.value = response.data;
-  } catch (error) {
-    console.error("Error fetching products:", error);
-    products.value = defaultProducts;
+  methods: {
+    openProduct(prod) {
+      this.selectedProduct = prod;
+    },
+    closeModal() {
+      this.selectedProduct = null;
+    },
+    modalAddToCart() {
+      alert('Added to cart: ' + this.selectedProduct.name + ' Size: ' + this.selectedSize);
+      this.closeModal();
+    },
+    toggleFavourite(product) {
+      product.isFavourite = !product.isFavourite;
+      // Favourites are only tracked locally in this component.
+      if (product.isFavourite) {
+        this.favourites.push(product);
+      } else {
+        const index = this.favourites.findIndex(p => p.name === product.name);
+        if (index !== -1) {
+          this.favourites.splice(index, 1);
+        }
+      }
+    }
   }
-};
-
-const postDefaultProducts = async () => {
-  try {
-    const response = await axiosClient.post("/DashShoe/test", { products: defaultProducts });
-    alert("Default products added successfully!");
-    products.value = defaultProducts;
-  } catch (error) {
-    console.error("Error adding default products:", error);
-    products.value = defaultProducts;
-  }
-};
-
-
-onMounted(postDefaultProducts);
-
-const filteredProducts = computed(() => {
-  return products.value.filter((prod) => {
-    const categoryMatch = selectedCategory.value ? prod.category === selectedCategory.value : true;
-    const colorMatch = selectedColor.value ? prod.color.toLowerCase() === selectedColor.value.toLowerCase() : true;
-    const searchMatch = searchQuery.value
-        ? prod.name.toLowerCase().includes(searchQuery.value.toLowerCase())
-        : true;
-    return categoryMatch && colorMatch && searchMatch;
-  });
-});
-
-const searchProducts = () => {
-  console.log("Searching for:", searchQuery.value);
-};
-
-const openProduct = (prod) => {
-  selectedProduct.value = prod;
-  selectedSize.value = "";
-};
-
-const closeModal = () => {
-  selectedProduct.value = null;
-  selectedSize.value = "";
-};
-
-const modalAddToCart = () => {
-  if (!selectedSize.value) {
-    alert("Please select a size before adding to cart.");
-    return;
-  }
-  alert(`Added ${selectedProduct.value.name} (UK size ${selectedSize.value}) to cart!`);
-  closeModal();
-};
-
-const addToCart = (prod) => {
-  if (!prod.selectedSize) {
-    alert("Please select a size before adding to cart.");
-    return;
-  }
-  alert(`Added ${prod.name} (UK size ${prod.selectedSize}) to cart!`);
-};
+}
 </script>
 
 <style scoped>
-
-
 body {
   font-family: 'Inter', sans-serif;
   margin: 0;
   padding: 0;
   background-color: #EDE4DA;
 }
-
-
-.header-title {
+.container {
+  width: 90%;
+  margin: auto;
+}
+.header {
   text-align: center;
   padding: 10px;
-  font-size: 30px;
+  font-size: 40px;
   font-weight: 600;
   color: #333;
 }
-
 header {
   display: flex;
   justify-content: space-between;
@@ -287,72 +254,55 @@ header {
   padding: 20px;
   background-color: #EDE4DA;
 }
-
 .logo img {
   width: 150px;
-  background-color: transparent;
   mix-blend-mode: multiply;
 }
-
 nav ul {
   list-style: none;
   display: flex;
   gap: 30px;
-  padding: 0;
   margin: 0;
+  padding: 0;
 }
-
 nav a {
   text-decoration: none;
   color: rgb(131, 117, 117);
   font-size: 18px;
 }
-
-
 .search-bar {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-left: auto;
   margin-right: 20px;
 }
-
 .search-bar input {
   padding: 8px;
   width: 200px;
   border: 1px solid #ffffffd8;
   border-radius: 10px;
-  font-family: inherit;
 }
-
 .search-bar button {
   padding: 8px 12px;
   background: #4D382D;
-  color: rgb(255, 254, 254);
+  color: #fff;
   border: none;
-  cursor: pointer;
   border-radius: 5px;
-  font-family: inherit;
+  cursor: pointer;
   font-size: 14px;
-
 }
-
 .banner {
   background-color: #4D382D;
   color: white;
   padding: 40px;
-  text-align: left;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
-
 .banner h1 {
   font-size: 28px;
   font-weight: bold;
-  margin-bottom: 15px;
 }
-
 .shop-button {
   background: white;
   color: black;
@@ -361,26 +311,13 @@ nav a {
   cursor: pointer;
   font-weight: bold;
 }
-
-.banner.container {
-  width: 90%;
-  margin: auto;
-}
-
-.banner img {
-  max-width: 300px;
-  height: auto;
-  border-radius: 5px;
-}
-
 .filter-container {
   width: 90%;
-  margin: 20px auto 0 auto;
+  margin: 20px auto 0;
   display: flex;
   align-items: center;
   position: relative;
 }
-
 .filter-container button {
   background-color: #4D382D;
   color: white;
@@ -388,15 +325,12 @@ nav a {
   padding: 10px 15px;
   border-radius: 5px;
   cursor: pointer;
-  font-family: inherit;
   font-size: 16px;
   transition: background-color 0.3s ease;
 }
-
 .filter-container button:hover {
   background-color: #3a2b22;
 }
-
 .filter-dropdown {
   position: absolute;
   top: 55px;
@@ -405,97 +339,102 @@ nav a {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   z-index: 10;
   min-width: 200px;
 }
-
 .filter-dropdown label {
   display: block;
   margin-bottom: 10px;
 }
-
 .filter-dropdown select {
   width: 100%;
   padding: 8px;
   border-radius: 5px;
   border: 1px solid #ccc;
-  font-family: inherit;
 }
-
+.sort-container {
+  width: 90%;
+  margin: 20px auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 .products {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 220px));
   gap: 20px;
   padding: 20px 0;
-  width: 90%;
-  margin: auto;
 }
-
 .product {
   background: white;
   padding: 15px;
   text-align: center;
   border-radius: 5px;
   cursor: pointer;
+  position: relative;
 }
-
 .product img {
   width: 100%;
   height: auto;
   border-radius: 5px;
 }
-
 .product h3 {
   font-size: 16px;
   margin: 10px 0;
   color: #333;
 }
-
 .price {
   font-weight: bold;
   color: #555;
 }
-
 .size-select {
   width: 100%;
   padding: 8px;
   margin-top: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  font-family: inherit;
 }
-
 .add-cart {
   background: black;
   color: white;
   padding: 8px 10px;
   border: none;
-  cursor: pointer;
   margin-top: 10px;
   width: 100%;
-  font-family: inherit;
   border-radius: 5px;
+  cursor: pointer;
 }
-
 .add-cart:hover {
   background: #333;
 }
-
-
+.favourite-button {
+  background: white;
+  color: brown;
+  border: 1px solid brown;
+  font-size: 20px;
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0,0,0,0.6);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 999;
 }
-
 .modal-content {
   background: white;
   padding: 20px;
@@ -504,7 +443,6 @@ nav a {
   border-radius: 5px;
   position: relative;
 }
-
 .close-modal {
   position: absolute;
   top: 10px;
@@ -517,18 +455,15 @@ nav a {
   cursor: pointer;
   font-size: 14px;
 }
-
 .modal-image {
   width: 100%;
   max-width: 300px;
   border-radius: 5px;
   transition: transform 0.2s ease;
 }
-
 .modal-image:hover {
   transform: scale(1.1);
 }
-
 .modal-price {
   font-weight: bold;
   margin: 10px 0;

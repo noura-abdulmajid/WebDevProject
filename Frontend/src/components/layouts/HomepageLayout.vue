@@ -11,11 +11,11 @@
 
       <!-- Navigation Links -->
       <ul class="nav-links">
-        <li><a href="/MenCollection">Men</a></li>
-        <li><a href="/WomenCollection">Women</a></li>
-        <li><a href="/category/kids">Kids</a></li>
-        <li><a href="/category/brands">Brands</a></li>
-        <li><a href="/offers">Offers</a></li>
+        <router-link :to="{ name: 'MenCollection' }">Men</router-link>
+        <router-link :to="{ name: 'WomenCollection' }">Women</router-link>
+        <router-link :to="{ name: 'ChildrenCollection' }">Children</router-link>
+        <router-link :to="{ name: 'MenCollection' }">New</router-link>
+        <router-link :to="{ name: 'MenCollection' }">Offer</router-link>
       </ul>
 
       <!-- Search and Icons -->

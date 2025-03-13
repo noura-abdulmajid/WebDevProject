@@ -15,8 +15,8 @@ import CustomerProfile from "@/components/pages/admin/CustomerProfile.vue";
 import Orders from "@/components/pages/admin/Orders.vue";
 import Settings from "@/components/pages/admin/Settings.vue";
 import AdminUsers from "@/components/pages/admin/AdminUsers.vue";
-import payments from "@/components/pages/admin/refundprocessing.vue";
-import shipping from "@/components/pages/admin/shippings.vue";
+import RefundProcessing from "@/components/pages/admin/RefundProcessing.vue";
+import Shippings from "@/components/pages/admin/Shippings.vue";
 import SiteReviews from "@/components/pages/admin/SiteReviews.vue";
 
 // User Pages
@@ -58,9 +58,9 @@ const routes = [
         children: [
 
             {path: "/Homepage", component: Homepage},
-            {path: "/ChildrenCollection", component: ChildrenCollection},
-            {path: "/MenCollection", component: MenCollection},
-            {path: "/WomenCollection", component: WomenCollection},
+            {path: "/ChildrenCollection",name: "ChildrenCollection", component: ChildrenCollection},
+            {path: "/MenCollection",name: "MenCollection", component: MenCollection},
+            {path: "/WomenCollection",name: "WomenCollection", component: WomenCollection},
             {path: "/ShoppingCart", name: "ShoppingCart", component: ShoppingCart},
             {path: "/Checkout", name: "Checkout", component: Checkout},
             {path: "/contact", component: ContactUs},
@@ -68,10 +68,12 @@ const routes = [
 
             // Guest Pages (No authentication required)
             {path: "/login", name: "user-login", component: Login, meta: {guestOnly: true}},
-
             {path: "/register", name: "user-register", component: Register, meta: {guestOnly: true}},
             {path: "/forgot-password", name: "user-forgot-password", component: ForgotPassword, meta: {guestOnly: true}},
             {path: "/reset-password", name: "user-reset-password", component: ResetPassword, meta: {guestOnly: true}},
+
+            //Admin Page(Security Page)
+            {path: "/admin-login", name: "admin-login", component: AdminLogin, meta: {guestOnly: true}},
 
             // Customer Pages (Require authentication)
             {path: "/customer-dashboard", component: ProfileSettings, meta: {requiresAuth: true, role: "customer"}},
@@ -110,6 +112,9 @@ const routes = [
             {path: "settings", name: "admin-settings", component: Settings},
             {path: "customers", name: "admin-customers", component: Customers},
             {path: "customers/:id", name: "admin-customer-profile", component: CustomerProfile},
+            {path: "refund", name: "admin-refund", component: RefundProcessing},
+            {path: "shipping", name: "admin-shipping", component: Shippings},
+            {path: "site-reviews", name: "admin-site-reviews", component: SiteReviews},
         ],
     },
 

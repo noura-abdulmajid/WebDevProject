@@ -24,21 +24,21 @@
           </router-link>
         </li>
         <li>
-          <router-link to="{ name: 'admin-payments' }">
+          <router-link :to="{ name: 'admin-refund' }">
             <img src="@/assets/image/icon/payment.png" class="sidebar-icon" />
             <span v-if="!isSidebarCollapsed">Refund</span>
           </router-link>
         </li>
         <li>
-          <router-link to="{ name: 'admin-shipping' }">
+          <router-link :to="{ name: 'admin-shipping' }">
             <img src="@/assets/image/icon/shipping.png" class="sidebar-icon" />
             <span v-if="!isSidebarCollapsed">Shipping</span>
           </router-link>
         </li>
         <li>
-          <router-link :to="{ name: 'admin-products' }">
+          <router-link :to="{ name: 'admin-site-reviews' }">
             <img src="@/assets/image/icon/products.png" class="sidebar-icon" />
-            <span v-if="!isSidebarCollapsed">Inventory</span>
+            <span v-if="!isSidebarCollapsed">Site-Reviews</span>
           </router-link>
         </li>
         <li>

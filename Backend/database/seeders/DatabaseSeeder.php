@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             OrderedItemsSeeder::class,
             FavouriteSeeder::class,
             AdminUserSeeder::class,
+            SiteReviewSeeder::class,
         ]);
     }
 }
