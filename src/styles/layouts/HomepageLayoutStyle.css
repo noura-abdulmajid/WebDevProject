@@ -142,19 +142,37 @@
     color: var(--accent-color);
 }
 
+.main-content {
+    flex: 1;
+    min-height: calc(100vh - 150px);
+    padding-bottom: 50px;
+}
+
+.layout-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
 /* Bottom Navigation Bar */
 .bottom-navbar {
+    width: 100%;
     background: #f8f8f8;
-    padding: 20px 0;
-    margin-top: 20px;
+    text-align: center;
+    padding: 20px;
+    position: relative;
+    margin-top: auto;
 }
 
 .footer-container {
+    width: 100vw;
+    max-width: 100%;
     display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
     padding: 20px;
 }
+
 
 .footer-section {
     flex: 1;

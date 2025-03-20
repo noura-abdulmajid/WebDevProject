@@ -9,14 +9,14 @@
           <li class="dropdown-parent">
             <a>HOME</a>
             <ul class="dropdown">
-              <li><a href="/public">Home Page</a></li>
+              <li><a href="/">Home Page</a></li>
             </ul>
           </li>
           <li><a href="#">ABOUT</a></li>
           <li class="dropdown-parent">
             <a href="#">SHOPPING</a>
             <ul class="dropdown">
-              <li><a href="/pages/products/WomenCollection">Women's</a></li>
+              <li><a href="/WomenCollection">Women's</a></li>
               <li><a href="/MenCollection">Men's</a></li>
               <li><a href="/ChildrenCollection">Children</a></li>
             </ul>
@@ -43,7 +43,7 @@
         <button class="shop-button">Shop Now</button>
       </div>
       <div>
-        <img src="/image/mens%20banner.png" alt="Illustration"/>
+        <img src="/image/mens banner.png" alt="Illustration"/>
       </div>
     </div>
     <div class="products container">
