@@ -22,19 +22,18 @@
     <!-- Display Customer Details -->
     <div v-else>
       <div class="customer-details">
-        <p><strong>Full Name:</strong> {{ customer.name }}</p>
-        <p><strong>Email:</strong> {{ customer.email }}</p>
-        <p><strong>Phone:</strong> {{ customer.phone }}</p>
-        <p><strong>Address:</strong> {{ customer.address || "Not Provided" }}</p>
-        <p><strong>Total Orders:</strong> {{ customer.orders }}</p>
-        <p><strong>Total Spent:</strong> £{{ customer.amount_spent.toFixed(2) }}</p>
+        <p><strong>Full Name:</strong> {{ customer.first_name }} {{ customer.surname }}</p>
+        <p><strong>Email:</strong> {{ customer.email_address }}</p>
+        <p><strong>Phone:</strong> {{ customer.tel_no || "Not Provided" }}</p>
+        <p><strong>Shipping Address:</strong> {{ customer.shipping_address || "Not Provided" }}</p>
+        <p><strong>Billing Address:</strong> {{ customer.billing_address || "Not Provided" }}</p>
       </div>
 
 
     </div>
 
     <div class="button-group">
-      <button @click="editCustomer" class="edit-button">✏️ Edit Customer</button>
+      <button @click="toggleEditModal" class="edit-button">✏️ Edit Customer</button>
     </div>
 
     <!-- Order Table -->
@@ -51,17 +50,18 @@
         </tr>
         </thead>
         <tbody>
-        <tr v-for="order in orders" :key="order.id">
-          <td>{{ order.id }}</td>
-          <td>{{ order.date }}</td>
-          <td>{{ order.items }}</td>
-          <td>£{{ order.total.toFixed(2) }}</td>
+        <tr v-for="order in orders" :key="order.O_ID">
+          <td>{{ order.O_ID }}</td>
+          <td>{{ order.order_date }}</td>
+          <td>{{ order.itemQuantity }}</td>
+          <td>£{{ order.total_payment.toFixed(2) }}</td>
           <td class="action-buttons">
-            <button @click="viewOrder(order.id)" class="view">👁️ View</button>
-            <button @click="editOrder(order.id)" class="edit">✏️ Edit</button>
-            <button @click="deleteOrder(order.id)" class="delete">🗑️ Delete</button>
+            <button @click="viewOrder(order.O_ID)" class="view">👁️ View</button>
+            <button @click="editOrder(order.O_ID)" class="edit">✏️ Edit</button>
+            <button @click="deleteOrder(order.O_ID)" class="delete">🗑️ Delete</button>
           </td>
         </tr>
+
         <tr v-if="orders.length === 0">
           <td colspan="5" class="no-data">No orders found.</td>
         </tr>
@@ -70,6 +70,56 @@
     </div>
 
     <button @click="goBack" class="back-button">🔙 Back to Customers</button>
+
+    <!-- Edit Customer Modal -->
+    <div v-if="showModal" class="modal-overlay">
+      <div class="modal">
+        <h2>Edit Customer</h2>
+        <form @submit.prevent="editCustomer">
+          <!-- First Name -->
+          <div class="form-group">
+            <label for="first_name">First Name:</label>
+            <input v-model="editCustomerData.first_name" type="text" id="first_name"/>
+          </div>
+
+          <!-- Surname -->
+          <div class="form-group">
+            <label for="surname">Surname:</label>
+            <input v-model="editCustomerData.surname" type="text" id="surname"/>
+          </div>
+
+          <!-- Email Address -->
+          <div class="form-group">
+            <label for="email">Email Address:</label>
+            <input v-model="editCustomerData.email_address" type="email" id="email"/>
+          </div>
+
+          <!-- Phone Number -->
+          <div class="form-group">
+            <label for="tel_no">Phone Number:</label>
+            <input v-model="editCustomerData.tel_no" type="tel" id="tel_no"/>
+          </div>
+
+          <!-- Shipping Address -->
+          <div class="form-group">
+            <label for="shipping_address">Shipping Address:</label>
+            <textarea v-model="editCustomerData.shipping_address" id="shipping_address"></textarea>
+          </div>
+
+          <!-- Billing Address -->
+          <div class="form-group">
+            <label for="billing_address">Billing Address:</label>
+            <textarea v-model="editCustomerData.billing_address" id="billing_address"></textarea>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="form-actions">
+            <button type="submit" class="save-button">Save</button>
+            <button type="button" @click="toggleEditModal" class="cancel-button">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
 
 </template>

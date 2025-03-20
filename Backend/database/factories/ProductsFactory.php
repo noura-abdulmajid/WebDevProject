@@ -21,6 +21,7 @@ class ProductsFactory extends Factory
             'price' => $this->faker->randomFloat(2, 10, 100),
             'sustainability' => $this->faker->boolean,
             'overall_stock_status' => $this->faker->randomElement(['in_stock', 'out_of_stock', 'discontinued']),
+            'gender_target' => $this->faker->randomElement(['male', 'female', 'kids', 'unisex']),
         ];
     }
 }

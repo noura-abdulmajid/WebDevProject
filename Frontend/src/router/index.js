@@ -1,8 +1,7 @@
-
 import {createRouter, createWebHistory} from "vue-router";
 // Authentication Pages
 import Login from "@/components/pages/auth/Login.vue";
-import AdminLogin from "@/components/pages/auth/AdminLogin.vue";
+import AdminLogin from "@/components/pages/admin/AdminLogin.vue";
 import Register from "@/components/pages/auth/Register.vue";
 import ForgotPassword from "@/components/pages/auth/ForgotPassword.vue";
 import ResetPassword from "@/components/pages/auth/ResetPassword.vue";
@@ -24,6 +23,7 @@ import ProfileSettings from "@/components/pages/user/ProfileSettings.vue";
 import Favorites from "@/components/pages/user/Favorites.vue";
 import ProfileDetails from "@/components/pages/user/ProfileDetails.vue";
 import OrdersHistory from "@/components/pages/user/OrdersHistory.vue";
+
 
 // Storefront Pages
 import Homepage from "@/components/pages/home/Homepage.vue";
@@ -57,47 +57,64 @@ const routes = [
         component: HomepageLayout,
         children: [
 
-            {path: "/Homepage", component: Homepage},
-            {path: "/ChildrenCollection",name: "ChildrenCollection", component: ChildrenCollection},
-            {path: "/MenCollection",name: "MenCollection", component: MenCollection},
-            {path: "/WomenCollection",name: "WomenCollection", component: WomenCollection},
+            {path: "/Homepage", name: "Homepage", component: Homepage},
+            {path: "/ChildrenCollection", name: "ChildrenCollection", component: ChildrenCollection},
+            {path: "/MenCollection", name: "MenCollection", component: MenCollection},
+            {path: "/WomenCollection", name: "WomenCollection", component: WomenCollection},
             {path: "/ShoppingCart", name: "ShoppingCart", component: ShoppingCart},
             {path: "/Checkout", name: "Checkout", component: Checkout},
             {path: "/contact", component: ContactUs},
             {path: "/site-review", component: SiteReview},
 
             // Guest Pages (No authentication required)
-            {path: "/login", name: "user-login", component: Login, meta: {guestOnly: true}},
-            {path: "/register", name: "user-register", component: Register, meta: {guestOnly: true}},
-            {path: "/forgot-password", name: "user-forgot-password", component: ForgotPassword, meta: {guestOnly: true}},
-            {path: "/reset-password", name: "user-reset-password", component: ResetPassword, meta: {guestOnly: true}},
+            {path: "/login", name: "user-login", component: Login, meta: {guestOnly: true, hideFooter: true}},
+            {path: "/register", name: "user-register", component: Register, meta: {guestOnly: true, hideFooter: true}},
+            {
+                path: "/forgot-password",
+                name: "user-forgot-password",
+                component: ForgotPassword,
+                meta: {guestOnly: true, hideFooter: true}
+            },
+            {
+                path: "/reset-password",
+                name: "user-reset-password",
+                component: ResetPassword,
+                meta: {guestOnly: true, hideFooter: true}
+            },
 
-            //Admin Page(Security Page)
-            {path: "/admin-login", name: "admin-login", component: AdminLogin, meta: {guestOnly: true}},
-
-            // Customer Pages (Require authentication)
-            {path: "/customer-dashboard", component: ProfileSettings, meta: {requiresAuth: true, role: "customer"}},
         ],
     },
 
     // Customer Pages (Require authentication)
     {
         path: "/customer-dashboard",
-        name: 'CustomerDashboard',
-        component: ProfileSettings,
+        name: "CustomerDashboard",
+        component: HomepageLayout,
         meta: {requiresAuth: true, role: "customer"},
         redirect: "/customer-dashboard/profile",
         children: [
-            {path: "profile", name: "Profile", component: ProfileDetails},
-            {path: "favorites", name: "Favorites", component: Favorites},
-            {path: "orders-history", name: "OrdersHistory", component: OrdersHistory},
+            {
+                path: "profile",
+                name: "Profile",
+                component: ProfileSettings,
+                children: [
+                    {path: "", name: "ProfileDetails", component: ProfileDetails, meta: {hideFooter: true}},
+                    {path: "favorites", name: "Favorites", component: Favorites, meta: {hideFooter: true}},
+                    {path: "orders-history", name: "OrdersHistory", component: OrdersHistory, meta: {hideFooter: true}},
+                ]
+            },
         ],
     },
+
+
     {
         path: "/:pathMatch(.*)*",
         redirect: "/customer-dashboard",
     },
 
+
+    //Admin Page(Security Page)
+    {path: "/admin-login", name: "admin-login", component: AdminLogin, meta: {guestOnly: true}},
     // Admin Pages (Require authentication) - Using AdminLayout
     {
         path: "/admin",

@@ -45,7 +45,7 @@
   <router-view></router-view>
 
   <!-- Bottom Navigation Bar -->
-  <footer class="bottom-navbar">
+  <footer class="bottom-navbar" v-if="!$route.meta.hideFooter">
     <div class="container footer-container">
       <div class="footer-section">
         <h4>Shopping with DashShoe</h4>

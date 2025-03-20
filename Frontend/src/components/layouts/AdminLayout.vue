@@ -18,27 +18,27 @@
           </router-link>
         </li>
         <li>
-          <router-link :to="{ name: 'admin-orders' }">
+          <router-link :to="{ name: 'admin-products' }">
             <img src="@/assets/image/icon/orders.png" class="sidebar-icon" />
-            <span v-if="!isSidebarCollapsed">Orders</span>
+            <span v-if="!isSidebarCollapsed">Product</span>
           </router-link>
         </li>
         <li>
-          <router-link :to="{ name: 'admin-refund' }">
+          <router-link :to="{ name: 'admin-site-reviews' }">
+            <img src="@/assets/image/icon/products.png" class="sidebar-icon" />
+            <span v-if="!isSidebarCollapsed">Site Reviews</span>
+          </router-link>
+        </li>
+        <li>
+          <router-link :to="{ name: 'admin-orders' }">
             <img src="@/assets/image/icon/payment.png" class="sidebar-icon" />
-            <span v-if="!isSidebarCollapsed">Refund</span>
+            <span v-if="!isSidebarCollapsed">Order</span>
           </router-link>
         </li>
         <li>
           <router-link :to="{ name: 'admin-shipping' }">
             <img src="@/assets/image/icon/shipping.png" class="sidebar-icon" />
             <span v-if="!isSidebarCollapsed">Shipping</span>
-          </router-link>
-        </li>
-        <li>
-          <router-link :to="{ name: 'admin-site-reviews' }">
-            <img src="@/assets/image/icon/products.png" class="sidebar-icon" />
-            <span v-if="!isSidebarCollapsed">Site-Reviews</span>
           </router-link>
         </li>
         <li>

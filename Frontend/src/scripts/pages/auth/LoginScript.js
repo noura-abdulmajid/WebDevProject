@@ -1,4 +1,5 @@
 import axios from "@/services/axiosClient.js";
+import apiURL from '@/config/apiURL';
 
 export default {
     data() {
@@ -18,7 +19,7 @@ export default {
             try {
                 const data = await this.login(this.email, this.password);
 
-                this.$router.push("/customer-dashboard");
+                this.$router.push(apiURL.userProfile.profile);
             } catch (error) {
                 //alert(error.response?.data?.message || "Login failed!");
             } finally {

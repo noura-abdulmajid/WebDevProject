@@ -10,16 +10,23 @@ export default {
     },
 
     userProfile: {
-        profile: "/DashShoe/profile",
+
+        profile: "/customer-dashboard",
+        favorites: "/customer-dashboard/profile/favorites",
+        ordersHistory: "/customer-dashboard/profile/orders-history",
+
+        /* For API Use URL */
         getProfile: "/DashShoe/profile/getProfile",
         updateProfile: "/DashShoe/profile",
-        ordersHistory: "/DashShoe/profile/order",
+        getOrdersHistory: "/DashShoe/profile/order",
     },
 
     admin: {
         login: "/DashShoe/admin/login",
         logout: "/DashShoe/admin/logout",
         customers: "/DashShoe/admin/get_users",
+        customerProfile: (id) => `/DashShoe/admin/customers/${id}`,
+        customerProfileEditCustomer: (id) => `/DashShoe/admin/customers/${id}`,
         createUser: "/DashShoe/admin/create_user",
         dashboardStats: "/DashShoe/admin/dashboard_status",
         getUser: (id) => `/DashShoe/admin/get_user/${id}`,

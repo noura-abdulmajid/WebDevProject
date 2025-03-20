@@ -2,13 +2,13 @@
 
 namespace Database\Factories;
 
-use App\Models\OrderedItems;
+use App\Models\OrderedItem;
 use App\Models\Order;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class OrderedItemsFactory extends Factory
+class OrderedItemFactory extends Factory
 {
-    protected $model = OrderedItems::class;
+    protected $model = OrderedItem::class;
 
     public function definition(): array
     {

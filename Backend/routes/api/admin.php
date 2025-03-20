@@ -5,6 +5,8 @@ use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminProductController;
 use App\Http\Controllers\Admin\AdminSiteReviewController;
+use App\Http\Controllers\Admin\AdminCustomerController;
+use App\Http\Controllers\Admin\AdminOrderController;
 
 
 // Admin routes
@@ -14,10 +16,22 @@ Route::prefix('admin')->group(function () {
     Route::post('logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
 
     //Dashboard
-    Route::get('/get_users', [AdminDashboardController::class, 'getAllUsers'])->name('admin.users.getUsers');
-    Route::delete('/delete_user/{id}', [AdminDashboardController::class, 'deleteUser'])->name('admin.user.deleteUser');
-    Route::put('/update_user/{id}', [AdminDashboardController::class, 'updateUser'])->name('admin.updateUser');
     Route::get('/dashboard_status', [AdminDashboardController::class, 'dashboardStats'])->name('admin.dashboardStats');
+
+    //Customer
+    Route::delete('/delete_user/{id}', [AdminCustomerController::class, 'deleteUser'])->name('admin.user.deleteUser');
+    Route::put('/update_user/{id}', [AdminCustomerController::class, 'updateUser'])->name('admin.updateUser');
+    Route::get('/get_users', [AdminCustomerController::class, 'getAllUsers'])->name('admin.users.getUsers');
+
+    //Customer-EditPage
+    Route::get('/customers/{id}', [AdminCustomerController::class, 'show'])->name('admin.customers.show');
+    Route::put('/customers/{id}', [AdminCustomerController::class, 'update'])->name('admin.customer.update');
+    Route::delete('/customers/{id}', [AdminCustomerController::class, 'destroy'])->name('admin.customer.destroy');
+
+    //Order
+    Route::get('/orders/{id}', [AdminOrderController::class, 'show'])->name('admin.order.show');
+    Route::put('/orders/{id}', [AdminOrderController::class, 'update'])->name('admin.order.update');
+    Route::delete('/orders/{id}', [AdminOrderController::class, 'destroy'])->name('admin.order.destroy');
 
     //Product
     Route::get('/get_products', [AdminProductController::class, 'getProducts'])->name('admin.user.getProducts');

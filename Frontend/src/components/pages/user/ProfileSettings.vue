@@ -45,9 +45,9 @@ export default {
   justify-content: center;
   padding-right: 0;
   align-items: center;
-  overflow: hidden;
   flex-wrap: wrap;
   height: 100vh;
+  overflow: hidden;
 }
 
 .sidebar {
@@ -68,7 +68,8 @@ export default {
   border-radius: 20px;
   width: 100%;
   max-width: 1000px;
-  border-radius: 20px;
+
+  padding-top: 80px;
 }
 
 .profile-card {

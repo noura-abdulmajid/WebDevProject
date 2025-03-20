@@ -11,23 +11,39 @@ class Order extends Model
 {
     use HasFactory;
 
+    // Table name corresponds to the `orders` table
+    protected $table = 'orders';
+
+    // Primary key matches the database schema, which is `O_ID`
+    protected $primaryKey = 'O_ID';
+
+    // Primary key type is Big Integer and auto-incrementing
+    public $incrementing = true;
+    protected $keyType = 'int';
+
+    // Define fillable fields for mass assignment
     protected $fillable = [
-        'user_id',
+        'C_ID',
         'order_date',
         'shipping_address',
         'subtotal',
         'delivery_charge',
-        'total_payment'
+        'total_payment',
     ];
 
-    public function orderedItems()
+    /**
+     * Relation with OrderedItem: An order has many ordered items.
+     */
+    public function orderedItems(): HasMany
     {
-        return $this->hasMany(OrderedItem::class, 'order_id');
+        return $this->hasMany(OrderedItem::class, 'O_ID', 'O_ID');
     }
-
-
-    public function user(): BelongsTo
+    
+    /**
+     * Relation with Customer: An order belongs to a customer.
+     */
+    public function customer(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Customer::class, 'C_ID', 'C_ID');
     }
 }

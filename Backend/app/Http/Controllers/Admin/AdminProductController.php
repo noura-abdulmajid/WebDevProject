@@ -20,19 +20,14 @@ class AdminProductController extends Controller
             return response()->json(['error' => 'Unauthorized: You do not have the required admin role.'], 403);
         }
 
-        $products = Products::select('P_ID', 'p_name', 'description', 'categories', 'colours', 'photo', 'price', 'overall_stock_status')
-            ->paginate(10);
+        $products = Products::select('P_ID', 'p_name','gender_target', 'description', 'categories', 'colours', 'photo', 'price', 'overall_stock_status')
+            ->get();
 
         Log::info('All products retrieved successfully by admin: ' . $admin->email);
 
         return response()->json([
             'message' => 'All products retrieved successfully.',
-            'products' => $products->items(),
-            'pagination' => [
-                'total' => $products->total(),
-                'current_page' => $products->currentPage(),
-                'last_page' => $products->lastPage(),
-            ],
+            'products' => $products,
         ], 200);
     }
 }

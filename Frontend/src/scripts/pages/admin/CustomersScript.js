@@ -2,13 +2,19 @@ import {ref, computed, onMounted} from "vue";
 import axiosClient from "@/services/axiosClient.js";
 import {useRouter} from "vue-router";
 import AdminAddCustomerModal from "@/components/modals/AdminAddCustomerModal.vue";
-import AdminViewCustomerModal from '@/components/modals/AdminViewCustomerModal.vue';
+import AdminViewCustomerModal from "@/components/modals/AdminViewCustomerModal.vue";
 import AdminDeleteCustomerModal from "@/components/modals/AdminDeleteCustomerModal.vue";
 import apiConfig from "@/config/apiURL.js";
 
 export default {
-    components: {AdminAddCustomerModal, AdminViewCustomerModal, AdminDeleteCustomerModal},
+    components: {
+        AdminAddCustomerModal,
+        AdminViewCustomerModal,
+        AdminDeleteCustomerModal,
+    },
+
     setup() {
+        // Reactive state variables
         const customers = ref([]);
         const searchQuery = ref("");
         const selectedCustomers = ref([]);
@@ -16,13 +22,18 @@ export default {
         const showDeleteModal = ref(false);
         const customerToDelete = ref({});
         const selectAll = ref(false);
-        const activeActionMenu = ref(null);
         const showModal = ref(false);
         const sortingCriteria = ref("name");
         const loading = ref(true);
         const error = ref(null);
         const viewModalVisible = ref(false);
         const router = useRouter();
+        const currentPage = ref(1);
+        const customersPerPage = 20;
+        const filters = ref({
+            minOrders: 0,
+            minSpent: 0,
+        });
 
         /**
          * Fetches the list of customers from the backend.
@@ -37,9 +48,7 @@ export default {
                 });
 
                 customers.value = (response.data.customers || []).map((customer) => {
-
                     const orders = customer.orders_summary || {};
-
                     return {
                         id: customer.C_ID,
                         ...customer,
@@ -47,18 +56,16 @@ export default {
                             ongoing: Number(orders.ongoing) || 0,
                             completed: Number(orders.completed) || 0,
                             total_spent: Number(orders.total_spent) || 0,
-                            total_orders: (Number(orders.ongoing) || 0) + (Number(orders.completed) || 0),
+                            total_orders:
+                                (Number(orders.ongoing) || 0) + (Number(orders.completed) || 0),
                         },
                     };
                 });
-
-                console.log("Mapped Customers:", customers.value);
+                // Save fetched customers to localStorage
                 localStorage.setItem("customers", JSON.stringify(customers.value));
             } catch (err) {
                 error.value = "Failed to load customers. Displaying last available data.";
                 console.error("Error fetching customers:", err);
-
-
                 const localData = localStorage.getItem("customers");
                 customers.value = localData ? JSON.parse(localData) : [];
             } finally {
@@ -66,9 +73,34 @@ export default {
             }
         };
 
+        // Computed property for total pages based on filtered customers
+        const totalPages = computed(() =>
+            Math.ceil(filteredCustomers.value.length / customersPerPage)
+        );
+
+        // Computed property for customers to be displayed on the current page
+        const paginatedCustomers = computed(() => {
+            const startIndex = (currentPage.value - 1) * customersPerPage;
+            return filteredCustomers.value.slice(
+                startIndex,
+                startIndex + customersPerPage
+            );
+        });
+
+        /**
+         * Changes the current page.
+         * @param {number} page - The new page number.
+         */
+        const changePage = (page) => {
+            if (page > 0 && page <= totalPages.value) {
+                currentPage.value = page;
+            }
+        };
 
         /**
          * Get tooltips for customer order details.
+         * @param {object} orders - The orders object.
+         * @returns {string} Tooltip string with ongoing and completed orders.
          */
         const getOrderTooltip = (orders) => {
             if (!orders) {
@@ -76,11 +108,8 @@ export default {
             }
             const ongoing = orders.ongoing || 0;
             const completed = orders.completed || 0;
-
             return `Ongoing: ${ongoing}, Completed: ${completed}`;
         };
-
-
 
         /**
          * Bulk delete selected customers.
@@ -91,18 +120,19 @@ export default {
             if (!confirm("Are you sure you want to delete selected customers?"))
                 return;
             try {
+                // Delete each selected customer
                 for (const id of selectedCustomers.value) {
                     await axiosClient.delete(apiConfig.admin.deleteUser(id));
-                    selectedCustomers.value = [];
-                    await fetchCustomers();
                 }
-            } catch (error) {
-                console.error("Error deleting customers:", error);
+                selectedCustomers.value = [];
+                await fetchCustomers();
+            } catch (err) {
+                console.error("Error deleting customers:", err);
             }
         };
 
         /**
-         * Sorting Customers based on selected criteria.
+         * Sorts customers based on the selected criteria.
          */
         const sortedCustomers = computed(() => {
             return [...customers.value].sort((a, b) => {
@@ -115,25 +145,58 @@ export default {
             });
         });
 
+        // Filter options for checkbox-based filtering
+        const filterOptions = ref({
+            orders: [
+                {label: "All Orders", value: 0, checked: true},
+                {label: "5+ Orders", value: 5, checked: false},
+                {label: "10+ Orders", value: 10, checked: false},
+            ],
+            amountSpent: [
+                {label: "All Spent", value: 0, checked: true},
+                {label: "£100+", value: 100, checked: false},
+                {label: "£500+", value: 500, checked: false},
+            ],
+        });
+
         /**
-         * Filter Customers based on search query.
+         * Apply filters based on filterOptions.
+         * This method updates the filters object using the active filter criteria.
+         */
+        const applyFilters = () => {
+            // Update filters.minOrders based on checked orders options
+            const selectedOrders = filterOptions.value.orders
+                .filter((opt) => opt.checked)
+                .map((opt) => opt.value);
+            filters.value.minOrders = selectedOrders.length ? Math.max(...selectedOrders) : 0;
+
+            // Update filters.minSpent based on checked amountSpent options
+            const selectedSpent = filterOptions.value.amountSpent
+                .filter((opt) => opt.checked)
+                .map((opt) => opt.value);
+            filters.value.minSpent = selectedSpent.length ? Math.max(...selectedSpent) : 0;
+        };
+
+        /**
+         * Filter customers based on search query and filter criteria.
          */
         const filteredCustomers = computed(() => {
             const query = searchQuery.value.toLowerCase();
             return sortedCustomers.value.filter((customer) => {
-                const fullName = `${customer.first_name || ""} ${
-                    customer.surname || ""
-                }`.toLowerCase();
+                const fullName = `${customer.first_name || ""} ${customer.surname || ""}`.toLowerCase();
                 return (
-                    fullName.includes(query) ||
-                    (customer.email_address?.toLowerCase() || "").includes(query) ||
-                    (customer.tel_no?.toString() || "").includes(query)
+                    (fullName.includes(query) ||
+                        (customer.email_address?.toLowerCase() || "").includes(query) ||
+                        (customer.tel_no?.toString() || "").includes(query)) &&
+                    customer.orders.total_orders >= filters.value.minOrders &&
+                    customer.orders.total_spent >= filters.value.minSpent
                 );
             });
         });
 
+
         /**
-         * Select all customers at once.
+         * Select or deselect all customers.
          */
         const toggleSelectAll = () => {
             selectedCustomers.value = selectAll.value
@@ -141,30 +204,41 @@ export default {
                 : [];
         };
 
+        /**
+         * Set the customer to view and open the view modal.
+         * @param {number} customerId - The ID of the customer to view.
+         */
         const viewCustomer = (customerId) => {
-            const userData = customers.value.find(c => c.C_ID === customerId);
+            const userData = customers.value.find((c) => c.C_ID === customerId);
             if (userData) {
                 customerToView.value = userData;
             }
-            console.log("Found userData", userData);
-
             viewModalVisible.value = true;
-            console.log("viewModalVisible", viewModalVisible.value);
-
         };
 
+        /**
+         * Navigate to the customer edit page.
+         * @param {number} customerId - The ID of the customer to edit.
+         */
         const editCustomer = (customerId) => {
-            router.push({name: 'admin-customer-profile', params: {id: customerId}});
+            router.push({name: "admin-customer-profile", params: {id: customerId}});
         };
 
+        /**
+         * Open the delete modal for the selected customer.
+         * @param {number} customerId - The ID of the customer to delete.
+         */
         const deleteCustomer = (customerId) => {
             const found = customers.value.find((c) => c.id === customerId);
             if (!found) return;
-
             customerToDelete.value = found;
             showDeleteModal.value = true;
         };
 
+        /**
+         * Confirm deletion of a customer.
+         * @param {object} customer - The customer object to delete.
+         */
         const onConfirmDelete = async (customer) => {
             showDeleteModal.value = false;
             try {
@@ -176,17 +250,28 @@ export default {
             }
         };
 
+        /**
+         * Clear all filters by resetting filterOptions to default values.
+         */
+        const clearFilters = () => {
+            filterOptions.value.orders.forEach((opt, index) => {
+                opt.checked = index === 0;
+            });
+            filterOptions.value.amountSpent.forEach((opt, index) => {
+                opt.checked = index === 0;
+            });
+            // After clearing, apply filters to update filters object
+            applyFilters();
+        };
 
         onMounted(fetchCustomers);
 
         return {
-            customers,
-            searchQuery,
+            customers, searchQuery,
             selectedCustomers,
             viewModalVisible,
             customerToView,
             selectAll,
-            activeActionMenu,
             showModal,
             sortingCriteria,
             loading,
@@ -201,8 +286,16 @@ export default {
             showDeleteModal,
             customerToDelete,
             onConfirmDelete,
-            getOrderTooltip
-
+            getOrderTooltip,
+            currentPage,
+            customersPerPage,
+            totalPages,
+            paginatedCustomers,
+            changePage,
+            filters,
+            filterOptions,
+            clearFilters,
+            applyFilters
         };
     },
 };

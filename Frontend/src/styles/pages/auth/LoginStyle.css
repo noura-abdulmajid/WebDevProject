@@ -1,17 +1,19 @@
 /* 🌟 Centering Wrapper */
 .login-wrapper {
+  min-height: 100vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  max-width: 450px;
-  margin-top: 150px;
+  height: 100vh;
+  text-align: center;
+  font-family: var(--font-family);
 }
-
 /* 🌟 Login Container */
 .login-container {
   width: 100%;
+  max-width: 400px;
   padding: 40px;
   border-radius: 12px;
   background: white;
@@ -22,6 +24,7 @@
   justify-content: center;
   align-items: center;
 }
+
 
 /* 🌟 Form Groups */
 .form-group {

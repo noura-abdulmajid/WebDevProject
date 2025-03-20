@@ -9,13 +9,14 @@ use Illuminate\Support\Carbon;
 
 class ProductsSeeder extends Seeder
 {
-
     public function run(): void
     {
         Products::factory()->count(10)->create();
+
         $products = [
             [
                 "name" => "Heart Trainers",
+                "gender_target" => "female",
                 "price" => 40,
                 "image" => "/image/banner.png",
                 "category" => "Trainers",
@@ -25,6 +26,7 @@ class ProductsSeeder extends Seeder
             ],
             [
                 "name" => "Black Trainers",
+                "gender_target" => "male",
                 "price" => 82,
                 "image" => "/image/banner.png",
                 "category" => "Trainers",
@@ -34,6 +36,7 @@ class ProductsSeeder extends Seeder
             ],
             [
                 "name" => "Black Shoes",
+                "gender_target" => "male",
                 "price" => 60,
                 "image" => "/image/banner.png",
                 "category" => "Loafers",
@@ -43,6 +46,7 @@ class ProductsSeeder extends Seeder
             ],
             [
                 "name" => "Red Shoes",
+                "gender_target" => "female",
                 "price" => 25,
                 "image" => "/image/banner.png",
                 "category" => "Heels",
@@ -52,6 +56,7 @@ class ProductsSeeder extends Seeder
             ],
             [
                 "name" => "Silver Shoes",
+                "gender_target" => "female",
                 "price" => 55,
                 "image" => "/image/banner.png",
                 "category" => "Loafers",
@@ -61,6 +66,7 @@ class ProductsSeeder extends Seeder
             ],
             [
                 "name" => "Studded Ballerina Flats",
+                "gender_target" => "female",
                 "price" => 65,
                 "image" => "/image/banner.png",
                 "category" => "Ballerinas",
@@ -70,6 +76,7 @@ class ProductsSeeder extends Seeder
             ],
             [
                 "name" => "Black Boots",
+                "gender_target" => "kids",
                 "price" => 70,
                 "image" => "/image/banner.png",
                 "category" => "Boots",
@@ -79,6 +86,7 @@ class ProductsSeeder extends Seeder
             ],
             [
                 "name" => "Printed Shoes",
+                "gender_target" => "kids",
                 "price" => 50,
                 "image" => "/image/banner.png",
                 "category" => "Loafers",
@@ -97,6 +105,7 @@ class ProductsSeeder extends Seeder
                 'photo' => $product['image'],
                 'sizes' => json_encode($product['sizes']),
                 'price' => $product['price'],
+                'gender_target' => $product['gender_target'],
                 'sustainability' => true,
                 'overall_stock_status' => 'in_stock',
                 'created_at' => Carbon::now(),
