@@ -24,7 +24,8 @@ export default {
                     localStorage.removeItem("redirectAfterLogin");
                     this.$router.push(redirectPath);
                 } else {
-                    this.$router.push("/Homepage");
+                    await this.$router.push("/Homepage");
+                    window.location.reload();
                 }
             } catch (error) {
                 //alert(error.response?.data?.message || "Login failed!");
@@ -58,6 +59,8 @@ export default {
                 localStorage.setItem("tel_no", data.user?.tel_no);
                 localStorage.setItem("shipping_address", data.user?.shipping_address);
                 localStorage.setItem("billing_address", data.user?.billing_address);
+
+
 
                 return data;
             } catch (error) {
