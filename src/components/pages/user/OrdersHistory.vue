@@ -20,7 +20,7 @@
       <!-- Pending Orders -->
       <div v-if="pendingOrders.length > 0">
         <h2>Pending Orders</h2>
-        <ul class="orders-list">≈
+        <ul class="orders-list">
           <li v-for="order in pendingOrders" :key="order.id" class="order">
             <h3>Order #{{ order.id }}</h3>
             <p><strong>Date:</strong> {{ order.date }}</p>
@@ -91,7 +91,7 @@ const fetchOrders = async () => {
     if (!token) throw new Error("No authentication token found. Please log in.");
 
     // Send GET request to fetch orders
-    const response = await axiosClient.get(apiConfig.userProfile.ordersHistory, {
+    const response = await axiosClient.get(apiConfig.userProfile.getOrdersHistory, {
       headers: { Authorization: `Bearer ${token}` },
     });
 

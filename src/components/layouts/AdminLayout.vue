@@ -7,7 +7,7 @@
       <ul class="nav-links">
         <li>
           <router-link :to="{ name: 'admin-dashboard' }">
-          <img src="@/assets/image/icon/dashboard.png" class="sidebar-icon" />
+            <img src="@/assets/image/icon/dashboard.png" class="sidebar-icon" />
             <span v-if="!isSidebarCollapsed">Dashboard</span>
           </router-link>
         </li>
@@ -24,7 +24,7 @@
           </router-link>
         </li>
         <li>
-          <router-link :to="{ name: 'admin-payments' }">
+          <router-link :to="{ name: 'admin-refund' }">
             <img src="@/assets/image/icon/payment.png" class="sidebar-icon" />
             <span v-if="!isSidebarCollapsed">Refund</span>
           </router-link>
@@ -36,15 +36,9 @@
           </router-link>
         </li>
         <li>
-          <router-link :to="{ name: 'admin-products' }">
-            <img src="@/assets/image/icon/products.png" class="sidebar-icon" />
-            <span v-if="!isSidebarCollapsed">Inventory</span>
-          </router-link>
-        </li>
-        <li>
           <router-link :to="{ name: 'admin-site-reviews' }">
-            <img src="@/assets/image/icon/review.png" class="sidebar-icon" />
-            <span v-if="!isSidebarCollapsed">Site Reviews</span>
+            <img src="@/assets/image/icon/products.png" class="sidebar-icon" />
+            <span v-if="!isSidebarCollapsed">Site-Reviews</span>
           </router-link>
         </li>
         <li>
@@ -66,7 +60,6 @@
       </div>
 
       <!-- Renders admin pages inside layout -->
-
       <router-view></router-view>
 
     </main>

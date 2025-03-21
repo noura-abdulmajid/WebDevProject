@@ -28,7 +28,19 @@
             </div>
 
             <div class="icons-container">
-              <a href="/login" class="icon">
+              <!-- Welcome Dropdown -->
+              <div class="dropdown-wrapper" v-if="isLoggedIn">
+                <div class="welcome-button" @click="toggleDropdown">
+                  Welcome,
+                  {{ userFirstName }}
+                </div>
+                <div v-if="showDropdown" class="dropdown-menu">
+                  <router-link to="apiURL.userProfile.profile">Profile</router-link>
+                  <a href="#" @click.prevent="logout">Logout</a>
+                </div>
+              </div>
+
+              <a v-else href="/login" class="icon">
                 <img src="@/assets/image/icon/login.png" class="icon-img"/>
               </a>
               <a href="/favorites" class="icon">

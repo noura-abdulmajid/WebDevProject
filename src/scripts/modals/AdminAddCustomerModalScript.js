@@ -1,4 +1,4 @@
-import { ref, defineProps, defineEmits } from "vue";
+import {ref, defineProps, defineEmits} from "vue";
 import axiosClient from "@/services/axiosClient.js";
 import apiConfig from "@/config/apiURL.js";
 
@@ -8,7 +8,7 @@ export default {
     },
     emits: ["close", "customerAdded"], //  Emits success and close events
 
-    setup(props, { emit }) {
+    setup(props, {emit}) {
         const newCustomer = ref({
             firstName: "",
             surname: "",
@@ -49,8 +49,8 @@ export default {
                 });
 
                 alert("Customer account created successfully!");
-                emit("customerAdded"); //  Notify parent component to refresh list
-                closeModal(); //  Auto-close modal after successful submission
+                emit("customerAdded");
+                closeModal();
             } catch (err) {
                 console.error("Error adding customer:", err);
                 alert("Failed to add customer.");
@@ -64,6 +64,6 @@ export default {
             emit("close");
         };
 
-        return { newCustomer, submitCustomer, closeModal };
+        return {newCustomer, submitCustomer, closeModal};
     },
 };

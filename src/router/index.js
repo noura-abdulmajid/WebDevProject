@@ -1,7 +1,7 @@
 import {createRouter, createWebHistory} from "vue-router";
 // Authentication Pages
 import Login from "@/components/pages/auth/Login.vue";
-import AdminLogin from "@/components/pages/auth/AdminLogin.vue";
+import AdminLogin from "@/components/pages/admin/AdminLogin.vue";
 import Register from "@/components/pages/auth/Register.vue";
 import ForgotPassword from "@/components/pages/auth/ForgotPassword.vue";
 import ResetPassword from "@/components/pages/auth/ResetPassword.vue";
@@ -160,8 +160,9 @@ router.beforeEach((to, from, next) => {
 
 
     if (to.meta.requiresAuth && !token) {
+        localStorage.setItem("redirectAfterLogin", to.fullPath);
         alert("Please log in to access this page.");
-        return next("/Homepage");
+        return next("/login");
     }
     const noRedirectRoutes = ["/register", "/login", "/forgot-password", "/reset-password", "/contact", "/admin-login"];
 

@@ -1,6 +1,6 @@
 <template>
 
-    <h1>Sales Dashboard</h1>
+  <h1>Sales Dashboard</h1>
 
   <main class="content">
 
@@ -24,16 +24,32 @@
       </div>
     </div>
 
+    <!-- Donut Chart for All Years -->
+    <div class="donut-chart">
+      <h2>All Years Sales Percentage</h2>
+      <canvas id="allYearsDonutChart"></canvas>
+    </div>
+
     <!-- Charts -->
     <div class="charts">
-      <canvas id="salesChart"></canvas>
-      <canvas id="ordersChart"></canvas>
+      <!-- Dynamic Pie Charts by Year -->
+      <div v-for="(yearData, index) in yearlySalesData" :key="'pie-' + index" class="chart-container">
+        <h4>Sales Pie Chart ({{ yearData.year }})</h4>
+        <canvas :id="'salesPieChart-' + index"></canvas>
+      </div>
+
+      <!-- Dynamic Line Charts by Year -->
+      <div v-for="(yearData, index) in yearlySalesData" :key="'line-' + index" class="chart-container">
+        <h4>Sales Line Chart ({{ yearData.year }})</h4>
+        <canvas :id="'salesLineChart-' + index"></canvas>
+      </div>
     </div>
   </main>
 </template>
 
 <script>
 import AdminDashboardScript from "../../../scripts/pages/admin/DashboardScript.js";
+
 export default AdminDashboardScript;
 </script>
 <style scoped src="../../../styles/GlobalStyle.css"></style>

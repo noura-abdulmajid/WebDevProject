@@ -121,7 +121,8 @@ export default {
 .favorites {
   padding: 20px;
   overflow-y: auto;
-  height: 600px;
+  max-height: none;
+  box-sizing: border-box;
 }
 
 .favorite-list {

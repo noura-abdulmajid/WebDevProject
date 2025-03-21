@@ -18,7 +18,14 @@ export default {
             try {
                 const data = await this.login(this.email, this.password);
 
-                this.$router.push("/customer-dashboard");
+                //Redirect back to previous page if stored
+                const redirectPath = localStorage.getItem("redirectAfterLogin");
+                if (redirectPath) {
+                    localStorage.removeItem("redirectAfterLogin");
+                    this.$router.push(redirectPath);
+                } else {
+                    this.$router.push("/Homepage");
+                }
             } catch (error) {
                 //alert(error.response?.data?.message || "Login failed!");
             } finally {

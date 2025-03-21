@@ -64,4 +64,3 @@ import SiteReview from "../../../scripts/pages/home/SiteReviewScript.js";
 export default SiteReview;
 </script>
 
-<style scoped src="@/styles/pages/home/SiteReviewStyle.css"></style>

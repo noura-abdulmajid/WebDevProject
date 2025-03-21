@@ -1,34 +1,57 @@
 <template>
   <nav class="navigation">
     <NavItem
-        imgSrc="/image/tabler--dashboard.png"
-        tooltip="Dashboard"
-        to="/customer-dashboard"
-        :isActive="$route.path === '/customer-dashboard'"
-    />
-    <NavItem
-        imgSrc="/image/iconoir--user-love.png"
-        tooltip="Favorites"
-        to="/customer-dashboard/favorites"
-        :isActive="$route.path === '/customer-dashboard/favorites'"
-    />
-    <NavItem
-        imgSrc="/image/lets-icons--order.png"
-        to="/customer-dashboard/orders-history"
-        :isActive="$route.path === '/orders-history'"
+        v-for="item in navItems"
+        :key="item.to"
+        :imgSrc="item.imgSrc"
+        :tooltip="item.tooltip"
+        :to="item.to"
+        :isActive="isActive(item.to)"
     />
   </nav>
 </template>
 
 <script>
-import NavItem from './NavItem.vue'
+import {computed} from 'vue';
+import {useRoute} from 'vue-router';
+import NavItem from './NavItem.vue';
+import apiURL from '@/config/apiURL';
+
 
 export default {
-  name: 'NavLinks',
+  name: 'Navigation',
   components: {
-    NavItem
-  }
-}
+    NavItem,
+  },
+  setup() {
+    const route = useRoute();
+
+    const navItems = computed(() => [
+      {
+        imgSrc: '/image/tabler--dashboard.png',
+        tooltip: 'Dashboard',
+        to: apiURL.userProfile.profile,
+      },
+      {
+        imgSrc: '/image/iconoir--user-love.png',
+        tooltip: 'Favorites',
+        to: apiURL.userProfile.favorites,
+      },
+      {
+        imgSrc: '/image/lets-icons--order.png',
+        tooltip: 'Orders History',
+        to: apiURL.userProfile.ordersHistory,
+      },
+    ]);
+
+    const isActive = (path) => route.path === path;
+
+    return {
+      navItems,
+      isActive,
+    };
+  },
+};
 </script>
 
 <style scoped>

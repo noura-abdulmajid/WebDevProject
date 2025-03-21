@@ -29,6 +29,7 @@ export default {
 
     async saveProfile() {
       try {
+        alert("Saving profile...");
         const updatedData = this.$refs.profileForm.getFormData();
         console.log("Updated data:", updatedData);
         const response = await axiosClient.put(apiConfig.userProfile.updateProfile, updatedData,
