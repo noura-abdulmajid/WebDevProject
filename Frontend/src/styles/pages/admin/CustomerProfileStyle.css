@@ -177,6 +177,202 @@
     transform: translateY(-2px);
 }
 
+.order-detail-dialog {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.dialog-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.dialog-content {
+    position: relative;
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    z-index: 1100;
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+}
+
+.dialog-content h3 {
+    margin-bottom: 20px;
+}
+
+.dialog-content p {
+    margin: 10px 0;
+}
+
+.close-dialog-button {
+    background: #f44336;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.close-dialog-button:hover {
+    background: #d32f2f;
+}
+
+.edit-order-dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    background-color: #fff;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    padding: 20px;
+    z-index: 1000;
+}
+
+.dialog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.save-button {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.cancel-button {
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Background overlay */
+.delete-confirm-dialog .dialog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+    z-index: 99; /* Ensures it is above all other elements */
+}
+
+/* Dialog container */
+.delete-confirm-dialog .dialog-content {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 400px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    z-index: 100;
+    text-align: center;
+}
+
+/* Dialog text styling */
+.delete-confirm-dialog .dialog-content p {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 16px;
+}
+
+/* Button actions container */
+.delete-confirm-dialog .dialog-actions {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+/* General button styling */
+.delete-confirm-dialog button {
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+/* Confirm button styling */
+.delete-confirm-dialog .confirm-button {
+    background-color: #f44336;
+    color: #fff;
+}
+
+.delete-confirm-dialog .confirm-button:hover {
+    background-color: #d32f2f;
+    transform: scale(1.05);
+}
+
+/* Cancel button styling */
+.delete-confirm-dialog .cancel-button {
+    background-color: #e0e0e0;
+    color: #333;
+}
+
+.delete-confirm-dialog .cancel-button:hover {
+    background-color: #bdbdbd;
+    transform: scale(1.05);
+}
+
 /* ✅ Responsive Design */
 @media (max-width: 768px) {
     .customer-profile {

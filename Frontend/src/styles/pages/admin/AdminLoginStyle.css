@@ -11,16 +11,24 @@
 /* Admin Login Box */
 .admin-login-container {
     width: 100%;
-    max-width: 400px;
-    padding: 40px;
-    border-radius: 12px;
-    background-color: white;
-    box-shadow: 0 3px 12px var(--shadow-color);
+    max-width: 650px;
+    padding: 60px;
+    border-radius: 16px;
+    background-color: #454442;
+    color: #ffffff;
+    box-shadow: 0 4px 15px var(--shadow-color);
     text-align: center;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+.admin-login-container h1 {
+    margin-bottom: 20px;
+    font-size: 2rem;
+    color: #ffffff;
+    text-align: center;
 }
 
 /*  Form Elements */
@@ -34,7 +42,7 @@
     display: block;
     font-weight: bold;
     font-size: 14px;
-    color: var(--primary-color);
+    color: white;
     margin-bottom: 5px;
 }
 
@@ -61,13 +69,14 @@
     padding: 14px;
     margin-top: 18px;
     background: var(--accent-color);
-    color: white;
+    color: #ffffff;
     border: none;
     border-radius: 8px;
     cursor: pointer;
     font-size: 18px;
     font-weight: bold;
     transition: all 0.3s ease;
+    background-color: #10b981;
 }
 
 .login-button:hover {
@@ -148,3 +157,27 @@
 .nav-links li {
     display: inline;
 }
+
+/* Responsive Design Adjustments for Larger Login Container */
+@media (max-width: 768px) {
+    .admin-login-container {
+        width: 90%;
+        padding: 50px;
+    }
+}
+
+@media (max-width: 480px) {
+    .admin-login-container {
+        width: 100%;
+        padding: 40px;
+    }
+
+    .input-field {
+        font-size: 15px;
+    }
+
+    .login-button {
+        font-size: 16px;
+    }
+}
+

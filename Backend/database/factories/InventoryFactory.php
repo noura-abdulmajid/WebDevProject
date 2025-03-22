@@ -12,10 +12,16 @@ class InventoryFactory extends Factory
 
     public function definition(): array
     {
+        $product = Products::inRandomOrder()->first() ?? Products::factory()->create();
+
+        $colors = is_string($product->colours) ? json_decode($product->colours, true) : (array) $product->colours;
+        $sizes = is_string($product->sizes) ? json_decode($product->sizes, true) : (array) $product->sizes;
+
         return [
-            'P_ID' => Products::inRandomOrder()->first()?->id ?? Products::factory(),
-            'size' => $this->faker->randomElement([36, 38, 40, 42, 44]),
-            'price' => $this->faker->randomFloat(2, 10, 500),
+            'P_ID' => $product->P_ID,
+            'color' => $this->faker->randomElement($colors),
+            'size' => $this->faker->randomElement($sizes),
+            'price' => $this->faker->randomFloat(2, $product->price - 10, $product->price + 10),
             'stock_level' => $this->faker->numberBetween(0, 100),
             'stock_status' => $this->faker->randomElement(['in_stock', 'low_stock', 'out_of_stock']),
         ];

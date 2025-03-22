@@ -67,7 +67,7 @@ const routes = [
             {path: "/site-review", component: SiteReview},
 
             // Guest Pages (No authentication required)
-            {path: "/login", name: "user-login", component: Login, meta: {guestOnly: true, hideFooter: true}},
+            {path: "/login", name: "user-login", component: Login, meta: {guestOnly: true}},
             {path: "/register", name: "user-register", component: Register, meta: {guestOnly: true, hideFooter: true}},
             {
                 path: "/forgot-password",

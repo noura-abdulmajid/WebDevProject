@@ -78,7 +78,6 @@ class AdminCustomerController extends Controller
             'customers' => $users
         ], 200);
     }
-
     public function deleteUser($id)
     {
         $admin = $this->validateAdminToken();
@@ -153,7 +152,6 @@ class AdminCustomerController extends Controller
             'customer_id' => $id,
             'orders_count' => $customer->orders->count(),
         ]);
-
 
         return response()->json([
             'customer' => $customer,

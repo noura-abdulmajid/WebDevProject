@@ -38,7 +38,7 @@ Route::prefix('admin')->group(function () {
     Route::post('/add_product', [AdminProductController::class, 'addProduct'])->name('admin.user.addProduct');
     Route::put('/update_product/{id}', [AdminProductController::class, 'updateProduct'])->name('admin.user.updateProduct');
     Route::delete('/delete_product/{id}', [AdminProductController::class, 'deleteProduct'])->name('admin.user.deleteProduct');
-    Route::get('/get_product_categories', [AdminProductController::class, 'getProductCategories'])->name('admin.user.getProductCategories');
+    Route::post('/upload_image', [AdminProductController::class, 'uploadImage'])->name('admin.user.uploadImage');
 
     //
     Route::get('/site_review', [AdminSiteReviewController::class, 'getSiteReview'])->name('admin.user.getSiteReview');

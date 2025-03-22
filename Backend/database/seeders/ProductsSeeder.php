@@ -11,7 +11,15 @@ class ProductsSeeder extends Seeder
 {
     public function run(): void
     {
-        Products::factory()->count(10)->create();
+        Products::factory()->count(30)->create();
+
+        $colorHexMapping = [
+            "Pink" => "#FFC0CB",
+            "Black" => "#000000",
+            "Red" => "#FF0000",
+            "Silver" => "#C0C0C0",
+            "Printed" => "#FF5733",
+        ];
 
         $products = [
             [
@@ -101,7 +109,9 @@ class ProductsSeeder extends Seeder
                 'p_name' => $product['name'],
                 'description' => $product['description'],
                 'categories' => json_encode([$product['category']]),
-                'colours' => json_encode([$product['color']]),
+                'colours' => json_encode([
+                    $colorHexMapping[$product['color']] ?? $product['color']
+                ]),
                 'photo' => $product['image'],
                 'sizes' => json_encode($product['sizes']),
                 'price' => $product['price'],

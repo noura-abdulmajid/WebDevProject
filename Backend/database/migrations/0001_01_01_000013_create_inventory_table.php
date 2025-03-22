@@ -11,7 +11,8 @@ return new class extends Migration
         Schema::create('inventory', function (Blueprint $table) {
             $table->bigIncrements('I_ID');
             $table->unsignedBigInteger('P_ID');
-            $table->integer('size');
+            $table->string('color');
+            $table->string('size');
             $table->decimal('price', 10, 2);
             $table->integer('stock_level');
             $table->enum('stock_status', ['in_stock', 'low_stock', 'out_of_stock'])->default('in_stock');

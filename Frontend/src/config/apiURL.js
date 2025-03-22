@@ -27,6 +27,8 @@ export default {
         customers: "/DashShoe/admin/get_users",
         customerProfile: (id) => `/DashShoe/admin/customers/${id}`,
         customerProfileEditCustomer: (id) => `/DashShoe/admin/customers/${id}`,
+        customerProfileEditOrder: (id) => `/DashShoe/admin/orders/${id}`,
+        customerProfileDeleteOrder: (id) => `/DashShoe/admin/orders/${id}`,
         createUser: "/DashShoe/admin/create_user",
         dashboardStats: "/DashShoe/admin/dashboard_status",
         getUser: (id) => `/DashShoe/admin/get_user/${id}`,

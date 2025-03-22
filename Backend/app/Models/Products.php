@@ -37,4 +37,10 @@ class Products extends Model
     {
         return $this->hasMany(Cart::class, 'P_ID', 'P_ID');
     }
+
+    public function inventory()
+    {
+        return $this->hasMany(Inventory::class, 'P_ID', 'P_ID');
+    }
+
 }

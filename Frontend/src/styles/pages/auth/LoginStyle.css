@@ -1,19 +1,18 @@
 /* 🌟 Centering Wrapper */
 .login-wrapper {
-  min-height: 100vh;
-  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  width: 100%;
+  max-width: 450px;
   height: 100vh;
-  text-align: center;
-  font-family: var(--font-family);
+  margin-top: 0;
+  margin-left: 35%;
 }
 /* 🌟 Login Container */
 .login-container {
   width: 100%;
-  max-width: 400px;
   padding: 40px;
   border-radius: 12px;
   background: white;
@@ -119,17 +118,11 @@
   margin-top: 12px;
 }
 
-.footer-text a {
-  color: var(--accent-color);
-  text-decoration: none;
-}
-
-.footer-text a:hover {
-  text-decoration: underline;
-}
-
 /* 🌟 Responsive Design */
 @media (max-width: 768px) {
+  .login-wrapper {
+    margin-left: 20%;
+  }
   .login-container {
     width: 85%;
     padding: 35px;

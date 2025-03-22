@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Order;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class AdminOrderController extends Controller
 {
@@ -13,6 +14,7 @@ class AdminOrderController extends Controller
      */
     public function show($id)
     {
+        info('Retrieving order with id: ' . $id);
         $order = Order::with(['customer', 'orderedItems'])->find($id);
 
         if (!$order) {
@@ -27,6 +29,7 @@ class AdminOrderController extends Controller
      */
     public function update(Request $request, $id)
     {
+        info('Updating order with id: ' . $id);
         $order = Order::find($id);
 
         if (!$order) {
@@ -50,6 +53,7 @@ class AdminOrderController extends Controller
      */
     public function destroy($id)
     {
+        info('Deleting order with id: ' . $id);
         $order = Order::find($id);
 
         if (!$order) {
