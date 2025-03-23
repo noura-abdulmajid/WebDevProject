@@ -16,6 +16,9 @@ return new class extends Migration
             $table->text('review_email');
             $table->longText('review');
             $table->integer('rating');
+            $table->boolean('is_read')->default(false);
+            $table->boolean('is_replied')->default(false);
+            $table->text('reply')->nullable();
             $table->timestamps();
         });
     }

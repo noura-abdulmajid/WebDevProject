@@ -17,6 +17,9 @@ class SiteReview extends Model
         'review_email',
         'review',
         'rating',
+        'is_read',
+        'is_replied',
+        'reply'
     ];
 
     public $timestamps = true;

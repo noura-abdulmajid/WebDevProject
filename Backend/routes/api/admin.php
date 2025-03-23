@@ -40,8 +40,11 @@ Route::prefix('admin')->group(function () {
     Route::delete('/delete_product/{id}', [AdminProductController::class, 'deleteProduct'])->name('admin.user.deleteProduct');
     Route::post('/upload_image', [AdminProductController::class, 'uploadImage'])->name('admin.user.uploadImage');
 
-    //
+    //SiteReview
     Route::get('/site_review', [AdminSiteReviewController::class, 'getSiteReview'])->name('admin.user.getSiteReview');
+    Route::put('/site-reviews/{id}/mark-as-read', [AdminSiteReviewController::class, 'markAsRead'])->name('admin.user.markAsRead');
+    Route::put('/site-reviews/{id}/mark-as-replied', [AdminSiteReviewController::class, 'markAsReplied'])->name('admin.user.markAsReplied');
+    Route::patch('/site-reviews/reply/{id}', [AdminSiteReviewController::class, 'sendReply'])->name('admin.user.sendReply');
 
     //Test
     Route::get('test', function () {
