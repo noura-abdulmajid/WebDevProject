@@ -1,4 +1,4 @@
-/* 🌟 Centering Wrapper */
+/* Centering Wrapper */
 .login-wrapper {
   display: flex;
   flex-direction: column;
@@ -10,7 +10,7 @@
   margin-top: 0;
   margin-left: 35%;
 }
-/* 🌟 Login Container */
+/* Login Container */
 .login-container {
   width: 100%;
   padding: 40px;
@@ -25,7 +25,7 @@
 }
 
 
-/* 🌟 Form Groups */
+/* Form Groups */
 .form-group {
   width: 100%;
   text-align: left;
@@ -40,7 +40,7 @@
   margin-bottom: 5px;
 }
 
-/* 🌟 Input Fields */
+/* Input Fields */
 .input-field {
   width: 100%;
   padding: 12px;
@@ -57,7 +57,7 @@
   box-shadow: 0px 0px 6px rgba(52, 152, 219, 0.3);
 }
 
-/* 🌟 Remember Me */
+/* Remember Me */
 .remember-me {
   display: flex;
   align-items: center;
@@ -69,7 +69,7 @@
   margin-right: 8px;
 }
 
-/* 🌟 Login Button */
+/* Login Button */
 .login-button {
   width: 100%;
   padding: 14px;
@@ -90,7 +90,7 @@
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.12);
 }
 
-/* 🌟 Links (Forgot Password & Create Account) */
+/* Links (Forgot Password & Create Account) */
 .login-links {
   display: flex;
   justify-content: space-between;
@@ -111,14 +111,14 @@
   color: var(--button-hover);
 }
 
-/* 🌟 Footer Text */
+/* Footer Text */
 .footer-text {
   font-size: 12px;
   color: var(--secondary-color);
   margin-top: 12px;
 }
 
-/* 🌟 Responsive Design */
+/*  Responsive Design */
 @media (max-width: 768px) {
   .login-wrapper {
     margin-left: 20%;
