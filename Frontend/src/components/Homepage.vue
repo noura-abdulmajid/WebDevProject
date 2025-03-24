@@ -19,16 +19,17 @@
               <li><a href="#">Our Mission</a></li>
             </ul>
           </li>
-          <li><a href="/sustainability">Women's</a></li>
-<!--          <li class="dropdown-parent">-->
-<!--            <a href="#">SHOPPING</a>-->
-<!--            <ul class="dropdown">-->
-<!--              <li><a href="#">New Arrivals</a></li>-->
-<!--              -->
-<!--              <li><a href="#">Men's</a></li>-->
-<!--              <li><a href="#">Children</a></li>-->
-<!--            </ul>-->
-<!--          </li>-->
+          <li><a href="/sustainability">Sustainable Picks</a></li>
+          <!--
+          <li class="dropdown-parent">
+            <a href="#">SHOPPING</a>
+            <ul class="dropdown">
+              <li><a href="#">New Arrivals</a></li>
+              <li><a href="#">Men's</a></li>
+              <li><a href="#">Children</a></li>
+            </ul>
+          </li>
+          -->
           <li class="dropdown-parent">
             <a href="#">CONTACT</a>
             <ul class="dropdown">
@@ -156,6 +157,8 @@ export default {
   name: "DashShoeClub",
   data() {
     return {
+      // Search term for the search bar
+      searchTerm: "",
       // Carousel data
       carouselImages: [
         "https://via.placeholder.com/500x300?text=Carousel+1",
@@ -581,5 +584,4 @@ footer {
   margin-top: auto;
 }
 </style>
-
 
