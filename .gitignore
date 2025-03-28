@@ -38,3 +38,4 @@ Frontend/src/image/.DS_Store
 
 *.iml
 >>>>>>> 10080a938eef1e1f888c085ea3d98a1578afe3f1
+node_modules
