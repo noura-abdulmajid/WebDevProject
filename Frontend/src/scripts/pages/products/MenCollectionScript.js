@@ -2,53 +2,51 @@ import axios from "axios";
 import Cookies from "js-cookie";
 
 export default {
-    name: "App",
+    name: 'MensWear',
     data() {
         return {
-            products: [
-                {
-                    image: "mens brown loafers.jpeg",
-                    name: "White Loafers",
-                    price: "£40",
-                },
-                {
-                    image: "white laced trainers.png",
-                    name: "White Laced Trainers",
-                    price: "£82",
-                },
-                {
-                    image: "https://via.placeholder.com/200",
-                    name: "Cream Heels",
-                    price: "£60",
-                },
-                {
-                    image: "https://via.placeholder.com/200",
-                    name: "Flats",
-                    price: "£25",
-                },
-                {
-                    image: "https://via.placeholder.com/200",
-                    name: "Black Shoes",
-                    price: "£55",
-                },
-                {
-                    image: "https://via.placeholder.com/200",
-                    name: "Red Heels",
-                    price: "£65",
-                },
-                {
-                    image: "https://via.placeholder.com/200",
-                    name: "Sport Sneakers",
-                    price: "£70",
-                },
-                {
-                    image: "https://via.placeholder.com/200",
-                    name: "Brown Loafers",
-                    price: "£50",
-                },
-            ],
             cartCount: 0,
+            showDropdown: false,
+            selectedFilter: '',
+            selectedCategory: '',
+            selectedColor: '',
+            selectedSort: 'recommended',
+            searchTerm: '',
+            selectedProduct: null,
+            selectedSize: '',
+            favourites: [],
+            categories: ['Sneakers', 'Boots', 'Sandals'],
+            colors: ['Red', 'Blue', 'Green', 'Black'],
+            products: []
         };
+    },
+    computed: {
+        filteredProducts() {
+            return this.products.filter(prod => {
+                if (this.selectedCategory && prod.category !== this.selectedCategory) return false;
+                if (this.selectedColor && prod.color !== this.selectedColor) return false;
+                if (this.searchTerm) {
+                    const search = this.searchTerm.toLowerCase();
+                    return (
+                        prod.name.toLowerCase().includes(search) ||
+                        prod.description.toLowerCase().includes(search) ||
+                        prod.color.toLowerCase().includes(search)
+                    );
+                }
+                return true;
+            });
+        },
+        sortedProducts() {
+            let sorted = [...this.filteredProducts];
+            if (this.selectedSort === 'priceDesc') {
+                sorted.sort((a, b) => b.price - a.price);
+            } else if (this.selectedSort === 'priceAsc') {
+                sorted.sort((a, b) => a.price - b.price);
+            } else if (this.selectedSort === 'whatsNew') {
+                sorted.sort((a, b) => new Date(b.dateAdded) - new Date(a.dateAdded));
+            }
+            return sorted;
+        }
     },
     methods: {
         async logMenVisit() {
@@ -69,41 +67,64 @@ export default {
                 console.error(error);
             }
         },
-        getImageURL(image) {
-            return new URL(`../image/${image}`, import.meta.url).href;
-        },
-        addToCart(product) {
-            let cart = JSON.parse(Cookies.get("cart") || "[]");
-
-            const productToAdd = {
-                image: product.image.startsWith("http") ? product.image : this.getImageURL(product.image),
-                name: product.name || "Unknown",
-                description: product.description || "No description",
-                color: product.color || "Default",
-                size: product.size || "Standard",
-                quantity: 1,
-                price: parseFloat(product.price.replace(/[^0-9.]/g, "")) || 0,
-            };
-
-            const existingProduct = cart.find(item => item.name === productToAdd.name);
-            if (existingProduct) {
-                existingProduct.quantity++;
-            } else {
-                cart.push(productToAdd);
-            }
-
-            Cookies.set("cart", JSON.stringify(cart), { expires: 7 });
-
-            this.cartCount = cart.reduce((total, item) => total + item.quantity, 0);
-        },
-
         updateCartCountFromCookie() {
-            const cart = JSON.parse(Cookies.get("cart") || "[]");
+            const cart = JSON.parse(localStorage.getItem("cart") || "[]");
             this.cartCount = cart.reduce((total, item) => total + item.quantity, 0);
         },
+        getImageURL(path) {
+            return path;
+        },
+        openProduct(prod) {
+            this.selectedProduct = prod;
+        },
+        closeModal() {
+            this.selectedProduct = null;
+        },
+        modalAddToCart() {
+            if (!this.selectedProduct.selectedSize || this.selectedProduct.selectedSize === '') {
+                alert("Please select a size before adding to cart.");
+                return;
+            }
+            this.addToCart(this.selectedProduct);
+            this.selectedProduct.selectedSize = '';
+            this.closeModal();
+        },
+        toggleFavourite(product) {
+            product.isFavourite = !product.isFavourite;
+            if (product.isFavourite) {
+                this.favourites.push(product);
+            } else {
+                const index = this.favourites.findIndex(p => p.name === product.name);
+                if (index !== -1) {
+                    this.favourites.splice(index, 1);
+                }
+            }
+        },
+        async fetchProducts() {
+            try {
+                const response = await axios.get("http://localhost:8000/api/DashShoe/products");
+                this.products = response.data
+                    .filter(product => product.gender_target === 'male' || product.gender_target === 'unisex')
+                    .map(product => ({
+                        name: product.p_name,
+                        image: product.photo,
+                        price: parseFloat(product.price),
+                        description: product.description,
+                        sizes: JSON.parse(product.sizes || '[]'),
+                        color: JSON.parse(product.colours || '["Black"]')[0] || 'Black',
+                        category: JSON.parse(product.categories || '["Sneakers"]')[0] || 'Sneakers',
+                        isFavourite: false,
+                        selectedSize: '',
+                        dateAdded: product.created_at
+                    }));
+            } catch (error) {
+                console.error("Failed to fetch products", error);
+            }
+        }
     },
     mounted() {
-        this.logMenVisit();
+        this.fetchProducts();
         this.updateCartCountFromCookie();
-    },
+        this.logMenVisit();
+    }
 };

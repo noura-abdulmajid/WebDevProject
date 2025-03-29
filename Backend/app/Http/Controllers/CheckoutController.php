@@ -23,16 +23,14 @@ class CheckoutController extends Controller
             'customer.surname' => 'required|string|max:255',
             'customer.email' => 'required|email',
             'order.items' => 'required|array|min:1',
-            'order.items.*.name' => 'required|string|max:255',
+            'order.items.*.P_ID' => 'required|exists:products,P_ID',
             'order.items.*.quantity' => 'required|integer|min:1',
-            'order.items.*.price' => 'required|numeric|min:0',
             'order.totalQuantity' => 'required|integer|min:1',
             'order.totalPrice' => 'required|numeric|min:0'
         ]);
 
         if ($validator->fails()) {
             Log::warning('Validation failed', ['errors' => $validator->errors()]);
-
             return response()->json([
                 'message' => 'Validation failed',
                 'errors' => $validator->errors()
@@ -43,10 +41,10 @@ class CheckoutController extends Controller
             Log::info('Validation passed');
             DB::beginTransaction();
 
+            // Get or create customer
             if (Auth::check()) {
                 $userId = Auth::id();
             } else {
-
                 $customer = Customer::where('email_address', $request->input('customer.email'))->first();
 
                 if (!$customer) {
@@ -65,8 +63,9 @@ class CheckoutController extends Controller
                 $userId = $customer->C_ID;
             }
 
+            // Create order
             $order = Order::create([
-                'user_id' => $userId,
+                'C_ID' => $userId,
                 'order_date' => now(),
                 'shipping_address' => $request->input('customer.shippingAddress', "Default Shipping Address"),
                 'subtotal' => $request->input('order.totalPrice'),
@@ -74,25 +73,33 @@ class CheckoutController extends Controller
                 'total_payment' => $request->input('order.totalPrice') + 10.00
             ]);
 
-            Log::info('Order created successfully', ['order_id' => $order->id]);
+            Log::info('Order created successfully', ['order_id' => $order->O_ID]);
 
+            // Create order items
             foreach ($request->input('order.items') as $itemData) {
                 OrderedItem::create([
-                    'order_id' => $order->id,
-                    'name' => $itemData['name'],
-                    'price' => $itemData['price'],
+                    'O_ID' => $order->O_ID,
+                    'P_ID' => $itemData['P_ID'],
                     'quantity' => $itemData['quantity']
                 ]);
 
                 Log::info('Item added to order', ['item_data' => $itemData]);
             }
 
+            // Create shipping record
+            DB::table('shipped')->insert([
+                'O_ID' => $order->O_ID,
+                'delivery_status' => 'pending',
+                'created_at' => now(),
+                'updated_at' => now()
+            ]);
+
             DB::commit();
             Log::info('Transaction committed successfully');
 
             return response()->json([
                 'message' => 'Order placed successfully.',
-                'order_id' => $order->id
+                'order_id' => $order->O_ID
             ], 200);
         } catch (\Exception $e) {
             DB::rollBack();

@@ -1,6 +1,16 @@
 export default {
     baseURL: import.meta.env.VITE_API_BASE_URL,
 
+    products: {
+        getAll: "/DashShoe/products",
+        getAllProducts: "/DashShoe/products",
+        getById: (id) => `/DashShoe/products/${id}`,
+        addToCart: (id) => `/DashShoe/products/${id}/add_to_cart`,
+        saveReview: (id) => `/DashShoe/products/${id}/save`,
+        search: "/DashShoe/products/search",
+        logVisit: "/DashShoe/log-visit"
+    },
+
     auth: {
         register: "/DashShoe/register",
         login: "/DashShoe/login",
@@ -10,15 +20,33 @@ export default {
     },
 
     userProfile: {
-
         profile: "/customer-dashboard",
-        favorites: "/customer-dashboard/profile/favorites",
+        favorites: "/DashShoe/profile/favorites",
         ordersHistory: "/customer-dashboard/profile/orders-history",
 
         /* For API Use URL */
         getProfile: "/DashShoe/profile/getProfile",
         updateProfile: "/DashShoe/profile",
-        getOrdersHistory: "/DashShoe/profile/order",
+        getOrdersHistory: "/DashShoe/profile/orders",
+    },
+
+    favourites: {
+        toggle: "/DashShoe/profile/favorites",
+        getUserFavourites: "/DashShoe/profile/favorites",
+        sync: "/DashShoe/profile/favorites/sync"
+    },
+
+    cart: {
+        addToCart: "/DashShoe/cart/add",
+        getCart: "/DashShoe/cart",
+        updateCart: "/DashShoe/cart/update",
+        removeFromCart: "/DashShoe/cart/remove"
+    },
+
+    refund: {
+        store: "/DashShoe/refunds",
+        index: "/DashShoe/refunds",
+        show: (id) => `/DashShoe/refunds/${id}`,
     },
 
     admin: {

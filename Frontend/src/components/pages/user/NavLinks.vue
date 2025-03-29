@@ -15,8 +15,6 @@
 import {computed} from 'vue';
 import {useRoute} from 'vue-router';
 import NavItem from './NavItem.vue';
-import apiURL from '@/config/apiURL';
-
 
 export default {
   name: 'Navigation',
@@ -29,18 +27,18 @@ export default {
     const navItems = computed(() => [
       {
         imgSrc: '/image/tabler--dashboard.png',
-        tooltip: 'Dashboard',
-        to: apiURL.userProfile.profile,
+        tooltip: 'Profile',
+        to: '/customer-dashboard',
       },
       {
         imgSrc: '/image/iconoir--user-love.png',
         tooltip: 'Favorites',
-        to: apiURL.userProfile.favorites,
+        to: '/customer-dashboard/favorites',
       },
       {
         imgSrc: '/image/lets-icons--order.png',
-        tooltip: 'Orders History',
-        to: apiURL.userProfile.ordersHistory,
+        tooltip: 'Orders',
+        to: '/customer-dashboard/orders',
       },
     ]);
 

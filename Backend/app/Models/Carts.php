@@ -15,6 +15,7 @@ class Cart extends Model
     protected $keyType = 'int';
 
     protected $fillable = [
+        'C_ID',
         'P_ID',
         'size',
         'quantity',

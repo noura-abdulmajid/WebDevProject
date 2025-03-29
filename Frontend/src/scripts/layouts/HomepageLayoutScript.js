@@ -7,6 +7,7 @@ export default {
             lastScrollY: window.scrollY,
             userFirstName: "",
             showDropdown: false,
+            cartCount: 0,
         };
     },
     computed: {
@@ -28,6 +29,10 @@ export default {
         toggleDropdown() {
             this.showDropdown = !this.showDropdown;
         },
+        updateCartCountFromStorage() {
+            const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+            this.cartCount = cart.reduce((total, item) => total + item.quantity, 0);
+        },
         logout() {
             // Clear session
             localStorage.clear();
@@ -38,8 +43,11 @@ export default {
     mounted() {
         window.addEventListener("scroll", this.handleScroll);
         this.userFirstName = localStorage.getItem("user_first_name") || "";
+        this.updateCartCountFromStorage();
+        window.addEventListener("cart-updated", this.updateCartCountFromStorage);
     },
     beforeUnmount() {
         window.removeEventListener("scroll", this.handleScroll);
+        window.removeEventListener("cart-updated", this.updateCartCountFromStorage);
     },
 };

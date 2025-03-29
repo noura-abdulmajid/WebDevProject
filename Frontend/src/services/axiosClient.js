@@ -24,25 +24,30 @@ instance.interceptors.response.use(
     (error) => {
         if (error.response) {
             const status = error.response.status;
+            const message = error.response.data?.message || 'An error occurred';
+            
             switch (status) {
                 case 401:
-                    //alert("Unauthorized! Please log in again.");
-                    //localStorage.removeItem("jwt"); // Clear token
-                    window.location.href = "/Homepage";
+                    localStorage.removeItem("jwt");
+                    window.location.href = "/login";
                     break;
                 case 404:
-                    //alert("Requested resource not found.");
+                    console.error('Resource not found:', message);
                     break;
                 case 422:
-                    //alert("Validation error occurred.");
+                    console.error('Validation error:', message);
                     break;
                 default:
-                    //alert("An unexpected error occurred!");
+                    console.error('Server error:', message);
             }
+            
+            // Throw the error with the message
+            return Promise.reject(new Error(message));
         } else {
-            alert("Network error or server is unreachable!");
+            const message = 'Network error or server is unreachable!';
+            console.error(message);
+            return Promise.reject(new Error(message));
         }
-        return Promise.reject(error);
     }
 );
 

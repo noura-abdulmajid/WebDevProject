@@ -3,6 +3,8 @@
 use App\Http\Controllers\Customer\CustomersController;
 use App\Http\Controllers\Customer\ForgetPasswordController;
 use App\Http\Controllers\Customer\CustomerProfileController;
+use App\Http\Controllers\Customer\RefundController;
+use App\Http\Controllers\Customer\FavoriteController;
 use Illuminate\Support\Facades\Route;
 
 // User Auth
@@ -16,9 +18,21 @@ Route::prefix('profile')->group(function () {
     Route::put('/', [CustomerProfileController::class, 'updateProfile'])->name('profile.update');
 
     // Profile Orders
-    Route::get('/order', [CustomerProfileController::class, 'getOrders'])->name('profile.order.get');
+    Route::get('/orders', [CustomerProfileController::class, 'getOrders'])->name('profile.orders.get');
+
+    // Profile Favorites
+    Route::get('/favorites', [FavoriteController::class, 'index'])->name('profile.favorites.get');
+    Route::post('/favorites/{product}', [FavoriteController::class, 'store'])->name('profile.favorites.store');
+    Route::delete('/favorites/{product}', [FavoriteController::class, 'destroy'])->name('profile.favorites.destroy');
 });
 
 // Forgot password and reset password
 Route::post('forgot-password', [ForgetPasswordController::class, 'forgotPassword'])->name('auth.forgot_password');
 Route::post('reset-password', [ForgetPasswordController::class, 'resetPassword'])->name('auth.reset_password');
+
+// Refund routes
+Route::middleware('auth:api')->group(function () {
+    Route::post('/refunds', [RefundController::class, 'store'])->name('refunds.store');
+    Route::get('/refunds', [RefundController::class, 'index'])->name('refunds.index');
+    Route::get('/refunds/{refund}', [RefundController::class, 'show'])->name('refunds.show');
+});

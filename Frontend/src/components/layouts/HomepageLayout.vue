@@ -23,8 +23,8 @@
         <!-- Search and Icons -->
         <div class="right-section">
           <div class="search-container">
-            <input type="text" v-model="searchQuery" placeholder="Search"/>
-            <button @keyup.enter="searchProducts">🔍</button>
+            <input type="text" v-model="searchQuery" placeholder="Search" @keyup.enter="searchProducts" />
+            <button @click="searchProducts">🔍</button>
           </div>
 
           <div class="icons-container">
@@ -35,20 +35,21 @@
                 {{ userFirstName }}
               </div>
               <div v-if="showDropdown" class="dropdown-menu">
-                <router-link to="apiURL.userProfile.profile">Profile</router-link>
+                <router-link :to="{ name: 'CustomerDashboard' }">Profile</router-link>
                 <a href="#" @click.prevent="logout">Logout</a>
               </div>
             </div>
 
-            <a v-if="!isLoggedIn" href="/login" class="icon">
-              <img src="@/assets/image/icon/login.png" class="icon-img"/>
-            </a>
-            <a href="/favorites" class="icon">
-              <img src="@/assets/image/icon/favourite.png" class="icon-img"/>
-            </a>
-            <a href="/ShoppingCart" class="icon">
-              <img src="@/assets/image/icon/cart.png" class="icon-img"/>
-            </a>
+            <router-link v-if="!isLoggedIn" :to="{ name: 'user-login' }" class="icon">
+              <img src="@/assets/image/icon/login.png" class="icon-img" />
+            </router-link>
+            <router-link :to="{ name: 'ProductFavorites' }" class="icon">
+              <img src="@/assets/image/icon/favourite.png" class="icon-img" />
+            </router-link>
+            <router-link :to="{ name: 'ShoppingCart' }" class="icon cart-wrapper">
+              <img src="@/assets/image/icon/cart.png" class="icon-img" />
+              <span v-if="cartCount > 0" class="cart-count">{{ cartCount }}</span>
+            </router-link>
           </div>
       </div>
       </div>

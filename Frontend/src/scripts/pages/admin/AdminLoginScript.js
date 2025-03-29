@@ -30,6 +30,8 @@ export default {
                 localStorage.setItem("jwt", result.access_token);
                 localStorage.setItem("token_type", result.token_type);
                 localStorage.setItem("admin_info", JSON.stringify(result.admin));
+                localStorage.setItem("isAdmin", "true");
+                localStorage.setItem("admin_role", result.admin.role);
 
                 axiosClient.defaults.headers.common['Authorization'] = `${result.token_type} ${result.access_token}`;
                 this.$router.push({name: "admin-dashboard"});
@@ -40,6 +42,8 @@ export default {
                 localStorage.removeItem("jwt");
                 localStorage.removeItem("token_type");
                 localStorage.removeItem("admin_info");
+                localStorage.removeItem("isAdmin");
+                localStorage.removeItem("admin_role");
 
                 this.$router.push({name: "admin-login"});
 

@@ -47,6 +47,12 @@
             <span v-if="!isSidebarCollapsed">Settings</span>
           </router-link>
         </li>
+        <li v-if="isSuperAdmin">
+          <router-link :to="{ name: 'admin-info' }">
+            <img src="@/assets/image/icon/customer.png" class="sidebar-icon" />
+            <span v-if="!isSidebarCollapsed">Admin Information</span>
+          </router-link>
+        </li>
       </ul>
     </aside>
 
@@ -66,5 +72,60 @@
   </div>
 </template>
 
-<script src="../../scripts/layouts/AdminLayoutScript.js"></script>
+<script setup>
+import { ref, computed, onMounted } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
+
+const router = useRouter();
+const route = useRoute();
+const isSidebarCollapsed = ref(localStorage.getItem("sidebarCollapsed") === "true");
+
+// Sidebar Toggle Function (Saves State)
+const toggleSidebar = () => {
+  isSidebarCollapsed.value = !isSidebarCollapsed.value;
+  localStorage.setItem("sidebarCollapsed", isSidebarCollapsed.value);
+};
+
+// Dynamic Breadcrumbs
+const breadcrumbs = computed(() => {
+  const breadcrumbMappings = {
+    "dashboard": "Dashboard",
+    "customers": "Customers",
+    "orders": "Orders",
+    "payments": "Payments",
+    "shipping": "Shipping",
+    "products": "Products",
+    "settings": "Settings"
+  };
+
+  const paths = route.path.split("/").filter((p) => p);
+  let fullPath = "";
+  return paths.map((segment) => {
+    fullPath += `/${segment}`;
+    return { name: breadcrumbMappings[segment] || segment.charAt(0).toUpperCase() + segment.slice(1), path: fullPath };
+  });
+});
+
+const isSuperAdmin = computed(() => {
+  return localStorage.getItem('admin_role') === 'super_admin';
+});
+
+// Check admin authentication
+const checkAdminAuth = () => {
+  const token = localStorage.getItem("jwt");
+  const isAdmin = localStorage.getItem("isAdmin") === "true";
+  
+  if (!token || !isAdmin) {
+    router.push('/admin/login');
+    return false;
+  }
+  return true;
+};
+
+// Check auth on component mount
+onMounted(() => {
+  checkAdminAuth();
+});
+</script>
+
 <style scoped src="../../styles/layouts/AdminLayoutStyle.css"></style>

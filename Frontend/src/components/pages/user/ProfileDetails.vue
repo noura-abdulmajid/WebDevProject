@@ -87,5 +87,29 @@ export default {
       }
     }
   },
+  mounted() {
+    this.loadUserProfile();
+  }
 };
 </script>
+
+<style scoped>
+.profile-details {
+  background-color: #EDE4DA;
+  min-height: calc(100vh - 100px);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profile-content {
+  width: 100%;
+  max-width: 1000px;
+  background-color: white;
+  border-radius: 10px;
+  padding: 32px;
+  margin-top: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+</style>

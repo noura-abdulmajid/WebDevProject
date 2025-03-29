@@ -48,6 +48,30 @@
     width: auto;
 }
 
+.cart-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.cart-count {
+    position: absolute;
+    top: -5px;
+    right: -10px;
+    background-color: red;
+    color: white;
+    font-size: 12px;
+    padding: 2px 5px;
+    border-radius: 50%;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    line-height: 1;
+}
+
+
 .dropdown-wrapper {
     position: relative;
     cursor: pointer;

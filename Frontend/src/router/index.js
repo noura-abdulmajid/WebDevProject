@@ -34,6 +34,7 @@ import MenCollection from "@/components/pages/products/MenCollection.vue";
 import WomenCollection from "@/components/pages/products/WomenCollection.vue";
 import ShoppingCart from "@/components/pages/cart/ShoppingCart.vue";
 import Checkout from "@/components/pages/cart/Checkout.vue";
+import ProductFavorites from "@/components/pages/cart/Favorite.vue";
 
 // Maintenance Pages
 import Fix from "@/components/pages/maintenance/Fix.vue";
@@ -42,11 +43,13 @@ import Forbidden from "@/components/pages/maintenance/Forbidden.vue";
 // Layouts
 import AdminLayout from "@/components/layouts/AdminLayout.vue";
 import HomepageLayout from "@/components/layouts/HomepageLayout.vue";
+import AdminInfo from "@/components/pages/admin/AdminInfo.vue";
 
 
 // Modals
 import AdminViewCustomerModal from "@/components/modals/AdminViewCustomerModal.vue";
 
+import Refund from '@/components/pages/user/Refund.vue'
 
 const routes = [
     {path: "/", redirect: "/Homepage"},
@@ -65,6 +68,7 @@ const routes = [
             {path: "/Checkout", name: "Checkout", component: Checkout},
             {path: "/contact", component: ContactUs},
             {path: "/site-review", component: SiteReview},
+            {path: "/product-favorites", name: "ProductFavorites", component: ProductFavorites},
 
             // Guest Pages (No authentication required)
             {path: "/login", name: "user-login", component: Login, meta: {guestOnly: true}},
@@ -88,22 +92,35 @@ const routes = [
     // Customer Pages (Require authentication)
     {
         path: "/customer-dashboard",
-        name: "CustomerDashboard",
         component: HomepageLayout,
         meta: {requiresAuth: true, role: "customer"},
-        redirect: "/customer-dashboard/profile",
         children: [
             {
-                path: "profile",
-                name: "Profile",
-                component: ProfileSettings,
+                path: '',
+                name: "CustomerDashboard",
+                component: () => import('@/components/pages/user/ProfileSettings.vue'),
                 children: [
-                    {path: "", name: "ProfileDetails", component: ProfileDetails, meta: {hideFooter: true}},
-                    {path: "favorites", name: "Favorites", component: Favorites, meta: {hideFooter: true}},
-                    {path: "orders-history", name: "OrdersHistory", component: OrdersHistory, meta: {hideFooter: true}},
+                    {
+                        path: '',
+                        name: 'ProfileDetails',
+                        component: () => import('@/components/pages/user/ProfileDetails.vue'),
+                        meta: { hideFooter: true }
+                    },
+                    {
+                        path: 'favorites',
+                        name: 'Favorites',
+                        component: () => import('@/components/pages/user/Favorites.vue'),
+                        meta: { hideFooter: true }
+                    },
+                    {
+                        path: 'orders',
+                        name: 'OrdersHistory',
+                        component: () => import('@/components/pages/user/OrdersHistory.vue'),
+                        meta: { hideFooter: true }
+                    }
                 ]
-            },
-        ],
+            }
+        ]
     },
 
 
@@ -132,12 +149,20 @@ const routes = [
             {path: "refund", name: "admin-refund", component: RefundProcessing},
             {path: "shipping", name: "admin-shipping", component: Shippings},
             {path: "site-reviews", name: "admin-site-reviews", component: SiteReviews},
+            {path: "admin-info", name: "admin-info", component: AdminInfo, meta: {role: "super_admin"}},
         ],
     },
 
     // Forbidden Page
     {path: "/forbidden", component: Forbidden},
     {path: "/fix", component: Fix, meta: {guestOnly: true}},
+
+    {
+        path: '/refund',
+        name: 'Refund',
+        component: Refund,
+        meta: { requiresAuth: true }
+    },
 ];
 
 const router = createRouter({
@@ -160,7 +185,7 @@ router.beforeEach((to, from, next) => {
                 throw new Error("Invalid JWT structure, expected 3 parts.");
             }
 
-            const payload = JSON.parse(atob(tokenParts[1])); // 解碼 payload
+            const payload = JSON.parse(atob(tokenParts[1])); // Decode payload
             console.log("Decoded Payload:", payload);
 
             if (payload.exp * 1000 > Date.now()) {

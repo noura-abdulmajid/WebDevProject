@@ -8,7 +8,7 @@
         <button class="shop-button">Shop Now</button>
       </div>
       <div>
-        <img src="" alt="Illustration">
+        <img src="/image/womens banner.png" alt="Illustration"/>
       </div>
     </div>
 
@@ -58,17 +58,32 @@
           :key="prod.name"
           @click="openProduct(prod)"
       >
-        <img :src="prod.image" :alt="prod.name">
+        <img :src="getImageURL(prod.image)" :alt="prod.name"/>
         <h3>{{ prod.name }}</h3>
         <p class="price">£{{ prod.price }}</p>
+
+        <div class="color-tag">
+          <span
+              v-for="(color, index) in prod.colors"
+              :key="index"
+              class="color-square"
+              :style="{ backgroundColor: color }"
+          ></span>
+        </div>
+
         <select v-model="prod.selectedSize" class="size-select">
           <option value="">Select UK Size</option>
           <option v-for="size in prod.sizes" :key="size" :value="size">
             {{ size }}
           </option>
         </select>
-        <button class="add-cart">Add to Cart</button>
-        <!-- Favourite button with white background and brown heart -->
+        <p>Quantity :</p>
+        <select v-model="prod.selectedQuantity" class="quantity-select">
+          <option v-for="n in 10" :key="n" :value="n">{{ n }}</option>
+        </select>
+
+        <button class="add-cart" @click.stop="handleAddToCart(prod)">Add to Cart</button>
+
         <button class="favourite-button" @click.stop="toggleFavourite(prod)">
           {{ prod.isFavourite ? '♥' : '♡' }}
         </button>
@@ -79,16 +94,34 @@
       <div class="modal-content">
         <button class="close-modal" @click="closeModal">Close</button>
         <h2>{{ selectedProduct.name }}</h2>
-        <img :src="selectedProduct.image" alt="Detail Image" class="modal-image">
+        <img
+            :src="getImageURL(selectedProduct.image)"
+            alt="Detail Image"
+            class="modal-image"
+        />
         <p class="modal-price">£{{ selectedProduct.price }}</p>
+        <div class="color-tag">
+          <span
+              v-for="(color, index) in selectedProduct.colors"
+              :key="index"
+              class="color-square"
+              :style="{ backgroundColor: color }"
+              :class="{ selected: modalSelectedColor === color }"
+              @click.stop="modalSelectedColor = color"
+          ></span>
+        </div>
         <p>{{ selectedProduct.description }}</p>
-        <select v-model="selectedSize" class="size-select" style="margin-top: 10px;">
+        <select v-model="modalSelectedSize" class="size-select" style="margin-top: 10px">
           <option value="">Select UK Size</option>
           <option v-for="size in selectedProduct.sizes" :key="size" :value="size">
             {{ size }}
           </option>
         </select>
-        <button class="add-cart" style="margin-top: 15px;" @click="modalAddToCart">
+        <p>Quantity :</p>
+        <select v-model="modalSelectedQuantity" class="quantity-select" style="margin-top: 10px">
+          <option v-for="n in 10" :key="n" :value="n">{{ n }}</option>
+        </select>
+        <button class="add-cart" style="margin-top: 15px" @click="modalAddToCart">
           Add to Cart
         </button>
       </div>
@@ -97,10 +130,15 @@
 </template>
 
 <script>
+import axios from 'axios';
+import axiosClient from '@/services/axiosClient';
+import apiConfig from '@/config/apiURL';
+
 export default {
   name: 'ChildrensWear',
   data() {
     return {
+      cartCount: 0,
       showDropdown: false,
       selectedFilter: '',
       selectedCategory: '',
@@ -109,60 +147,46 @@ export default {
       searchTerm: '',
       selectedProduct: null,
       selectedSize: '',
+      modalSelectedSize: '',
+      modalSelectedColor: '',
+      modalSelectedQuantity: 1,
       favourites: [],
       categories: ['Sneakers', 'Boots', 'Sandals'],
       colors: ['Red', 'Blue', 'Green', 'Black'],
-      products: [
-        {
-          name: 'Red Sneaker',
-          image: 'path/to/image1.jpg',
-          price: 50,
-          sizes: [5, 6, 7, 8],
-          description: 'A cool red sneaker.',
-          color: 'Red',
-          category: 'Sneakers',
-          isFavourite: false,
-          selectedSize: '',
-          dateAdded: '2025-03-01'
-        },
-        {
-          name: 'Black Boot',
-          image: 'path/to/image2.jpg',
-          price: 80,
-          sizes: [7, 8, 9, 10],
-          description: 'A sturdy black boot.',
-          color: 'Black',
-          category: 'Boots',
-          isFavourite: false,
-          selectedSize: '',
-          dateAdded: '2025-03-05'
-        },
-        {
-          name: 'Blue Sandal',
-          image: 'path/to/image3.jpg',
-          price: 40,
-          sizes: [4, 5, 6, 7],
-          description: 'A comfortable blue sandal.',
-          color: 'Blue',
-          category: 'Sandals',
-          isFavourite: false,
-          selectedSize: '',
-          dateAdded: '2025-03-03'
-        }
-      ]
+      products: []
     }
   },
   computed: {
     filteredProducts() {
+      console.log('Computing filtered products from:', this.products);
       return this.products.filter(prod => {
-        if (this.selectedCategory && prod.category !== this.selectedCategory) return false;
-        if (this.selectedColor && prod.color !== this.selectedColor) return false;
+        // First check if product is valid
+        if (!prod || !prod.name) {
+          console.warn('Invalid product in filter:', prod);
+          return false;
+        }
+
+        // Apply category filter
+        if (this.selectedCategory && prod.category !== this.selectedCategory) {
+          return false;
+        }
+
+        // Apply color filter
+        if (this.selectedColor && (!prod.colors || !prod.colors[0] || prod.colors[0] !== this.selectedColor)) {
+          return false;
+        }
+
+        // Apply search filter
         if (this.searchTerm) {
           const search = this.searchTerm.toLowerCase();
-          return prod.name.toLowerCase().includes(search) ||
-              prod.description.toLowerCase().includes(search) ||
-              prod.color.toLowerCase().includes(search);
+          return (
+            prod.name.toLowerCase().includes(search) ||
+            (prod.description && prod.description.toLowerCase().includes(search)) ||
+            (prod.colors && prod.colors[0] && prod.colors[0].toLowerCase().includes(search))
+          );
         }
+
+        // Gender filter is already applied in fetchProducts
         return true;
       });
     },
@@ -179,33 +203,264 @@ export default {
     }
   },
   methods: {
+    safeParseArray(input) {
+      if (Array.isArray(input)) {
+        return input;
+      }
+      try {
+        return JSON.parse(input);
+      } catch (e) {
+        console.warn("Failed to parse JSON string:", input, e);
+        return [];
+      }
+    },
+    async logChildrenVisit() {
+      try {
+        await axios.post(
+            "http://127.0.0.1:8000/api/DashShoe/log-visit",
+            {
+              page: "ChildrenCollection-page",
+              timestamp: new Date().toISOString(),
+            },
+            {
+              headers: {
+                "Content-Type": "application/json",
+              }
+            }
+        );
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async fetchProducts() {
+      try {
+        console.log('Fetching products...');
+        const response = await axiosClient.get(apiConfig.products.getAll);
+        
+        console.log('Raw response:', response);
+        
+        if (!response || !response.data) {
+          console.error('Invalid response from server');
+          return;
+        }
+
+        // Process products directly from response.data
+        this.products = response.data
+          .filter(product => product.gender_target === 'kids')
+          .map(product => ({
+            P_ID: product.P_ID,
+            name: product.p_name,
+            image: product.photo,
+            price: parseFloat(product.price),
+            description: product.description,
+            sizes: this.safeParseArray(product.sizes),
+            colors: this.safeParseArray(product.colours),
+            category: this.safeParseArray(product.categories),
+            isFavourite: false,
+            selectedSize: '',
+            selectedQuantity: 1,
+            dateAdded: product.created_at,
+            gender_target: product.gender_target
+          }));
+        
+        console.log('Processed products:', this.products);
+        
+        // Update computed properties
+        this.$nextTick(() => {
+          console.log('Filtered products:', this.filteredProducts);
+          console.log('Sorted products:', this.sortedProducts);
+        });
+        
+        await this.loadFavourites();
+      } catch (error) {
+        console.error("Failed to fetch products:", error);
+        if (error.response) {
+          console.error("Error response:", error.response.data);
+          console.error("Error status:", error.response.status);
+          console.error("Error headers:", error.response.headers);
+        }
+        this.products = []; // Set empty array on error
+      }
+    },
     openProduct(prod) {
       this.selectedProduct = prod;
+      if (!this.selectedProduct.selectedQuantity) {
+        this.selectedProduct.selectedQuantity = 1;
+      }
+      this.modalSelectedQuantity = 1;
     },
     closeModal() {
       this.selectedProduct = null;
     },
     modalAddToCart() {
-      alert('Added to cart: ' + this.selectedProduct.name + ' Size: ' + this.selectedSize);
+      if (!this.modalSelectedSize) {
+        alert('Please select a size');
+        return;
+      }
+      this.addToCart(this.selectedProduct, this.modalSelectedQuantity);
       this.closeModal();
     },
-    toggleFavourite(product) {
-      product.isFavourite = !product.isFavourite;
-      // Favourites are only tracked locally in this component.
-      if (product.isFavourite) {
-        this.favourites.push(product);
-      } else {
-        const index = this.favourites.findIndex(p => p.name === product.name);
-        if (index !== -1) {
-          this.favourites.splice(index, 1);
+    async toggleFavourite(product) {
+      if (!product || !product.P_ID) {
+        console.error('Invalid product data');
+        return;
+      }
+
+      try {
+        const isLoggedIn = localStorage.getItem('token');
+        
+        if (isLoggedIn) {
+          if (product.isFavourite) {
+            await axiosClient.delete(apiConfig.userProfile.favorites + '/' + product.P_ID);
+            product.isFavourite = false;
+          } else {
+            await axiosClient.post(apiConfig.userProfile.favorites + '/' + product.P_ID);
+            product.isFavourite = true;
+          }
+        } else {
+          let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+          if (product.isFavourite) {
+            favorites = favorites.filter(fav => fav.P_ID !== product.P_ID);
+            product.isFavourite = false;
+          } else {
+            favorites.push({
+              P_ID: product.P_ID,
+              name: product.name || '',
+              image: product.image || '',
+              price: product.price || 0,
+              description: product.description || '',
+              sizes: product.sizes || [],
+              colors: product.colors || []
+            });
+            product.isFavourite = true;
+          }
+          localStorage.setItem('favorites', JSON.stringify(favorites));
         }
+      } catch (error) {
+        console.error('Error toggling favorite:', error);
+        alert('Failed to update favorites. Please try again later.');
+      }
+    },
+    handleAddToCart(product) {
+      if (!product.selectedSize) {
+        alert("Please select a size before adding to cart.");
+        return;
+      }
+      this.addToCart(product, product.selectedQuantity || 1);
+      if (confirm("Item added successfully.\nClick OK to continue shopping or Cancel to view your cart.")) {
+      } else {
+        this.$router.push("/ShoppingCart");
+      }
+    },
+    addToCart(product, quantity) {
+      let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      const selectedColor =
+          product.selectedColor ||
+          (product.colors && product.colors.length > 0 ? product.colors[0] : '');
+      const existingProduct = cart.find(
+          item => item.name === product.name && item.size === product.selectedSize
+      );
+      if (existingProduct) {
+        existingProduct.quantity += quantity;
+      } else {
+        cart.push({
+          name: product.name,
+          image: product.image,
+          price: product.price,
+          description: product.description,
+          color: selectedColor,
+          size: product.selectedSize || '',
+          quantity: quantity,
+          P_ID: product.P_ID,
+          gender_target: product.gender_target,
+          category: product.category,
+          dateAdded: product.dateAdded
+        });
+      }
+      localStorage.setItem('cart', JSON.stringify(cart));
+      window.dispatchEvent(new Event("cart-updated"));
+      this.cartCount = cart.reduce((total, item) => total + item.quantity, 0);
+    },
+    getImageURL(path) {
+      return path;
+    },
+    async loadFavourites() {
+      try {
+        const token = localStorage.getItem('token');
+        
+        if (token) {
+          try {
+            const response = await axiosClient.get(apiConfig.userProfile.favorites, {
+              headers: {
+                'Authorization': `Bearer ${token}`
+              }
+            });
+            
+            if (response?.data?.favorites) {
+              this.favourites = response.data.favorites;
+              this.products.forEach(product => {
+                if (product && product.P_ID) {
+                  product.isFavourite = this.favourites.some(fav => fav.P_ID === product.P_ID);
+                }
+              });
+            }
+          } catch (error) {
+            console.error('Error loading favourites from backend:', error);
+            this.loadFavouritesFromStorage();
+          }
+        } else {
+          this.loadFavouritesFromStorage();
+        }
+      } catch (error) {
+        console.error('Error in loadFavourites:', error);
+        this.loadFavouritesFromStorage();
+      }
+    },
+    loadFavouritesFromStorage() {
+      try {
+        const savedFavourites = localStorage.getItem('favourites');
+        if (savedFavourites) {
+          this.favourites = JSON.parse(savedFavourites);
+          this.products.forEach(product => {
+            if (product && product.P_ID) {
+              product.isFavourite = this.favourites.some(fav => fav.P_ID === product.P_ID);
+            }
+          });
+        }
+      } catch (error) {
+        console.error('Error loading favourites from storage:', error);
+        this.favourites = [];
+      }
+    },
+    async syncFavouritesToBackend() {
+      try {
+        // Check if user is logged in
+        const userId = localStorage.getItem('user_id');
+        if (!userId) return;
+
+        // For logged-in users: sync to backend
+        await axiosClient.post(apiConfig.favourites.sync, {
+          user_id: userId,
+          favourites: this.favourites
+        });
+      } catch (error) {
+        console.error('Error syncing favourites:', error);
       }
     }
+  },
+  async created() {
+    await this.logChildrenVisit();
+    await this.fetchProducts();
+    this.cartCount = parseInt(localStorage.getItem('cart_count')) || 0;
   }
 }
 </script>
 
 <style scoped>
+#childrensWear {
+  padding-top: 150px;
+}
+
 body {
   font-family: 'Inter', sans-serif;
   margin: 0;
@@ -232,10 +487,6 @@ header {
   align-items: center;
   padding: 20px;
   background-color: #EDE4DA;
-}
-
-#childrensWear {
-  padding-top: 100px;
 }
 
 .logo img {
@@ -288,12 +539,14 @@ nav a {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-bottom: 30px;
 }
 
 .banner h1 {
   font-size: 28px;
   font-weight: bold;
 }
+
 
 .shop-button {
   background: white;
@@ -401,6 +654,14 @@ nav a {
   border-radius: 5px;
 }
 
+.quantity-select {
+  width: 100%;
+  padding: 8px;
+  margin-top: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
 .add-cart {
   background: black;
   color: white;
@@ -481,5 +742,38 @@ nav a {
 .modal-price {
   font-weight: bold;
   margin: 10px 0;
+}
+
+.color-tag {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 5px 0;
+}
+
+.color-square {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.color-square:hover {
+  transform: scale(1.1);
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.color-square.selected {
+  border: 2px solid red;
+}
+
+.banner img {
+  max-width: 800px;
+  height: auto;
+  object-fit: contain;
+  margin-left: 20px;
 }
 </style>

@@ -123,9 +123,12 @@ class ProductsSeeder extends Seeder
             ]);
 
             foreach ($product['sizes'] as $size) {
+                $randomCustomer = DB::table('customers')->inRandomOrder()->first();
+
                 DB::table('carts')->insert([
                     'P_ID' => $P_ID,
                     'size' => $size,
+                    'C_ID' => $randomCustomer->C_ID,
                     'quantity' => 10,
                     'created_at' => Carbon::now(),
                     'updated_at' => Carbon::now(),

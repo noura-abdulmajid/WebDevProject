@@ -1,19 +1,5 @@
 <template>
   <div class="shopping-cart-container">
-    <header>
-      <div class="logo">
-        <img src="/image/logo%20three.png" alt="DASH Shoe Logo" />
-      </div>
-      <nav>
-        <ul>
-          <li><a href="#">HOME</a></li>
-          <li><a href="#">ABOUT</a></li>
-          <li><a href="#">SHOPPING</a></li>
-          <li><a href="#">CONTACT</a></li>
-        </ul>
-      </nav>
-    </header>
-
     <div class="content">
       <div class="cart-left">
         <div v-if="cart.length === 0" class="empty-cart">Your cart is empty.</div>
@@ -27,7 +13,12 @@
             <div class="details">
               <h3>{{ item.name }}</h3>
               <p>{{ item.description }}</p>
-              <p>Color: {{ item.color }}</p>
+              <div class="color-tag">
+                <span
+                    class="color-square"
+                    :style="{ backgroundColor: item.color }">
+                </span>
+              </div>
               <p>Size: {{ item.size }}</p>
               <p>Quantity: {{ item.quantity }}</p>
               <p class="price">£{{ item.price.toFixed(2) }}</p>
@@ -51,7 +42,6 @@
   </div>
 </template>
 <script>
-import Cookies from "js-cookie";
 import axios from "axios";
 
 export default {
@@ -70,8 +60,8 @@ export default {
     },
   },
   methods: {
-    loadCartFromCookies() {
-      this.cart = JSON.parse(Cookies.get("cart") || "[]");
+    loadCartFromStorage() {
+      this.cart = JSON.parse(localStorage.getItem("cart") || "[]");
     },
     async logShoppingVisit() {
       try {
@@ -104,11 +94,13 @@ export default {
       this.updateCart();
     },
     updateCart() {
-      Cookies.set("cart", JSON.stringify(this.cart), { expires: 7 });
+      localStorage.setItem("cart", JSON.stringify(this.cart));
+      window.dispatchEvent(new Event("cart-updated"));
     },
+
   },
   mounted() {
-    this.loadCartFromCookies();
+    this.loadCartFromStorage();
     this.logShoppingVisit();
   },
 };
@@ -116,6 +108,7 @@ export default {
 <style scoped>
 .shopping-cart-container {
   padding: 20px;
+  margin-top: 150px;
 }
 
 header {
@@ -130,6 +123,8 @@ header {
 
 .cart-left {
   width: 65%;
+  max-height: calc(100vh - 150px);
+  overflow-y: auto;
 }
 
 .cart-items {
@@ -244,4 +239,31 @@ header {
   font-weight: bold;
   color: #999;
 }
+
+.color-tag {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 5px 0;
+}
+
+.color-square {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.color-square:hover {
+  transform: scale(1.1);
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.color-code {
+  font-size: 14px;
+  color: #333;
+}
+
 </style>

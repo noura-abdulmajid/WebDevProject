@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Log;
 Route::prefix('DashShoe')->group(function () {
     require base_path('routes/api/customers.php');
     require base_path('routes/api/admin.php');
+    require base_path('routes/api/product.php');
     //Visit
     Route::post('/log-visit', [LogVisitController::class, 'visit'])->name('visit');
     //Checkout
