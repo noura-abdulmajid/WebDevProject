@@ -64,21 +64,27 @@ export default {
         this.error = null;
         
         // Check if user is logged in
-        const userId = localStorage.getItem('user_id');
+        const token = localStorage.getItem('token');
         
-        if (userId) {
+        if (token) {
           // For logged-in users: load from backend
-          const response = await axiosClient.get(apiConfig.favourites.getUserFavourites);
-          this.favorites = response.data.favourites;
+          const response = await axiosClient.get(apiConfig.userProfile.favorites, {
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          });
+          if (response?.data?.favorites) {
+            this.favorites = response.data.favorites;
+          }
         } else {
           // For guests: load from localStorage
-          const savedFavourites = localStorage.getItem('favourites');
-          if (savedFavourites) {
-            this.favorites = JSON.parse(savedFavourites);
+          const savedFavorites = localStorage.getItem('favorites');
+          if (savedFavorites) {
+            this.favorites = JSON.parse(savedFavorites);
           }
         }
       } catch (error) {
-        console.error('Error loading favourites:', error);
+        console.error('Error loading favorites:', error);
         this.error = 'Failed to load favorites. Please try again later.';
       } finally {
         this.loading = false;
@@ -87,24 +93,21 @@ export default {
     async removeFavorite(productId) {
       try {
         // Check if user is logged in
-        const userId = localStorage.getItem('user_id');
-        if (userId) {
+        const token = localStorage.getItem('token');
+        if (token) {
           // For logged-in users: remove from backend
-          await axiosClient.post(apiConfig.favourites.remove, {
-            user_id: userId,
-            product_id: productId
-          });
+          await axiosClient.delete(apiConfig.userProfile.favorites + '/' + productId);
         } else {
           // For guests: remove from localStorage
-          const savedFavourites = JSON.parse(localStorage.getItem('favourites') || '[]');
-          const updatedFavourites = savedFavourites.filter(p => p.P_ID !== productId);
-          localStorage.setItem('favourites', JSON.stringify(updatedFavourites));
+          const savedFavorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+          const updatedFavorites = savedFavorites.filter(p => p.P_ID !== productId);
+          localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
         }
         // Update local state
         this.favorites = this.favorites.filter(p => p.P_ID !== productId);
       } catch (error) {
-        console.error('Error removing from favourites:', error);
-        alert('Failed to remove from favourites. Please try again.');
+        console.error('Error removing from favorites:', error);
+        alert('Failed to remove from favorites. Please try again.');
       }
     },
     increaseQuantity(item) {

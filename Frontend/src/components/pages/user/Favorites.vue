@@ -6,7 +6,7 @@
     <div v-if="favorites.length > 0" class="favorite-list">
       <div
           v-for="item in favorites"
-          :key="item.name"
+          :key="item.P_ID"
           class="favorite-item"
       >
         <img
@@ -18,7 +18,15 @@
         <div class="item-details">
           <h3>{{ item.name }}</h3>
           <p>{{ item.description }}</p>
-          <p>Price: ${{ item.price }}</p>
+          <p>Price: £{{ item.price }}</p>
+          <div class="color-tag">
+            <span
+                v-for="(color, index) in item.colors"
+                :key="index"
+                class="color-square"
+                :style="{ backgroundColor: color }"
+            ></span>
+          </div>
           <button
               @click="removeFromFavorites(item)"
               class="remove-btn"
@@ -44,6 +52,16 @@
             class="modal-image"
         />
         <p class="modal-price">£{{ selectedProduct.price }}</p>
+        <div class="color-tag">
+          <span
+              v-for="(color, index) in selectedProduct.colors"
+              :key="index"
+              class="color-square"
+              :style="{ backgroundColor: color }"
+              :class="{ selected: selectedColor === color }"
+              @click.stop="selectedColor = color"
+          ></span>
+        </div>
         <p>{{ selectedProduct.description }}</p>
         <select class="size-select" v-model="selectedSize">
           <option value="">Select UK Size</option>
@@ -64,6 +82,8 @@
 
 <script>
 import {ref, onMounted} from "vue";
+import axiosClient from '@/services/axiosClient';
+import apiConfig from '@/config/apiURL';
 
 export default {
   name: "Favorites",
@@ -71,24 +91,60 @@ export default {
     const favorites = ref([]);
     const selectedProduct = ref(null);
     const selectedSize = ref("");
+    const selectedColor = ref("");
 
-    const loadFavorites = () => {
-      favorites.value = JSON.parse(localStorage.getItem("favorites")) || [];
+    const loadFavorites = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        if (token) {
+          const response = await axiosClient.get(apiConfig.userProfile.favorites, {
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          });
+          if (response?.data?.favorites) {
+            favorites.value = response.data.favorites;
+          }
+        } else {
+          const savedFavorites = localStorage.getItem('favorites');
+          if (savedFavorites) {
+            favorites.value = JSON.parse(savedFavorites);
+          }
+        }
+      } catch (error) {
+        console.error('Error loading favorites:', error);
+        const savedFavorites = localStorage.getItem('favorites');
+        if (savedFavorites) {
+          favorites.value = JSON.parse(savedFavorites);
+        }
+      }
     };
 
-    const removeFromFavorites = (item) => {
-      favorites.value = favorites.value.filter((fav) => fav.name !== item.name);
-      localStorage.setItem("favorites", JSON.stringify(favorites.value));
+    const removeFromFavorites = async (item) => {
+      try {
+        const token = localStorage.getItem('token');
+        if (token) {
+          await axiosClient.delete(apiConfig.userProfile.favorites + '/' + item.P_ID);
+        } else {
+          favorites.value = favorites.value.filter((fav) => fav.P_ID !== item.P_ID);
+          localStorage.setItem('favorites', JSON.stringify(favorites.value));
+        }
+      } catch (error) {
+        console.error('Error removing from favorites:', error);
+        alert('Failed to remove from favorites. Please try again later.');
+      }
     };
 
     const openModal = (product) => {
       selectedProduct.value = product;
       selectedSize.value = "";
+      selectedColor.value = product.colors && product.colors.length > 0 ? product.colors[0] : "";
     };
 
     const closeModal = () => {
       selectedProduct.value = null;
       selectedSize.value = "";
+      selectedColor.value = "";
     };
 
     const modalAddToCart = () => {
@@ -96,9 +152,38 @@ export default {
         alert("Please select a size!");
         return;
       }
-      alert(
-          `Added "${selectedProduct.value.name}" of size "${selectedSize.value}" to your cart!`
+
+      const product = {
+        ...selectedProduct.value,
+        selectedSize: selectedSize.value,
+        selectedColor: selectedColor.value,
+        selectedQuantity: 1
+      };
+
+      let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      const existingProduct = cart.find(
+        item => item.name === product.name && 
+               item.size === product.selectedSize &&
+               item.color === product.selectedColor
       );
+
+      if (existingProduct) {
+        existingProduct.quantity += 1;
+      } else {
+        cart.push({
+          name: product.name,
+          image: product.image || '',
+          price: product.price || 0,
+          description: product.description || '',
+          color: product.selectedColor,
+          size: product.selectedSize,
+          quantity: 1,
+        });
+      }
+
+      localStorage.setItem('cart', JSON.stringify(cart));
+      window.dispatchEvent(new Event("cart-updated"));
+      alert("Item added to cart successfully!");
       closeModal();
     };
 
@@ -108,6 +193,7 @@ export default {
       favorites,
       selectedProduct,
       selectedSize,
+      selectedColor,
       removeFromFavorites,
       openModal,
       closeModal,
@@ -229,5 +315,31 @@ button.remove-btn:hover {
 .modal-price {
   font-weight: bold;
   margin: 10px 0;
+}
+
+.color-tag {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 5px 0;
+}
+
+.color-square {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.color-square:hover {
+  transform: scale(1.1);
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.color-square.selected {
+  border: 2px solid red;
 }
 </style>

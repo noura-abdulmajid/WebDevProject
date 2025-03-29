@@ -418,7 +418,7 @@ export default {
     },
     loadFavouritesFromStorage() {
       try {
-        const savedFavourites = localStorage.getItem('favourites');
+        const savedFavourites = localStorage.getItem('favorites');
         if (savedFavourites) {
           this.favourites = JSON.parse(savedFavourites);
           this.products.forEach(product => {
