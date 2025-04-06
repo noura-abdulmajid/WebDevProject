@@ -41,10 +41,19 @@ class AdminUserController extends Controller
     public function index()
     {
         try {
+            Log::info('Admin users list request received');
+            
             $admin = $this->validateAdminToken();
             if ($admin instanceof \Illuminate\Http\JsonResponse) {
+                Log::warning('Token validation failed', ['response' => $admin->getData()]);
                 return $admin;
             }
+
+            Log::info('Admin authenticated', [
+                'admin_id' => $admin->A_ID,
+                'username' => $admin->username,
+                'role' => $admin->role
+            ]);
 
             if (!$admin->isSuperAdmin()) {
                 Log::warning('Unauthorized access attempt to admin users list', [
@@ -54,12 +63,14 @@ class AdminUserController extends Controller
                 return response()->json(['error' => 'Unauthorized: Only super admin can access this resource.'], 403);
             }
 
+            Log::info('Fetching admin users list');
             $admins = AdminUser::select('A_ID', 'username', 'email', 'first_name', 'surname', 'date_joined', 'role', 'status')
                 ->get();
 
-            Log::info('Super admin retrieved all admin users', [
+            Log::info('Admin users retrieved successfully', [
                 'admin_id' => $admin->A_ID,
                 'total_admins' => $admins->count(),
+                'admins' => $admins->toArray()
             ]);
 
             return response()->json([
@@ -67,7 +78,9 @@ class AdminUserController extends Controller
                 'data' => $admins,
             ]);
         } catch (\Exception $e) {
-            Log::error('Error retrieving admin users: ' . $e->getMessage());
+            Log::error('Error retrieving admin users: ' . $e->getMessage(), [
+                'trace' => $e->getTraceAsString()
+            ]);
             return response()->json(['error' => 'Internal server error'], 500);
         }
     }

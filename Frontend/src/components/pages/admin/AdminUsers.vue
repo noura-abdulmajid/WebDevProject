@@ -85,7 +85,7 @@
             </div>
             <div class="form-group">
               <label>Password</label>
-              <input v-model="adminForm.password" type="password" :required="showAddAdminModal">
+              <input v-model="adminForm.password" type="password" :required="showAddAdminModal" :placeholder="showAddAdminModal ? 'Required' : 'Leave blank to keep current password'">
             </div>
             <div class="form-group">
               <label>First Name</label>
@@ -121,7 +121,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axiosClient from '@/services/axiosClient.js';
 import { ref, onMounted, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import apiConfig from '@/config/apiURL.js';
@@ -182,12 +182,12 @@ export default {
       error.value = null;
       try {
         console.log('Fetching admin users from:', apiConfig.admin.users);
-        const token = localStorage.getItem('admin_token');
+        const token = localStorage.getItem('jwt');
         if (!token) {
           throw new Error('No admin token found');
         }
         
-        const response = await axios.get(apiConfig.admin.users, {
+        const response = await axiosClient.get(apiConfig.admin.users, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -206,18 +206,18 @@ export default {
         if (error.response) {
           console.error('Error response:', error.response.data);
           if (error.response.status === 401) {
-            error.value = '您的會話已過期，請重新登錄';
+            error.value = 'Your session has expired. Please login again.';
             router.push('/admin-login');
           } else if (error.response.status === 403) {
-            error.value = '您沒有權限訪問此頁面';
+            error.value = 'You do not have permission to access this page.';
           } else {
-            error.value = `獲取管理員用戶失敗: ${error.response.data.message || '未知錯誤'}`;
+            error.value = `Failed to fetch admin users: ${error.response.data.message || 'Unknown error'}`;
           }
         } else if (error.request) {
           console.error('Error request:', error.request);
-          error.value = '無法連接到服務器，請檢查網絡連接';
+          error.value = 'Unable to connect to server. Please check your network connection.';
         } else {
-          error.value = `獲取管理員用戶時發生錯誤: ${error.message}`;
+          error.value = `Error occurred while fetching admin users: ${error.message}`;
         }
       } finally {
         loading.value = false;
@@ -234,7 +234,7 @@ export default {
       }
       loading.value = true;
       try {
-        await axios.post(apiConfig.admin.users, adminForm.value, {
+        await axiosClient.post(apiConfig.admin.users, adminForm.value, {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
           }
@@ -273,9 +273,14 @@ export default {
       }
       loading.value = true;
       try {
-        await axios.put(apiConfig.admin.user(editingAdminId.value), adminForm.value, {
+        const updateData = { ...adminForm.value };
+        if (!updateData.password) {
+          delete updateData.password;
+        }
+        
+        await axiosClient.put(apiConfig.admin.user(editingAdminId.value), updateData, {
           headers: {
-            'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
+            'Authorization': `Bearer ${localStorage.getItem('jwt')}`
           }
         });
         closeModal();
@@ -307,7 +312,7 @@ export default {
 
       loading.value = true;
       try {
-        await axios.delete(apiConfig.admin.user(id), {
+        await axiosClient.delete(apiConfig.admin.user(id), {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
           }

@@ -63,8 +63,8 @@ export default {
         updateUser: (id) => `/DashShoe/admin/update_user/${id}`,
         deleteUser: (id) => `/DashShoe/admin/delete_user/${id}`,
         test: "/DashShoe/admin/test",
-        users: "/DashShoe/admin/users",
-        user: (id) => `/DashShoe/admin/users/${id}`,
+        users: "/DashShoe/admin/admin_users",
+        user: (id) => `/DashShoe/admin/admin_users/${id}`,
     },
 
     adminProducts: {

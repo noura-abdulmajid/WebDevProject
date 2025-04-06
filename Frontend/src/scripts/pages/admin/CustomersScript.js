@@ -88,25 +88,25 @@ export default {
                 if (err.response) {
                     console.error('Error response:', err.response.data);
                     if (err.response.status === 401) {
-                        error.value = '您的會話已過期，請重新登錄';
+                        error.value = 'Your session has expired. Please login again.';
                         router.push('/admin-login');
                     } else if (err.response.status === 403) {
-                        error.value = '您沒有權限訪問此頁面';
+                        error.value = 'You do not have permission to access this page.';
                     } else {
-                        error.value = `獲取客戶列表失敗: ${err.response.data.message || '未知錯誤'}`;
+                        error.value = `Failed to fetch customers: ${err.response.data.message || 'Unknown error'}`;
                     }
                 } else if (err.request) {
                     console.error('Error request:', err.request);
-                    error.value = '無法連接到服務器，請檢查網絡連接';
+                    error.value = 'Unable to connect to server. Please check your network connection.';
                 } else {
-                    error.value = `獲取客戶列表時發生錯誤: ${err.message}`;
+                    error.value = `Error occurred while fetching customers: ${err.message}`;
                 }
                 
                 // Try to load from localStorage as fallback
                 const localData = localStorage.getItem("customers");
                 if (localData) {
                     customers.value = JSON.parse(localData);
-                    error.value = '顯示上次可用的數據';
+                    error.value = 'Showing last available data';
                 } else {
                     customers.value = [];
                 }

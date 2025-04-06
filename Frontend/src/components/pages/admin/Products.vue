@@ -676,7 +676,7 @@ export default {
                 }
                 this.showSuccess("Product updated successfully!");
                 this.closeEditDialog();
-                this.fetchProducts(); // 重新獲取產品列表以確保數據最新
+                this.fetchProducts(); // Refresh product list to ensure data is up to date
               } else {
                 this.showError("Failed to update product!");
               }
