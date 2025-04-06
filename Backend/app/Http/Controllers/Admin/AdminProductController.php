@@ -74,7 +74,7 @@ class AdminProductController extends Controller
         ];
 
         // Store in cache
-        Cache::tags(['products'])->put($cacheKey, $responseData, self::CACHE_DURATION);
+        Cache::put($cacheKey, $responseData, self::CACHE_DURATION);
 
         Log::info('Products retrieved from database and cached');
 
