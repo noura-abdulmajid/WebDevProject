@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\AdminProductController;
 use App\Http\Controllers\Admin\AdminSiteReviewController;
 use App\Http\Controllers\Admin\AdminCustomerController;
 use App\Http\Controllers\Admin\AdminOrderController;
+use App\Http\Controllers\Admin\AdminUserController;
 
 
 // Admin routes
@@ -50,4 +51,10 @@ Route::prefix('admin')->group(function () {
     Route::get('test', function () {
         return response()->json(['message' => 'Admin Test Route Works!']);
     })->name('admin.test');
+
+    //Admin Users
+    Route::get('/admin_users', [AdminUserController::class, 'index'])->name('admin.users.index');
+    Route::post('/admin_users', [AdminUserController::class, 'store'])->name('admin.users.store');
+    Route::put('/admin_users/{id}', [AdminUserController::class, 'update'])->name('admin.users.update');
+    Route::delete('/admin_users/{id}', [AdminUserController::class, 'destroy'])->name('admin.users.destroy');
 });

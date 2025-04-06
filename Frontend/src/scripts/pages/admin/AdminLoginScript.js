@@ -37,16 +37,22 @@ export default {
                 this.$router.push({name: "admin-dashboard"});
             } catch (err) {
                 console.error("Login failed:", err.message || err);
-                alert(err?.response?.data?.message || "Please try again! Login failed.");
+                this.error = err?.response?.data?.message || "Please try again! Login failed.";
 
+                // Clear all local storage data
                 localStorage.removeItem("jwt");
                 localStorage.removeItem("token_type");
                 localStorage.removeItem("admin_info");
                 localStorage.removeItem("isAdmin");
                 localStorage.removeItem("admin_role");
 
-                this.$router.push({name: "admin-login"});
+                // Clear axios authorization header
+                delete axiosClient.defaults.headers.common['Authorization'];
 
+                // Ensure we stay on the login page
+                if (this.$route.name !== 'admin-login') {
+                    this.$router.push({name: "admin-login"});
+                }
             } finally {
                 this.loading = false;
             }

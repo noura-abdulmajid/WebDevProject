@@ -34,7 +34,7 @@ abstract class Controller
     //Check the Admin Role
     protected function hasAdminRole($admin)
     {
-        return in_array(optional($admin)->role, [AdminUser::ROLE_ADMIN, AdminUser::ROLE_SUPER_ADMIN]);
+        return in_array(optional($admin)->role, [AdminUser::ROLE_SUPER_ADMIN, AdminUser::ROLE_EDITOR, AdminUser::ROLE_MODERATOR]);
     }
     protected function validateCustomerToken()
     {

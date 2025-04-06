@@ -53,6 +53,12 @@
             <span v-if="!isSidebarCollapsed">Admin Information</span>
           </router-link>
         </li>
+        <li v-if="isSuperAdmin">
+          <router-link :to="{ name: 'admin-users' }">
+            <img src="@/assets/image/icon/customer.png" class="sidebar-icon" />
+            <span v-if="!isSidebarCollapsed">Admin Users</span>
+          </router-link>
+        </li>
       </ul>
     </aside>
 

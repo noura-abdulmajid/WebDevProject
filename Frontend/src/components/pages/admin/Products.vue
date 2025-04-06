@@ -12,31 +12,31 @@
       <!-- Total Products Card -->
       <div class="category-card" @click="showProducts('all')">
         <h2>Total Products</h2>
-        <p>{{ products.length }} items</p>
+        <p>{{ totalProducts }} items</p>
       </div>
 
       <!-- Male Products Card -->
       <div class="category-card" @click="showProducts('male')">
         <h2>Male</h2>
-        <p>{{ maleProductsCount }} items</p>
+        <p>{{ maleCount }} items</p>
       </div>
 
       <!-- Female Products Card -->
       <div class="category-card" @click="showProducts('female')">
         <h2>Female</h2>
-        <p>{{ femaleProductsCount }} items</p>
+        <p>{{ femaleCount }} items</p>
       </div>
 
       <!-- Kids Products Card -->
       <div class="category-card" @click="showProducts('kids')">
         <h2>Kids</h2>
-        <p>{{ kidsProductsCount }} items</p>
+        <p>{{ kidsCount }} items</p>
       </div>
 
       <!-- Unisex Products Card -->
       <div class="category-card" @click="showProducts('unisex')">
         <h2>Unisex</h2>
-        <p>{{ unisexProductsCount }} items</p>
+        <p>{{ unisexCount }} items</p>
       </div>
     </div>
 
@@ -54,7 +54,7 @@
             :key="product.P_ID"
             class="product-card"
         >
-          <img :src="product.photo" alt="Product Image" class="product-card__image"/>
+          <img :src="getFullImageUrl(product.photo)" alt="Product Image" class="product-card__image"/>
           <div class="product-card__content">
 
             <!-- Product Name and Description -->
@@ -157,7 +157,7 @@
               <label>
                 Product Image:
                 <div class="image-edit-container">
-                  <img :src="editProductData.photo" alt="Product Image" class="editable-image"/>
+                  <img :src="getFullImageUrl(editProductData.photo)" alt="Product Image" class="editable-image"/>
                   <input type="file" @change="uploadImage" accept="image/*" class="upload-input"/>
                 </div>
               </label>
@@ -290,6 +290,13 @@
           </div>
         </div>
       </div>
+
+      <!-- Pagination -->
+      <div class="pagination">
+        <button @click="changePage(currentPage - 1)" :disabled="currentPage === 1" class="styled-pagination-button">Previous</button>
+        <span>Page {{ currentPage }} of {{ lastPage }}</span>
+        <button @click="changePage(currentPage + 1)" :disabled="currentPage === lastPage" class="styled-pagination-button">Next</button>
+      </div>
     </div>
 
     <!-- No Products Found -->
@@ -316,6 +323,14 @@ export default {
       activeDialog: null,
       deletionInProgress: false,
       isAddingProduct: false,
+      currentPage: 1,
+      perPage: 10,
+      totalProducts: 0,
+      lastPage: 1,
+      maleCount: 0,
+      femaleCount: 0,
+      kidsCount: 0,
+      unisexCount: 0,
       editProductData: {
         p_name: "",
         description: "",
@@ -325,12 +340,9 @@ export default {
         colours: [],
         overall_stock_status: "in_stock",
       },
-
-
     };
   },
   computed: {
-
     maleProductsCount() {
       return this.products.filter((product) => product.gender_target === "male").length;
     },
@@ -343,7 +355,6 @@ export default {
     unisexProductsCount() {
       return this.products.filter((product) => product.gender_target === "unisex").length;
     },
-
     filteredProducts() {
       if (this.selectedCategory === "all") {
         return this.products;
@@ -353,8 +364,9 @@ export default {
   },
   methods: {
     fetchProducts() {
+      this.loading = true;
       axios
-          .get("http://localhost:8000/api/DashShoe/admin/get_products")
+          .get(`http://localhost:8000/api/DashShoe/admin/get_products?page=${this.currentPage}&per_page=${this.perPage}`)
           .then((response) => {
             console.log(response.data);
             this.products = response.data.products.map((product) => {
@@ -395,6 +407,19 @@ export default {
               };
             });
 
+            if (response.data.pagination) {
+              this.totalProducts = response.data.pagination.total;
+              this.lastPage = response.data.pagination.last_page;
+            }
+
+            // Update gender counts
+            if (response.data.gender_counts) {
+              this.maleCount = response.data.gender_counts['male'] || 0;
+              this.femaleCount = response.data.gender_counts['female'] || 0;
+              this.kidsCount = response.data.gender_counts['kids'] || 0;
+              this.unisexCount = response.data.gender_counts['unisex'] || 0;
+            }
+
             this.loading = false;
           })
           .catch((error) => {
@@ -409,38 +434,71 @@ export default {
     addColor() {
       this.editProductData.colours.push("#000000");
     },
-
     goBack() {
       this.view = "summary";
       this.selectedCategory = null;
     },
+    getFullImageUrl(photo) {
+      if (!photo) return '';
+      if (photo.startsWith('http')) {
+        return photo;
+      }
+      if (photo.startsWith('/storage')) {
+        return photo;
+      }
+      if (photo.startsWith('storage')) {
+        return '/' + photo;
+      }
+      return '/storage/' + photo;
+    },
     uploadImage(event) {
       const file = event.target.files[0];
       if (!file) {
-        alert("Please select a file!");
+        this.showError("Please select a file!");
+        return;
+      }
+
+      if (file.size > 2 * 1024 * 1024) {
+        this.showError("File size cannot exceed 2MB!");
+        return;
+      }
+
+      const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif'];
+      if (!allowedTypes.includes(file.type)) {
+        this.showError("Only JPEG, PNG, JPG or GIF files are allowed!");
         return;
       }
 
       const formData = new FormData();
       formData.append("image", file);
 
+      this.loading = true;
+      
       axios.post("http://localhost:8000/api/DashShoe/admin/upload_image", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       })
-          .then((response) => {
-            if (response.data && response.data.image_url) {
-              this.editProductData.photo = response.data.image_url;
-              alert("Image uploaded successfully!");
-            } else {
-              alert("Image upload failed!");
-            }
-          })
-          .catch((error) => {
-            console.error("Image upload failed:", error);
-            alert("An error occurred during the upload process. Please try again.");
-          });
+      .then((response) => {
+        if (response.data && response.data.image_url) {
+          this.editProductData.photo = response.data.image_url;
+          this.showSuccess("Image uploaded successfully!");
+          
+          // If it's a new product, save immediately
+          if (this.isAddingProduct) {
+            this.saveProductEdit();
+          }
+        } else {
+          this.showError("Image upload failed!");
+        }
+      })
+      .catch((error) => {
+        console.error("Image upload failed:", error);
+        this.showError(error.response?.data?.message || "An error occurred during upload. Please try again.");
+      })
+      .finally(() => {
+        this.loading = false;
+      });
     },
     getNextProductId() {
       if (this.products && this.products.length > 0) {
@@ -487,8 +545,36 @@ export default {
       this.editProductData.categories.splice(index, 1);
     },
     updateColor(event, index) {
-
-      this.$set(this.editProductData.colours, index, event.target.value);
+      const oldColor = this.editProductData.colours[index];
+      const newColor = event.target.value;
+      
+      // Update color in the colours array
+      this.editProductData.colours = [
+        ...this.editProductData.colours.slice(0, index),
+        newColor,
+        ...this.editProductData.colours.slice(index + 1)
+      ];
+      
+      // Update related inventory data
+      this.editProductData.inventory = this.editProductData.inventory.map(item => {
+        if (item.color === oldColor) {
+          return {
+            ...item,
+            color: newColor
+          };
+        }
+        return item;
+      });
+      
+      // Force Vue to update the view
+      this.$forceUpdate();
+      
+      console.log('Color updated:', {
+        oldColor,
+        newColor,
+        colours: this.editProductData.colours,
+        inventory: this.editProductData.inventory
+      });
     },
     removeColor(index) {
       if (confirm("Are you sure you want to delete this colour and the associated inventory data?？")) {
@@ -503,8 +589,6 @@ export default {
         alert(`The colour ${removedColor} and the associated inventory data have been successfully deleted.`);
       }
     },
-
-
     getInventoryByColor(color) {
       return this.editProductData.inventory.filter(
           (item) => item.color?.toLowerCase() === color?.toLowerCase()
@@ -533,8 +617,6 @@ export default {
       );
       alert("Inventory item removed successfully.");
     },
-
-
     showStockDialog(color, inventory) {
       this.activeDialog = 'stockDialog';
       this.selectedColor = color;
@@ -546,23 +628,35 @@ export default {
       this.activeDialog = null;
       this.selectedColor = null;
       this.filteredInventory = [];
-    }
-    ,
+    },
     ensureInventoryHasPID() {
       this.editProductData.inventory = this.editProductData.inventory.map((item) => ({
         ...item,
         P_ID: this.editProductData.P_ID
       }));
-    }
-    ,
+    },
     saveProductEdit() {
       this.ensureInventoryHasPID();
 
       if (this.isAddingProduct) {
-
         const newProduct = {...this.editProductData, P_ID: this.getNextProductId()};
-        this.products.push(newProduct);
-        alert("Product added successfully!");
+        
+        // 先保存到後端
+        axios.post("http://localhost:8000/api/DashShoe/admin/add_product", newProduct)
+            .then((response) => {
+              if (response.data && response.data.product) {
+                this.products.push(response.data.product);
+                this.showSuccess("Product added successfully!");
+                this.closeEditDialog();
+                this.fetchProducts(); // 重新獲取產品列表以確保數據最新
+              } else {
+                this.showError("Failed to add product!");
+              }
+            })
+            .catch((error) => {
+              console.error("Error adding product:", error);
+              this.showError("Failed to add product. Please try again.");
+            });
       } else {
         const productData = {
           ...this.editProductData,
@@ -573,23 +667,26 @@ export default {
 
         axios.put(url, productData)
             .then((response) => {
-              const productIndex = this.products.findIndex(
-                  (prod) => prod.P_ID === this.editProductData.P_ID
-              );
-              if (productIndex !== -1) {
-                this.products[productIndex] = {...this.editProductData};
+              if (response.data && response.data.product) {
+                const productIndex = this.products.findIndex(
+                    (prod) => prod.P_ID === this.editProductData.P_ID
+                );
+                if (productIndex !== -1) {
+                  this.products[productIndex] = response.data.product;
+                }
+                this.showSuccess("Product updated successfully!");
+                this.closeEditDialog();
+                this.fetchProducts(); // 重新獲取產品列表以確保數據最新
+              } else {
+                this.showError("Failed to update product!");
               }
-              alert("Product updated successfully!");
-              this.closeEditDialog();
             })
             .catch((error) => {
               console.error("Error updating product:", error);
-              alert("Failed to update product. Please try again.");
+              this.showError("Failed to update product. Please try again.");
             });
       }
-
     },
-
     deleteProduct(productId) {
       if (confirm("Are you sure you want to delete this product?")) {
         axios
@@ -615,9 +712,24 @@ export default {
         "stock-status--discontinued": status === "discontinued",
         "stock-status": true,
       };
-    }
-    ,
-
+    },
+    showError(message) {
+      alert(message);
+    },
+    showSuccess(message) {
+      alert(message);
+    },
+    changePage(page) {
+      if (page >= 1 && page <= this.lastPage) {
+        this.currentPage = page;
+        this.fetchProducts();
+      }
+    },
+    changePerPage(value) {
+      this.perPage = value;
+      this.currentPage = 1;
+      this.fetchProducts();
+    },
   },
   mounted() {
     this.fetchProducts();
@@ -831,7 +943,6 @@ h1 {
   text-transform: capitalize;
 }
 
-
 .stock-status--in-stock {
   color: #10b981;
 }
@@ -872,7 +983,6 @@ h1 {
   margin-bottom: 20px;
   color: #333;
 }
-
 
 .dialog-box label {
   display: block;
@@ -1133,6 +1243,35 @@ h1 {
 
 .editable-image:hover {
   transform: scale(1.05);
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.styled-pagination-button {
+  background-color: #ffffff;
+  color: #333;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+  margin: 0 5px;
+}
+
+.styled-pagination-button:hover {
+  background-color: #f5f5f5;
+  transform: translateY(-2px);
+}
+
+.styled-pagination-button:disabled {
+  background-color: #f3f4f6;
+  cursor: not-allowed;
 }
 
 </style>

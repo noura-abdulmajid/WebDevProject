@@ -43,31 +43,73 @@ export default {
             loading.value = true;
             error.value = null;
             try {
+                console.log('Fetching customers from:', apiConfig.admin.customers);
+                const token = localStorage.getItem('admin_token');
+                if (!token) {
+                    throw new Error('No admin token found');
+                }
+                
                 const response = await axiosClient.get(apiConfig.admin.customers, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    },
                     params: {search: searchQuery.value},
                 });
-
-                customers.value = (response.data.customers || []).map((customer) => {
-                    const orders = customer.orders_summary || {};
-                    return {
-                        id: customer.C_ID,
-                        ...customer,
-                        orders: {
-                            ongoing: Number(orders.ongoing) || 0,
-                            completed: Number(orders.completed) || 0,
-                            total_spent: Number(orders.total_spent) || 0,
-                            total_orders:
-                                (Number(orders.ongoing) || 0) + (Number(orders.completed) || 0),
-                        },
-                    };
-                });
-                // Save fetched customers to localStorage
-                localStorage.setItem("customers", JSON.stringify(customers.value));
+                
+                console.log('Customers response:', response.data);
+                
+                if (response.data && response.data.customers) {
+                    customers.value = response.data.customers.map((customer) => {
+                        const orders = customer.orders_summary || {};
+                        return {
+                            id: customer.C_ID,
+                            first_name: customer.first_name,
+                            surname: customer.surname,
+                            email_address: customer.email_address,
+                            tel_no: customer.tel_no,
+                            shipping_address: customer.shipping_address,
+                            billing_address: customer.billing_address,
+                            orders: {
+                                ongoing: Number(orders.ongoing) || 0,
+                                completed: Number(orders.completed) || 0,
+                                total_spent: Number(orders.total_spent) || 0,
+                                total_orders:
+                                    (Number(orders.ongoing) || 0) + (Number(orders.completed) || 0),
+                            },
+                        };
+                    });
+                    // Save fetched customers to localStorage
+                    localStorage.setItem("customers", JSON.stringify(customers.value));
+                } else {
+                    throw new Error('Invalid response format');
+                }
             } catch (err) {
-                error.value = "Failed to load customers. Displaying last available data.";
-                console.error("Error fetching customers:", err);
+                console.error('Error fetching customers:', err);
+                if (err.response) {
+                    console.error('Error response:', err.response.data);
+                    if (err.response.status === 401) {
+                        error.value = '您的會話已過期，請重新登錄';
+                        router.push('/admin-login');
+                    } else if (err.response.status === 403) {
+                        error.value = '您沒有權限訪問此頁面';
+                    } else {
+                        error.value = `獲取客戶列表失敗: ${err.response.data.message || '未知錯誤'}`;
+                    }
+                } else if (err.request) {
+                    console.error('Error request:', err.request);
+                    error.value = '無法連接到服務器，請檢查網絡連接';
+                } else {
+                    error.value = `獲取客戶列表時發生錯誤: ${err.message}`;
+                }
+                
+                // Try to load from localStorage as fallback
                 const localData = localStorage.getItem("customers");
-                customers.value = localData ? JSON.parse(localData) : [];
+                if (localData) {
+                    customers.value = JSON.parse(localData);
+                    error.value = '顯示上次可用的數據';
+                } else {
+                    customers.value = [];
+                }
             } finally {
                 loading.value = false;
             }

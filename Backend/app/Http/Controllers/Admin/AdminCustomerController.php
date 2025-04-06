@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Log;
 class AdminCustomerController extends Controller
 {
 
-    public function getAllUsers(Request $request)
+    public function index(Request $request)
     {
         $admin = $this->validateAdminToken();
         if ($admin instanceof \Illuminate\Http\JsonResponse) {
@@ -78,6 +78,7 @@ class AdminCustomerController extends Controller
             'customers' => $users
         ], 200);
     }
+
     public function deleteUser($id)
     {
         $admin = $this->validateAdminToken();
@@ -140,8 +141,16 @@ class AdminCustomerController extends Controller
      */
     public function show($id)
     {
-        log::info('Customer Retrieved Successfully');
-        // Use the provided ID to fetch the customer with their associated orders
+        $admin = $this->validateAdminToken();
+        if ($admin instanceof \Illuminate\Http\JsonResponse) {
+            return $admin;
+        }
+
+        if (!$this->hasAdminRole($admin)) {
+            return response()->json(['error' => 'Unauthorized: You do not have the required admin role.'], 403);
+        }
+
+        Log::info('Retrieving customer details', ['customer_id' => $id]);
         $customer = Customer::with('orders.orderedItems')->find($id);
 
         if (!$customer) {
@@ -164,44 +173,62 @@ class AdminCustomerController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $admin = $this->validateAdminToken();
+        if ($admin instanceof \Illuminate\Http\JsonResponse) {
+            return $admin;
+        }
+
+        if (!$this->hasAdminRole($admin)) {
+            return response()->json(['error' => 'Unauthorized: You do not have the required admin role.'], 403);
+        }
+
         Log::info('Received update request for customer', [
             'C_ID' => $id,
             'request_data' => $request->all(),
         ]);
 
         $customer = Customer::find($id);
-
         if (!$customer) {
             return response()->json(['message' => 'Customer not found'], 404);
         }
 
-        $request->validate([
+        $validatedData = $request->validate([
             'first_name' => 'required|string|max:50',
             'surname' => 'required|string|max:50',
-            'email_address' => 'required|email',
+            'email_address' => 'required|email|unique:customers,email_address,' . $customer->C_ID,
             'tel_no' => 'nullable|string|max:20',
             'shipping_address' => 'nullable|string|max:255',
             'billing_address' => 'nullable|string|max:255',
         ]);
 
-        $customer->update($request->only([
-            'first_name',
-            'surname',
-            'email_address',
-            'tel_no',
-            'shipping_address',
-            'billing_address',
-        ]));
+        $customer->update($validatedData);
 
-        return response()->json(['message' => 'Customer updated successfully']);
+        Log::info('Admin updated customer successfully', [
+            'admin_id' => $admin->id,
+            'customer_id' => $id,
+        ]);
+
+        return response()->json([
+            'message' => 'Customer updated successfully.',
+            'customer' => $customer,
+        ], 200);
     }
-
 
     /**
      * Remove the specified customer from storage.
      */
     public function destroy($id)
     {
+        $admin = $this->validateAdminToken();
+        if ($admin instanceof \Illuminate\Http\JsonResponse) {
+            return $admin;
+        }
+
+        if (!$this->hasAdminRole($admin)) {
+            return response()->json(['error' => 'Unauthorized: You do not have the required admin role.'], 403);
+        }
+
+        Log::info('Deleting customer', ['customer_id' => $id]);
         $customer = Customer::find($id);
 
         if (!$customer) {
@@ -210,6 +237,11 @@ class AdminCustomerController extends Controller
 
         $customer->delete();
 
-        return response()->json(['message' => 'Customer deleted successfully']);
+        Log::info('Admin deleted customer successfully', [
+            'admin_id' => $admin->id,
+            'customer_id' => $id,
+        ]);
+
+        return response()->json(['message' => 'Customer deleted successfully'], 200);
     }
 }

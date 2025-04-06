@@ -156,3 +156,4 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
    CACHE_STORE=database
    ```
 
+6.php artisan storage:link
