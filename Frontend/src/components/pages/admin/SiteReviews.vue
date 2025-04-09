@@ -47,7 +47,7 @@
         <div class="reviews-grid">
           <article v-for="review in paginatedReviews" :key="review.SR_ID" class="review-card">
             <div class="review-header">
-              <div>
+              <div class="review-header-left">
                 <h2 class="review-title">{{ review.title }}</h2>
                 <p class="review-date">{{ formatDate(review.date) }}</p>
               </div>
@@ -297,31 +297,30 @@ onMounted(() => {
 }
 
 .dashboard-title {
-  font-size: 32px;
-  font-weight: bold;
+  font-size: 34px;
+  font-weight: 700;
   color: #2B3674;
-  margin-bottom: 32px;
+  margin-bottom: 40px;
   text-align: center;
 }
 
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 24px;
   margin-bottom: 32px;
-}
-
-@media (max-width: 640px) {
-  .stats-grid {
-    grid-template-columns: 1fr;
-  }
 }
 
 .stat-card {
   background-color: white;
   border-radius: 12px;
-  padding: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-3px);
 }
 
 .stat-content {
@@ -331,8 +330,8 @@ onMounted(() => {
 }
 
 .stat-icon {
-  width: 30px;
-  height: 30px;
+  width: 40px;
+  height: 40px;
   border-radius: 8px;
   background-color: #E9EDF7;
   display: flex;
@@ -373,11 +372,11 @@ onMounted(() => {
   border-radius: 8px;
   font-size: 14px;
   font-weight: 500;
-  transition: all 0.3s ease;
   background-color: white;
   color: #2B3674;
   border: none;
   cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .category-button.active {
@@ -399,7 +398,15 @@ onMounted(() => {
 .review-list-container {
   max-height: 400px;
   overflow-y: auto;
-  margin-bottom: 16px;
+  padding-bottom: 100px;
+}
+
+.review-list-container::-webkit-scrollbar {
+  width: 8px;
+}
+.review-list-container::-webkit-scrollbar-thumb {
+  background-color: #CBD5E1;
+  border-radius: 8px;
 }
 
 .reviews-grid {
@@ -411,16 +418,22 @@ onMounted(() => {
 .review-card {
   background-color: white;
   border-radius: 16px;
-  padding: 24px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 28px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.review-card:hover {
+  transform: translateY(-4px);
 }
 
 .review-header {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   gap: 16px;
   margin-bottom: 16px;
+  flex-wrap: wrap;
 }
 
 .review-title {
@@ -438,6 +451,7 @@ onMounted(() => {
 .status-badges {
   display: flex;
   gap: 8px;
+  flex-shrink: 0;
 }
 
 .status-badge {
@@ -445,6 +459,12 @@ onMounted(() => {
   border-radius: 20px;
   font-size: 12px;
   font-weight: 500;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.status-badge:hover {
+  transform: scale(1.05);
 }
 
 .status-badge.read {
@@ -471,6 +491,7 @@ onMounted(() => {
   font-size: 16px;
   color: #2B3674;
   margin-bottom: 16px;
+  line-height: 1.6;
 }
 
 .review-reply {
@@ -557,3 +578,4 @@ onMounted(() => {
   color: #2B3674;
 }
 </style>
+

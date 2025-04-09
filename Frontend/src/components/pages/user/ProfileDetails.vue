@@ -96,20 +96,39 @@ export default {
 <style scoped>
 .profile-details {
   background-color: #EDE4DA;
-  min-height: calc(100vh - 100px);
-  padding: 20px;
+  min-height: 100vh;
+  padding: 40px 20px;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  justify-content: center;
+  align-items: flex-start;
+  font-family: 'Inter', sans-serif;
 }
 
 .profile-content {
   width: 100%;
-  max-width: 1000px;
-  background-color: white;
-  border-radius: 10px;
-  padding: 32px;
-  margin-top: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  max-width: 960px;
+  background-color: #fff;
+  border-radius: 16px;
+  padding: 40px;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
 }
+
+@media (max-width: 768px) {
+  .profile-content {
+    padding: 24px;
+    border-radius: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-details {
+    padding: 24px 12px;
+  }
+
+  .profile-content {
+    padding: 20px;
+  }
+}
+
 </style>

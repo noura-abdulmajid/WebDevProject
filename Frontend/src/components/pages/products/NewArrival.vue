@@ -1,6 +1,6 @@
 <template>
   <div id="MensWear">
-    <div class="header">Men's Collection</div>
+    <div class="header">New Arrivals</div>
 
     <div class="banner container">
       <div>
@@ -8,7 +8,7 @@
         <button class="shop-button">Shop Now</button>
       </div>
       <div class="image-right">
-        <img src="/image/mens banner.png" alt="Illustration"/>
+        <img src="/image/asics%20mens.jpeg" alt="Illustration"/>
       </div>
     </div>
 
@@ -182,9 +182,9 @@ export default {
         if (this.searchTerm) {
           const search = this.searchTerm.toLowerCase();
           return (
-            prod.name.toLowerCase().includes(search) ||
-            (prod.description && prod.description.toLowerCase().includes(search)) ||
-            (prod.colors && prod.colors[0] && prod.colors[0].toLowerCase().includes(search))
+              prod.name.toLowerCase().includes(search) ||
+              (prod.description && prod.description.toLowerCase().includes(search)) ||
+              (prod.colors && prod.colors[0] && prod.colors[0].toLowerCase().includes(search))
           );
         }
 
@@ -316,12 +316,12 @@ export default {
 
       let cart = JSON.parse(localStorage.getItem('cart') || '[]');
       const selectedColor = product.selectedColor ||
-        (product.colors && product.colors.length > 0 ? product.colors[0] : '');
+          (product.colors && product.colors.length > 0 ? product.colors[0] : '');
 
       const existingProduct = cart.find(
-        item => item.name === product.name &&
-               item.size === product.selectedSize &&
-               item.color === selectedColor
+          item => item.name === product.name &&
+              item.size === product.selectedSize &&
+              item.color === selectedColor
       );
 
       if (existingProduct) {
@@ -455,22 +455,22 @@ export default {
 
         // Process products directly from response.data
         this.products = response.data
-          .filter(product => product.gender_target === 'male' || product.gender_target === 'unisex')
-          .map(product => ({
-            P_ID: product.P_ID,
-            name: product.p_name,
-            image: product.photo,
-            price: parseFloat(product.price),
-            description: product.description,
-            sizes: this.safeParseArray(product.sizes),
-            colors: this.safeParseArray(product.colours),
-            category: this.safeParseArray(product.categories),
-            isFavourite: false,
-            selectedSize: '',
-            selectedQuantity: 1,
-            dateAdded: product.created_at,
-            gender_target: product.gender_target
-          }));
+            .filter(product => product.gender_target === 'male' || product.gender_target === 'unisex')
+            .map(product => ({
+              P_ID: product.P_ID,
+              name: product.p_name,
+              image: product.photo,
+              price: parseFloat(product.price),
+              description: product.description,
+              sizes: this.safeParseArray(product.sizes),
+              colors: this.safeParseArray(product.colours),
+              category: this.safeParseArray(product.categories),
+              isFavourite: false,
+              selectedSize: '',
+              selectedQuantity: 1,
+              dateAdded: product.created_at,
+              gender_target: product.gender_target
+            }));
 
         console.log('Processed products:', this.products);
 
@@ -526,11 +526,15 @@ body {
   margin: 0;
   padding: 0;
   background-color: #EDE4DA;
+  color: #333;
 }
+
 .container {
   width: 90%;
   margin: auto;
 }
+
+/* Header */
 .header {
   text-align: center;
   padding: 10px;
@@ -538,79 +542,54 @@ body {
   font-weight: 600;
   color: #333;
 }
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px;
-  background-color: #EDE4DA;
-}
-.logo img {
-  width: 150px;
-  mix-blend-mode: multiply;
-}
-nav ul {
-  list-style: none;
-  display: flex;
-  gap: 30px;
-  margin: 0;
-  padding: 0;
-}
-nav a {
-  text-decoration: none;
-  color: rgb(131, 117, 117);
-  font-size: 18px;
-}
-.search-bar {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-right: 20px;
-}
-.search-bar input {
-  padding: 8px;
-  width: 200px;
-  border: 1px solid #ffffffd8;
-  border-radius: 10px;
-}
-.search-bar button {
-  padding: 8px 12px;
-  background: #4D382D;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 14px;
-}
+
+/* Banner */
 .banner {
   background-color: #4D382D;
   color: white;
-  padding: 40px;
+  padding: 40px 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
+  border-radius: 8px;
 }
+
 .banner h1 {
-  font-size: 28px;
+  font-size: clamp(24px, 4vw, 32px);
   font-weight: bold;
-  color: white;
+  margin-bottom: 20px;
 }
+
 .shop-button {
   background: white;
   color: black;
   padding: 10px 20px;
   border: 2px solid black;
-  cursor: pointer;
+  border-radius: 6px;
   font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
 }
-.filter-container {
+
+.shop-button:hover {
+  background: #f2f2f2;
+}
+
+/* Filter & Sort */
+.filter-container,
+.sort-container {
   width: 90%;
   margin: 20px auto 0;
   display: flex;
   align-items: center;
   position: relative;
+  flex-wrap: wrap;
+  gap: 10px;
 }
-.filter-container button {
+
+.filter-container button,
+.clear-btn {
   background-color: #4D382D;
   color: white;
   border: none;
@@ -620,9 +599,12 @@ nav a {
   font-size: 16px;
   transition: background-color 0.3s ease;
 }
-.filter-container button:hover {
+
+.filter-container button:hover,
+.clear-btn:hover {
   background-color: #3a2b22;
 }
+
 .filter-dropdown {
   position: absolute;
   top: 55px;
@@ -635,51 +617,66 @@ nav a {
   z-index: 10;
   min-width: 200px;
 }
+
 .filter-dropdown label {
   display: block;
   margin-bottom: 10px;
 }
+
 .filter-dropdown select {
   width: 100%;
   padding: 8px;
   border-radius: 5px;
   border: 1px solid #ccc;
 }
-.sort-container {
-  width: 90%;
-  margin: 20px auto;
-  display: flex;
-  align-items: center;
-  gap: 10px;
+
+.sort-container select {
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
 }
+
+/* Products Grid */
 .products {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 220px));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 20px;
   padding: 20px 0;
 }
+
 .product {
   background: white;
   padding: 15px;
   text-align: center;
-  border-radius: 5px;
+  border-radius: 8px;
   cursor: pointer;
   position: relative;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
 }
+
+.product:hover {
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  transform: translateY(-4px);
+}
+
 .product img {
   width: 100%;
   height: auto;
-  border-radius: 5px;
+  border-radius: 6px;
 }
+
 .product h3 {
   font-size: 16px;
   margin: 10px 0;
   color: #333;
 }
+
 .price {
   font-weight: bold;
   color: #555;
 }
+
 .size-select, .quantity-select {
   width: 100%;
   padding: 8px;
@@ -687,19 +684,23 @@ nav a {
   border: 1px solid #ccc;
   border-radius: 5px;
 }
+
 .add-cart {
   background: black;
   color: white;
-  padding: 8px 10px;
+  padding: 10px 12px;
   border: none;
   margin-top: 10px;
   width: 100%;
   border-radius: 5px;
   cursor: pointer;
+  transition: background 0.3s ease;
 }
+
 .add-cart:hover {
   background: #333;
 }
+
 .favourite-button {
   background: white;
   color: brown;
@@ -714,7 +715,10 @@ nav a {
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: 5px;
 }
+
+/* Modal */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -727,14 +731,16 @@ nav a {
   justify-content: center;
   z-index: 999;
 }
+
 .modal-content {
   background: white;
   padding: 20px;
   width: 90%;
   max-width: 600px;
-  border-radius: 5px;
+  border-radius: 8px;
   position: relative;
 }
+
 .close-modal {
   position: absolute;
   top: 10px;
@@ -747,25 +753,30 @@ nav a {
   cursor: pointer;
   font-size: 14px;
 }
+
 .modal-image {
   width: 100%;
   max-width: 300px;
   border-radius: 5px;
   transition: transform 0.2s ease;
 }
+
 .modal-image:hover {
   transform: scale(1.1);
 }
+
 .modal-price {
   font-weight: bold;
   margin: 10px 0;
 }
+
 .color-tag {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin: 5px 0;
+  margin: 10px 0;
 }
+
 .color-square {
   width: 20px;
   height: 20px;
@@ -775,12 +786,26 @@ nav a {
   box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease;
 }
+
 .color-square:hover {
-  transform: scale(1.1);
+  transform: scale(1.2);
   box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
 }
+
 .color-square.selected {
   border: 2px solid red;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .banner {
+    flex-direction: column;
+    text-align: center;
+    padding: 30px 20px;
+  }
+  .products {
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  }
 }
 
 .image-right {
@@ -794,11 +819,12 @@ nav a {
   border-radius: 8px;
 }
 
+
 </style>
 
 
 <!--<script>-->
-<!--import MenCollectionScript from "@/scripts/pages/products/MenCollectionScript.js";-->
+<!--import NewArrivalScript from "@/scripts/pages/products/NewArrivalScript.js";-->
 
 <!--export default MenCollectionScript;-->
 

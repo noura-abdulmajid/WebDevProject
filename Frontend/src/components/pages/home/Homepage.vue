@@ -1,54 +1,11 @@
 <template>
   <div id="app">
-    <header>
-      <div class="logo">
-        <img src="/image/dashshoe.png" alt="DASH Shoe Logo" />
-      </div>
-      <nav>
-        <ul>
-          <li>
-            <a>HOME</a>
-            <ul class="dropdown">
-              <li><a href="/public">Home Page</a></li>
-            </ul>
-          </li>
-          <li>
-            <a>ABOUT</a>
-            <ul class="dropdown">
-              <li><a href="#">Our Mission</a></li>
-            </ul>
-          </li>
-          <li>
-            <a>SHOPPING</a>
-            <ul class="dropdown">
-<!--              <li><a href="#">New Arrivals</a></li>-->
-              <li><a href="/WomenCollection">Women's</a></li>
-              <li><a href="/MenCollection">Men's</a></li>
-              <li><a href="/ChildrenCollection">Children</a></li>
-            </ul>
-          </li>
-          <li>
-            <a>CONTACT</a>
-            <ul class="dropdown">
-              <li><a href="/contact">Contact Us</a></li>
-            </ul>
-          </li>
-          <li>
-            <a href="/login">LOGIN</a>
-          </li>
-        </ul>
-      </nav>
-    </header>
-
-    <div class="banner">
-      <p>
-        Exclusive Offer: Get 10% off your first purchase when you sign up with
-        your email!!
-      </p>
-    </div>
 
     <div class="banner-large">
+      <h1>Welcome to DASH Shoe Club</h1>
+      <p>Get 10% off your first purchase when you sign up!</p>
       <p>Check Out Our Latest Collection for Men & Women!</p>
+
       <img
           src="/image/banner%202.png"
           alt="Collection Banner"
@@ -60,7 +17,7 @@
       <div>
         <h2>JOIN THE DASH SHOE CLUB</h2>
         <p>EARN POINTS & GET £5 OFF REWARDS!</p>
-        <a href="#" class="btn">LEARN MORE</a>
+        <a href="/register" class="btn">Register</a>
       </div>
       <div class="carousel-container">
         <div class="carousel">
@@ -79,6 +36,54 @@
         </p>
       </div>
     </section>
+
+    <!-- Categories Section -->
+    <section class="categories">
+      <h2>Shop by Category</h2>
+      <div class="category-grid">
+        <div class="category-card">
+          <img src="/image/asics%20mens.jpeg" alt="New Arrivals">
+          <h3>New Arrivals</h3>
+          <p>Check out the freshest styles, just landed in store.</p>
+          <a href="#" class="btn">Shop New Arrivals</a>
+        </div>
+
+        <div class="category-card">
+          <img src="/image/cream heels.jpeg" alt="Women">
+          <h3>Women</h3>
+          <p>Explore heels, flats, trainers, and everything in between.</p>
+          <a href="/WomenCollection" class="btn">Shop Women’s</a>
+        </div>
+
+        <div class="category-card">
+          <img src="/image/mens%20brown%20loafers.jpeg" alt="Men">
+          <h3>Men</h3>
+          <p>Discover the latest men's sneakers, boots, and formal footwear.</p>
+          <a href="/MenCollection" class="btn">Shop Men’s</a>
+        </div>
+
+        <div class="category-card">
+          <img src="/image/kidsShoes.jpg" alt="Kids">
+          <h3>Kids</h3>
+          <p>Stylish and practical footwear for the younger ones.</p>
+          <a href="/ChildrenCollection" class="btn">Shop Kids</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Reviews Section -->
+    <section class="reviews">
+      <h2>What Our Customers Say</h2>
+      <div class="reviews-grid">
+        <div class="review-card" v-for="(review, index) in reviews" :key="index">
+          <p>"{{ review.text }}"</p>
+          <div class="reviewer">- {{ review.author }}</div>
+        </div>
+      </div>
+    </section>
+
+
+
   </div>
 </template>
 <script>

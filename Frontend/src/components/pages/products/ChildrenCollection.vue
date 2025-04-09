@@ -7,8 +7,8 @@
         <h1>Discover our latest arrivals and top picks</h1>
         <button class="shop-button">Shop Now</button>
       </div>
-      <div>
-        <img src="/image/womens banner.png" alt="Illustration"/>
+      <div class="image-right">
+        <img src="/image/kidsShoes.jpg" alt="Illustration"/>
       </div>
     </div>
 
@@ -776,4 +776,16 @@ nav a {
   object-fit: contain;
   margin-left: 20px;
 }
+
+.image-right {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.image-right img {
+  max-width: 350px;
+  width: 100%;
+  border-radius: 8px;
+}
+
 </style>

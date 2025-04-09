@@ -7,7 +7,7 @@
         <h1>Discover our latest arrivals and top picks</h1>
         <button class="shop-button">Shop Now</button>
       </div>
-      <div>
+      <div class="image-right">
         <img src="/image/womens banner.png" alt="Illustration"/>
       </div>
     </div>
@@ -726,4 +726,16 @@ nav a {
 .selected {
   border: 2px solid black;
 }
+
+.image-right {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.image-right img {
+  max-width: 500px;
+  width: 100%;
+  border-radius: 8px;
+}
+
 </style>

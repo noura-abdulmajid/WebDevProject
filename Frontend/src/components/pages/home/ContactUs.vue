@@ -1,10 +1,5 @@
 <template>
   <div>
-    <header>
-      <div class="logo-container">
-        <img src="/image/logo%20three.png" class="logo" alt="Company Logo">
-      </div>
-    </header>
     <div class="main-container">
       <div class="form-container">
         <div class="wrapper">

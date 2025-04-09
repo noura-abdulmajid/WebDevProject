@@ -13,11 +13,11 @@
 
         <!-- Navigation Links -->
         <ul class="nav-links">
+          <router-link :to="{ name: 'NewArrival' }">New</router-link>
+          <router-link :to="{ name: 'Sustainability' }">Sustainability</router-link>
           <router-link :to="{ name: 'MenCollection' }">Men</router-link>
           <router-link :to="{ name: 'WomenCollection' }">Women</router-link>
           <router-link :to="{ name: 'ChildrenCollection' }">Children</router-link>
-          <router-link :to="{ name: 'MenCollection' }">New</router-link>
-          <router-link :to="{ name: 'MenCollection' }">Offer</router-link>
         </ul>
 
         <!-- Search and Icons -->
@@ -67,24 +67,22 @@
         <div class="footer-section">
           <h4>Shopping with DashShoe</h4>
           <ul>
-            <li><a href="#">Contact Us</a></li>
-            <li><a href="#">Size Guides</a></li>
-            <li><a href="#">Find a Store</a></li>
+            <li><a href="/contact">Find a Store</a></li>
           </ul>
         </div>
         <div class="footer-section">
           <h4>Customer Care</h4>
           <ul>
-            <li><a href="#">Delivery & Returns</a></li>
-            <li><a href="#">Help & Contact Us</a></li>
-            <li><a href="#">Track My Order</a></li>
-            <li><a href="#">Site Review</a></li>
+            <li><a href="customer-dashboard/orders">Delivery & Returns</a></li>
+            <li><a href="/contact">Help & Contact Us</a></li>
+            <li><a href="customer-dashboard/orders">Track My Order</a></li>
+            <li><a href="/site-review">Site Review</a></li>
           </ul>
         </div>
         <div class="footer-section">
           <h4>Legal</h4>
           <ul>
-            <li><a href="#">Site Map</a></li>
+            <li><a href="/contact">Site Map</a></li>
           </ul>
         </div>
       </div>

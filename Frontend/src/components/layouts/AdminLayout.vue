@@ -35,7 +35,7 @@
             <span v-if="!isSidebarCollapsed">Order</span>
           </router-link>
         </li>
-        <li>
+        <!--<li>
           <router-link :to="{ name: 'admin-shipping' }">
             <img src="@/assets/image/icon/shipping.png" class="sidebar-icon" />
             <span v-if="!isSidebarCollapsed">Shipping</span>
@@ -52,7 +52,7 @@
             <img src="@/assets/image/icon/customer.png" class="sidebar-icon" />
             <span v-if="!isSidebarCollapsed">Admin Information</span>
           </router-link>
-        </li>
+        </li>-->
         <li v-if="isSuperAdmin">
           <router-link :to="{ name: 'admin-users' }">
             <img src="@/assets/image/icon/customer.png" class="sidebar-icon" />

@@ -36,6 +36,7 @@ export default {
 
 <style scoped>
 .profile-header {
+  margin-top: 50px;
   display: flex;
   width: 100%;
   align-items: stretch;

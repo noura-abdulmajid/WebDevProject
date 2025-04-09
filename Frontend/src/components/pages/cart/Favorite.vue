@@ -62,10 +62,10 @@ export default {
       try {
         this.loading = true;
         this.error = null;
-        
+
         // Check if user is logged in
         const token = localStorage.getItem('token');
-        
+
         if (token) {
           // For logged-in users: load from backend
           const response = await axiosClient.get(apiConfig.userProfile.favorites, {
@@ -166,107 +166,125 @@ export default {
 
 <style scoped>
 .favorites-container {
-  padding: 20px;
+  padding: 40px 20px;
   margin-top: 100px;
+  margin-left: 5%;
+  margin-right: 5%;
+  font-family: 'Inter', sans-serif;
+  color: #fff;
 }
 
-.loading, .error {
+.favorites-container h1 {
+  text-align: center;
+  font-size: 32px;
+  margin-bottom: 20px;
+}
+
+.loading, .error, .empty-favorites {
   text-align: center;
   font-size: 18px;
-  color: #888;
-  margin-top: 20px;
+  margin-top: 40px;
+  color: #f0f0f0;
 }
 
 .error {
-  color: #dc3545;
-}
-
-.empty-favorites {
-  text-align: center;
-  font-size: 18px;
-  color: #888;
-  margin-top: 20px;
-}
-
-.favorites-items {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  margin-top: 20px;
+  color: #ff6b6b;
 }
 
 .favorite-item {
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 15px;
-  width: 300px;
-  text-align: center;
   background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease;
+}
+
+.favorite-item:hover {
+  transform: translateY(-4px);
 }
 
 .favorite-item img {
   width: 100%;
-  border-radius: 8px;
+  height: 200px;
+  object-fit: cover;
 }
 
 .details {
-  margin-top: 10px;
+  padding: 16px;
+  color: #333;
 }
 
 .details h3 {
   margin: 0;
   font-size: 20px;
+  font-weight: 600;
+}
+
+.favorites-items {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+  margin-top: 30px;
 }
 
 .details p {
-  margin: 5px 0;
   font-size: 14px;
-  color: #555;
+  color: #666;
+  margin: 6px 0;
 }
 
 .color-tag {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 5px;
-  margin: 8px 0;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 10px 0;
 }
 
 .color-square {
   width: 20px;
   height: 20px;
   border-radius: 4px;
-  border: 1px solid #ddd;
+  border: 1px solid #ccc;
   cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.color-square:hover {
+  transform: scale(1.1);
 }
 
 .color-square.selected {
-  border: 2px solid red;
+  border: 2px solid #ff5252;
 }
 
 .size-select {
   width: 100%;
-  padding: 8px;
-  margin-top: 10px;
+  padding: 10px;
+  border-radius: 8px;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  margin-top: 10px;
+  font-size: 14px;
 }
 
 .quantity-selection {
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   gap: 10px;
-  margin-top: 10px;
+  margin-top: 12px;
 }
 
 .quantity-selection button {
-  padding: 4px 8px;
-  border: none;
+  padding: 6px 12px;
   background-color: #007bff;
-  color: white;
-  border-radius: 4px;
+  border: none;
+  color: #fff;
+  border-radius: 6px;
+  font-size: 16px;
   cursor: pointer;
+  transition: background 0.2s;
 }
 
 .quantity-selection button:hover {
@@ -274,34 +292,29 @@ export default {
 }
 
 .price {
-  font-weight: bold;
-  margin: 10px 0;
+  text-align: center;
   font-size: 18px;
-  color: #333;
+  font-weight: bold;
+  margin: 12px 0 8px;
+  color: #222;
 }
 
 .actions {
   display: flex;
-  gap: 10px;
-  justify-content: center;
-  margin-top: 10px;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 16px 16px;
 }
 
 .actions button {
   flex: 1;
-  min-width: 120px;
-  height: 40px;
-  line-height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  margin: 0;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+  padding: 10px;
   font-size: 14px;
-  box-sizing: border-box;
+  font-weight: 600;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s ease;
 }
 
 .remove-favorite {
@@ -321,4 +334,19 @@ export default {
 .add-cart:hover {
   background-color: #388e3c;
 }
+
+@media (max-width: 768px) {
+  .favorites-container h1 {
+    font-size: 24px;
+  }
+
+  .details h3 {
+    font-size: 18px;
+  }
+
+  .price {
+    font-size: 16px;
+  }
+}
+
 </style>

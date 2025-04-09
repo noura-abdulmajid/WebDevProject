@@ -42,70 +42,77 @@ export default {
 .profile-settings {
   background-color: #EDE4DA;
   display: flex;
-  justify-content: center;
-  padding-right: 0;
-  align-items: center;
   flex-wrap: wrap;
-  height: 100vh;
-  overflow: hidden;
+  min-height: 100vh;
+  font-family: "Poppins", sans-serif;
 }
 
 .sidebar {
-  width: 100px;
-  height: auto;
-  flex-shrink: 0;
+  width: 90px;
+  padding: 24px 0;
   background-color: #EDE4DA;
-  padding: 16px 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  margin-top: 110px;
+  border-right: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .main-content {
-  margin-top: auto;
-  margin-bottom: auto;
-  font-family: Poppins, -apple-system, Roboto, Helvetica, sans-serif;
-  flex-grow: 1;
-  flex-shrink: 0;
-  flex-basis: 0;
-  border-radius: 20px;
-  width: 100%;
+  flex: 1;
+  padding: 60px 40px 40px;
   max-width: 1000px;
-
-  padding-top: 80px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .profile-card {
-  border-radius: 10px;
-  background-color: rgba(255, 255, 255, 1);
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
   margin-top: 32px;
-  padding-bottom: 71px;
+  overflow: hidden;
+  transition: all 0.3s ease;
 }
 
 .profile-banner {
-  aspect-ratio: 12.82;
-  object-fit: contain;
-  object-position: center;
   width: 100%;
+  height: 80px;
+  object-fit: cover;
+  object-position: center;
 }
 
 .profile-card-content {
-  margin-top: 32px;
-  padding: 0 32px;
+  padding: 32px;
 }
 
 @media (max-width: 991px) {
-  .profile-settings {
-    padding-right: 20px;
-  }
-
   .main-content {
-    max-width: 100%;
+    padding: 40px 20px;
   }
 
-  .profile-banner {
-    max-width: 100%;
+  .sidebar {
+    width: 100%;
+    height: auto;
+    justify-content: space-around;
+    border-right: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   }
 
   .profile-card-content {
-    padding: 0 20px;
+    padding: 24px 16px;
   }
 }
+
+@media (max-width: 600px) {
+  .profile-banner {
+    height: 160px;
+  }
+
+  .profile-card-content {
+    padding: 20px 12px;
+  }
+}
+
 </style>

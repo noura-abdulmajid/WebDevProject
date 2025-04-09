@@ -1,12 +1,8 @@
 <template>
   <div>
-    <header>
-      <div class="logo">
-        <img src="/image/dashshoe.png" alt="Logo" />
-      </div>
-    </header>
-
-    <div class="container">
+    <div class="headerReview">
+    </div>
+    <div class="containerReview">
       <div class="wrapper">
         <h2>Review Form</h2>
 
@@ -42,8 +38,7 @@
                   v-for="star in 5"
                   :key="star"
                   class="star"
-                  :data-value="star"
-                  :style="{ color: star <= rating ? 'gold' : 'gray' }"
+                  :class="{ selected: star <= rating }"
                   @click="setRating(star)"
               >
                 &#9733;
@@ -63,4 +58,5 @@ import SiteReview from "../../../scripts/pages/home/SiteReviewScript.js";
 
 export default SiteReview;
 </script>
+<style src="@/styles/pages/home/SiteReviewStyle.css"></style>
 

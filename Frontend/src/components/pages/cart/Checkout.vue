@@ -1,36 +1,7 @@
 <template>
   <div class="checkout-container">
 
-    <header>
-      <div class="logo">
-        <img src="/image/logo%20three.png" alt="DASH Shoe Logo"/>
-      </div>
-      <nav>
-        <ul>
-          <li class="dropdown-parent">
-            <a>HOME</a>
-            <ul class="dropdown">
-              <li><a href="/public">Home Page</a></li>
-            </ul>
-          </li>
-          <li><a href="#">ABOUT</a></li>
-          <li class="dropdown-parent">
-            <a href="#">SHOPPING</a>
-            <ul class="dropdown">
-              <li><a href="/pages/products/WomenCollection">Women's</a></li>
-              <li><a href="/pages/products/MenCollection">Men's</a></li>
-              <li><a href="/pages/products/ChildrenCollection">Children</a></li>
-            </ul>
-          </li>
-          <li class="dropdown-parent">
-            <a>CONTACT</a>
-            <ul class="dropdown">
-              <li><a href="/contact">Contact Us</a></li>
-            </ul>
-          </li>
-        </ul>
-      </nav>
-    </header>
+    <header class="checkout"></header>
 
     <div class="content">
       <div class="checkout-form">
@@ -135,7 +106,6 @@
 </template>
 
 <script>
-import Cookies from "js-cookie";
 import axios from "axios";
 
 export default {
@@ -174,6 +144,7 @@ export default {
         },
         order: {
           items: this.cart.map(item => ({
+            P_ID: item.P_ID,
             name: item.name,
             quantity: item.quantity,
             price: item.price,
@@ -196,7 +167,7 @@ export default {
 
         if (response.status === 200) {
           alert("Payment Successful! Thank you for your purchase.");
-          Cookies.remove("cart");
+          localStorage.removeItem("cart");
           this.$router.push("/MenCollection");
         } else {
           alert("Payment failed. Please try again.");
@@ -225,7 +196,7 @@ export default {
       }
     },
     loadCart() {
-      this.cart = JSON.parse(Cookies.get("cart") || "[]");
+      this.cart = JSON.parse(localStorage.getItem("cart") || "[]");
     },
     goBack() {
       this.$router.push("/MenCollection");
@@ -238,48 +209,71 @@ export default {
   },
 };
 </script>
+
 <style scoped>
+
+.checkout-container {
+  padding: 60px;
+
+  font-family: 'Inter', sans-serif;
+}
 
 .content {
   display: flex;
-  gap: 20px;
+  gap: 40px;
+  max-width: 1200px;
+  margin: auto;
+  margin-top: 40px;
 }
+
 
 .checkout-form {
   flex: 2;
-  background: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background: #fff;
+  padding: 30px 40px;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
 }
 
 .checkout-form h2 {
+  font-size: 24px;
+  font-weight: 600;
   text-align: center;
-  margin-bottom: 20px;
+  color: #333;
+  margin-bottom: 30px;
 }
 
 .form-group {
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 }
 
 .form-group label {
   display: block;
   font-size: 14px;
-  font-weight: bold;
-  margin-bottom: 5px;
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: #555;
 }
 
 .form-group input {
   width: 100%;
-  padding: 10px;
+  padding: 12px 14px;
   font-size: 14px;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 8px;
+  background-color: #fafafa;
+  transition: border-color 0.2s;
+}
+
+.form-group input:focus {
+  border-color: #007bff;
+  outline: none;
+  background-color: #fff;
 }
 
 .form-row {
   display: flex;
-  gap: 15px;
+  gap: 20px;
 }
 
 .form-row .form-group {
@@ -288,62 +282,81 @@ export default {
 
 .submit-button {
   width: 100%;
-  padding: 10px;
-  background-color: #4caf50;
-  color: white;
+  padding: 14px;
+  background-color: #28a745;
+  color: #fff;
   border: none;
-  border-radius: 5px;
   font-size: 16px;
-  margin-top: 10px;
-  cursor: pointer;
+  border-radius: 8px;
+  font-weight: 600;
+  margin-top: 20px;
+  transition: background 0.3s;
 }
 
 .submit-button:hover {
-  background-color: #45a049;
+  background-color: #218838;
 }
 
 .back-button {
   width: 100%;
-  padding: 10px;
+  padding: 14px;
   margin-top: 15px;
-  background-color: #f44336;
+  background-color: #dc3545;
   color: white;
-  border: none;
-  border-radius: 5px;
   font-size: 16px;
-  cursor: pointer;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  transition: background 0.3s;
 }
 
 .back-button:hover {
-  background-color: #e53935;
+  background-color: #c82333;
 }
 
 .summary-section {
   flex: 1;
-  background: #f9f9f9;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background: #ffffff;
+  padding: 30px 25px;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+  min-width: 280px;
 }
 
 .summary-section h2 {
-  margin-bottom: 15px;
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #333;
 }
 
 .summary-item {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 10px;
+  font-size: 14px;
+  margin-bottom: 12px;
+  color: #444;
 }
 
 .summary-total {
-  margin-top: 20px;
+  margin-top: 30px;
+  border-top: 1px solid #eee;
+  padding-top: 15px;
+}
+
+.summary-total p {
+  font-size: 15px;
+  font-weight: 500;
+  margin: 5px 0;
+  color: #222;
 }
 
 .empty-cart {
-  text-align: center;
   font-size: 16px;
-  font-weight: bold;
+  text-align: center;
+  font-weight: 500;
   color: #999;
+  padding: 40px 0;
 }
+
 </style>

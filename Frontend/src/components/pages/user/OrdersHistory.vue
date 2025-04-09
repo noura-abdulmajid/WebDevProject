@@ -1,65 +1,66 @@
 <template>
-  <div class="orders-history">
-    <div class="content-wrapper">
-      <div class="orders-container">
-        <h2>Order History</h2>
-        <div v-if="loading" class="loading">Loading orders...</div>
-        <div v-else-if="error" class="error">{{ error }}</div>
-        <div v-else-if="orders.length === 0" class="no-orders">No orders found</div>
-        <div v-else class="orders-list">
-          <div v-for="order in orders" :key="order.O_ID" class="order-card">
-            <div class="order-header">
-              <span class="order-number">Order #{{ order.O_ID }}</span>
-              <span :class="['order-status', order.delivery_status]">{{ order.delivery_status }}</span>
-            </div>
-            <div class="order-details">
-              <div class="order-date">Order Date: {{ formatDate(order.order_date) }}</div>
-              <div class="order-items">
-                <div v-for="item in order.items" :key="item.P_ID" class="order-item">
-                  <span class="item-name">{{ item.name }}</span>
-                  <span class="item-quantity">x{{ item.quantity }}</span>
-                  <span class="item-price">${{ item.price }}</span>
-                </div>
-              </div>
-              <div class="order-total">
-                <span>Subtotal:</span>
-                <span>${{ order.subtotal }}</span>
-              </div>
-              <div class="order-total">
-                <span>Shipping:</span>
-                <span>${{ order.delivery_charge }}</span>
-              </div>
-              <div class="order-total total">
-                <span>Total:</span>
-                <span>${{ order.total_payment }}</span>
-              </div>
-            </div>
-            <div class="order-actions">
-              <button v-if="canRequestRefund(order)" 
-                      @click="showRefundForm(order)" 
-                      class="refund-btn">
-                Request Refund
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+  <div class="admin-orders">
+    <h1>Order Management</h1>
+
+    <!-- Filters -->
+    <div class="filters">
+      <input type="text" v-model="search" placeholder="Search by Order No or Customer Name" />
+      <select v-model="paymentStatus">
+        <option value="">All Payment Status</option>
+        <option value="paid">Paid</option>
+        <option value="unpaid">Unpaid</option>
+      </select>
+      <select v-model="deliveryStatus">
+        <option value="">All Delivery Status</option>
+        <option value="pending">Pending</option>
+        <option value="shipped">Shipped</option>
+        <option value="delivered">Delivered</option>
+      </select>
+      <button @click="applyFilters">Apply</button>
     </div>
 
-    <!-- Refund Form Modal -->
-    <div v-if="showRefundModal" class="modal">
-      <div class="modal-content">
-        <h3>Request Refund</h3>
-        <p>Order #{{ selectedOrder?.O_ID }}</p>
-        <div class="form-group">
-          <label for="refundReason">Refund Reason:</label>
-          <textarea id="refundReason" v-model="refundReason" required></textarea>
-        </div>
-        <div class="modal-actions">
-          <button @click="closeRefundModal" class="cancel-btn">Cancel</button>
-          <button @click="submitRefund" class="submit-btn">Submit</button>
-        </div>
-      </div>
+    <!-- Orders Table -->
+    <table class="orders-table">
+      <thead>
+      <tr>
+        <th><input type="checkbox" @change="toggleAll" v-model="selectAll" /></th>
+        <th>No.</th>
+        <th>Order No.</th>
+        <th>Customer</th>
+        <th>Date</th>
+        <th>Total Amount</th>
+        <th>Payment Status</th>
+        <th>Delivery Status</th>
+        <th>Action</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr v-for="(order, index) in filteredOrders" :key="order.O_ID">
+        <td><input type="checkbox" v-model="selectedOrders" :value="order.O_ID" /></td>
+        <td>{{ index + 1 }}</td>
+        <td>{{ order.O_ID }}</td>
+        <td>{{ order.customer_name }}</td>
+        <td>{{ formatDate(order.order_date) }}</td>
+        <td>${{ order.total_payment }}</td>
+        <td>{{ order.payment_status }}</td>
+        <td>{{ order.delivery_status }}</td>
+        <td>
+          <button @click="openActionMenu(order.O_ID)">⋮</button>
+          <div v-if="actionMenuId === order.O_ID" class="action-menu">
+            <button @click="viewOrder(order.O_ID)">View</button>
+            <button @click="editOrder(order.O_ID)">Edit</button>
+            <button @click="deleteOrder(order.O_ID)">Delete</button>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+    <!-- Bulk Actions -->
+    <div class="bulk-actions">
+      <button @click="bulkUpdatePayment">Update Payment Status</button>
+      <button @click="bulkUpdateShipping">Update Delivery Status</button>
+      <button @click="bulkDeleteOrders">Delete Selected Orders</button>
     </div>
   </div>
 </template>
@@ -67,31 +68,36 @@
 <script>
 import { ref, onMounted } from 'vue';
 import axiosClient from '@/services/axiosClient';
-import apiConfig from '@/config/apiURL';
 
 export default {
-  name: 'OrdersHistory',
+  name: 'AdminOrders',
   setup() {
     const orders = ref([]);
+    const filteredOrders = ref([]);
     const loading = ref(true);
     const error = ref(null);
-    const showRefundModal = ref(false);
-    const selectedOrder = ref(null);
-    const refundReason = ref('');
+    const search = ref('');
+    const paymentStatus = ref('');
+    const deliveryStatus = ref('');
+    const selectedOrders = ref([]);
+    const selectAll = ref(false);
+    const actionMenuId = ref(null);
 
     const fetchOrders = async () => {
       try {
         loading.value = true;
         error.value = null;
-        const response = await axiosClient.get('/DashShoe/profile/orders');
+        const response = await axiosClient.get('/api/admin/orders');
         if (response.data && response.data.orders) {
           orders.value = response.data.orders.map(order => ({
             ...order.order,
             items: order.ordered_items,
             delivery_status: order.shipped?.delivery_status || 'pending'
           }));
+          filteredOrders.value = [...orders.value];
         } else {
           orders.value = [];
+          filteredOrders.value = [];
         }
       } catch (err) {
         error.value = 'Failed to fetch orders. Please try again later.';
@@ -101,46 +107,50 @@ export default {
       }
     };
 
+    const applyFilters = () => {
+      filteredOrders.value = orders.value.filter(order => {
+        return (
+            (!search.value || order.O_ID.toString().includes(search.value) || order.customer_name.includes(search.value)) &&
+            (!paymentStatus.value || order.payment_status === paymentStatus.value) &&
+            (!deliveryStatus.value || order.delivery_status === deliveryStatus.value)
+        );
+      });
+    };
+
+    const toggleAll = () => {
+      selectedOrders.value = selectAll.value ? filteredOrders.value.map(order => order.O_ID) : [];
+    };
+
+    const openActionMenu = (id) => {
+      actionMenuId.value = actionMenuId.value === id ? null : id;
+    };
+
+    const viewOrder = (id) => {
+      window.location.href = `/admin/orders/${id}`;
+    };
+
+    const editOrder = (id) => {
+      window.location.href = `/admin/orders/${id}/edit`;
+    };
+
+    const deleteOrder = (id) => {
+      // Call API to delete the order
+    };
+
+    const bulkUpdatePayment = () => {
+      // Call API to update payment status of selected orders
+    };
+
+    const bulkUpdateShipping = () => {
+      // Call API to update shipping status of selected orders
+    };
+
+    const bulkDeleteOrders = () => {
+      // Call API to delete selected orders
+    };
+
     const formatDate = (dateString) => {
       return new Date(dateString).toLocaleDateString();
-    };
-
-    const canRequestRefund = (order) => {
-      return ['shipped', 'delivered'].includes(order.delivery_status);
-    };
-
-    const showRefundForm = (order) => {
-      selectedOrder.value = order;
-      showRefundModal.value = true;
-    };
-
-    const closeRefundModal = () => {
-      showRefundModal.value = false;
-      selectedOrder.value = null;
-      refundReason.value = '';
-    };
-
-    const submitRefund = async () => {
-      if (!selectedOrder.value || !refundReason.value) {
-        alert('Please provide a refund reason');
-        return;
-      }
-
-      try {
-        const response = await axiosClient.post('/DashShoe/profile/refunds', {
-          order_id: selectedOrder.value.O_ID,
-          reason: refundReason.value
-        });
-
-        if (response.status === 201) {
-          alert('Refund request submitted successfully');
-          closeRefundModal();
-          fetchOrders();
-        }
-      } catch (err) {
-        console.error('Error submitting refund:', err);
-        alert('Failed to submit refund request. Please try again later.');
-      }
     };
 
     onMounted(() => {
@@ -149,233 +159,138 @@ export default {
 
     return {
       orders,
-      loading,
-      error,
-      showRefundModal,
-      selectedOrder,
-      refundReason,
-      formatDate,
-      canRequestRefund,
-      showRefundForm,
-      closeRefundModal,
-      submitRefund
+      filteredOrders,
+      search,
+      paymentStatus,
+      deliveryStatus,
+      selectedOrders,
+      selectAll,
+      actionMenuId,
+      applyFilters,
+      toggleAll,
+      openActionMenu,
+      viewOrder,
+      editOrder,
+      deleteOrder,
+      bulkUpdatePayment,
+      bulkUpdateShipping,
+      bulkDeleteOrders,
+      formatDate
     };
   }
 };
 </script>
 
-<style scoped>
-.orders-history {
-  padding: 20px;
-  margin-top: 20px;
-  width: 100%;
-  height: calc(100vh - 100px);
-  overflow-y: auto;
-  position: relative;
+<style>
+.admin-orders {
+  padding: 24px;
+  font-family: 'Inter', sans-serif;
 }
 
-.content-wrapper {
-  max-width: 1200px;
-  margin: 0 auto;
-  height: 100%;
-}
-
-.orders-container {
-  background: white;
-  border-radius: 8px;
-  padding: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  height: 100%;
-}
-
-h2 {
+h1 {
+  font-size: 28px;
   margin-bottom: 20px;
-  color: #333;
+  color: #2B3674;
 }
 
-.loading, .error, .no-orders {
-  text-align: center;
-  padding: 20px;
-  font-size: 1.1em;
-}
-
-.error {
-  color: #dc3545;
-}
-
-.orders-list {
-  display: grid;
-  gap: 20px;
-}
-
-.order-card {
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 20px;
-  background: white;
-}
-
-.order-header {
+.filters,
+.bulk-actions {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 15px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #eee;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 20px;
 }
 
-.order-number {
-  font-weight: bold;
-  font-size: 1.1em;
-}
-
-.order-status {
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 0.9em;
-}
-
-.order-status.pending {
-  background-color: #fff3cd;
-  color: #856404;
-}
-
-.order-status.shipped {
-  background-color: #cce5ff;
-  color: #004085;
-}
-
-.order-status.delivered {
-  background-color: #d4edda;
-  color: #155724;
-}
-
-.order-status.canceled {
-  background-color: #f8d7da;
-  color: #721c24;
-}
-
-.order-details {
-  margin-bottom: 15px;
-}
-
-.order-date {
-  color: #666;
-  margin-bottom: 10px;
-}
-
-.order-items {
-  margin-bottom: 15px;
-}
-
-.order-item {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 5px;
-}
-
-.order-total {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 5px;
-}
-
-.order-total.total {
-  font-weight: bold;
-  font-size: 1.1em;
-  margin-top: 10px;
-  padding-top: 10px;
-  border-top: 1px solid #eee;
-}
-
-.order-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-}
-
-.refund-btn {
-  background-color: #dc3545;
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.refund-btn:hover {
-  background-color: #c82333;
-}
-
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.modal-content {
-  background: white;
-  padding: 20px;
-  border-radius: 8px;
-  width: 90%;
-  max-width: 500px;
-}
-
-.form-group {
-  margin-bottom: 15px;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 5px;
-}
-
-.form-group textarea {
-  width: 100%;
-  min-height: 100px;
+.filters input,
+.filters select {
   padding: 8px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  min-width: 220px;
 }
 
-.modal-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-}
-
-.cancel-btn, .submit-btn {
+.filters button,
+.bulk-actions button {
+  background-color: #4318FF;
+  color: white;
+  border: none;
   padding: 8px 16px;
-  border-radius: 4px;
+  font-weight: 500;
+  border-radius: 6px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.2s ease;
 }
 
-.cancel-btn {
-  background-color: #6c757d;
-  color: white;
+.filters button:hover,
+.bulk-actions button:hover {
+  background-color: #3614CC;
+}
+
+.orders-table {
+  width: 100%;
+  border-collapse: collapse;
+  overflow-x: auto;
+}
+
+.orders-table th,
+.orders-table td {
+  border: 1px solid #E0E0E0;
+  padding: 12px;
+  text-align: left;
+  font-size: 14px;
+}
+
+.orders-table thead {
+  background-color: #F5F7FA;
+}
+
+.orders-table tbody tr:hover {
+  background-color: #F0F4FF;
+}
+
+.orders-table button {
+  background: none;
   border: none;
+  font-size: 18px;
+  cursor: pointer;
 }
 
-.submit-btn {
-  background-color: #28a745;
-  color: white;
+.action-menu {
+  position: absolute;
+  background-color: white;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  border-radius: 8px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  z-index: 999;
+}
+
+.action-menu button {
+  padding: 6px 12px;
+  background-color: #F4F7FE;
   border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  text-align: left;
 }
 
-.cancel-btn:hover {
-  background-color: #5a6268;
+.action-menu button:hover {
+  background-color: #E0E7FF;
 }
 
-.submit-btn:hover {
-  background-color: #218838;
+@media (max-width: 768px) {
+  .orders-table {
+    display: block;
+    overflow-x: auto;
+  }
+
+  .orders-table table {
+    width: 100%;
+    min-width: 800px;
+  }
 }
+
 </style>

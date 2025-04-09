@@ -29,9 +29,11 @@ import OrdersHistory from "@/components/pages/user/OrdersHistory.vue";
 import Homepage from "@/components/pages/home/Homepage.vue";
 import ContactUs from "@/components/pages/home/ContactUs.vue";
 import SiteReview from "@/components/pages/home/SiteReview.vue";
+import NewArrival from "@/components/pages/products/NewArrival.vue";
 import ChildrenCollection from "@/components/pages/products/ChildrenCollection.vue";
 import MenCollection from "@/components/pages/products/MenCollection.vue";
 import WomenCollection from "@/components/pages/products/WomenCollection.vue";
+import Sustainability from "@/components/pages/products/Sustainability.vue";
 import ShoppingCart from "@/components/pages/cart/ShoppingCart.vue";
 import Checkout from "@/components/pages/cart/Checkout.vue";
 import ProductFavorites from "@/components/pages/cart/Favorite.vue";
@@ -61,9 +63,11 @@ const routes = [
         children: [
 
             {path: "/Homepage", name: "Homepage", component: Homepage},
+            {path: "/NewArrival", name: "NewArrival", component: NewArrival},
             {path: "/ChildrenCollection", name: "ChildrenCollection", component: ChildrenCollection},
             {path: "/MenCollection", name: "MenCollection", component: MenCollection},
             {path: "/WomenCollection", name: "WomenCollection", component: WomenCollection},
+            {path: "/Sustainability", name: "Sustainability", component: Sustainability},
             {path: "/ShoppingCart", name: "ShoppingCart", component: ShoppingCart},
             {path: "/Checkout", name: "Checkout", component: Checkout},
             {path: "/contact", component: ContactUs},

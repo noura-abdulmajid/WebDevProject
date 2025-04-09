@@ -205,7 +205,6 @@ export default {
 
 <style scoped>
 .favorites {
-  padding: 20px;
   overflow-y: auto;
   max-height: none;
   box-sizing: border-box;
