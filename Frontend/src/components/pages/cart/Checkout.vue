@@ -168,6 +168,7 @@ export default {
         if (response.status === 200) {
           alert("Payment Successful! Thank you for your purchase.");
           localStorage.removeItem("cart");
+          window.dispatchEvent(new Event("cart-updated"));
           this.$router.push("/MenCollection");
         } else {
           alert("Payment failed. Please try again.");

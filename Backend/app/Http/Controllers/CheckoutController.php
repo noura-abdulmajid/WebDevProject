@@ -90,8 +90,9 @@ class CheckoutController extends Controller
             DB::table('shipped')->insert([
                 'O_ID' => $order->O_ID,
                 'delivery_status' => 'pending',
-                'created_at' => now(),
-                'updated_at' => now()
+                'shipped_date' => null,
+                'shipped_by' => 1,
+                'stationery_printed' => false
             ]);
 
             DB::commit();
