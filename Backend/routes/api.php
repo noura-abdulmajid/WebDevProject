@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CustomersController;
 use App\Http\Controllers\AdminUsersController;
+use App\Http\Controllers\DiscountCodeController;
 use App\Http\Controllers\ForgetPasswordController;
 use App\Http\Controllers\ProductReturnController;
 use Illuminate\Support\Facades\Route;
@@ -17,13 +18,13 @@ Route::prefix('DashShoe')->group(function () {
     Route::post('/log-visit', [LogVisitController::class, 'visit'])->name('visit');
     //Checkout
     Route::post('/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
+    Route::post('/check_discount_code', [DiscountCodeController::class, 'checkDiscountCode']);
     //Contact
     Route::post('/contact-us', [MessageController::class, 'store'])->name('contact_us');
     //Site
     Route::post('/site-review', [SiteReviewController::class, 'store'])->name('site_review');
     //Returns
-    Route::post('/returns', [ProductReturnController::class, 'newReturn']);
-    Route::get('/returns', [ProductReturnController::class, 'getAllReturnRequests'])->name('returns');
+    Route::post('/new_return', [ProductReturnController::class, 'newReturn']);
 
     // Test route
     Route::post('test', function (Illuminate\Http\Request $request) {

@@ -100,7 +100,10 @@ class MessageController extends Controller
 
             Mail::to($message->email)->queue(new MessageResponse($message));
 
-
+            return response()->json([
+                'success' => true,
+                'message' => 'Response sent successfully',
+            ]);
 
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json([
@@ -116,27 +119,5 @@ class MessageController extends Controller
         }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
 }

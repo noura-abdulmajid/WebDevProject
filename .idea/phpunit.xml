@@ -5,6 +5,8 @@
       <list>
         <option value="$PROJECT_DIR$/tests/Unit" />
         <option value="$PROJECT_DIR$/tests/Feature" />
+        <option value="$PROJECT_DIR$/Backend/tests/Unit" />
+        <option value="$PROJECT_DIR$/Backend/tests/Feature" />
         <option value="$PROJECT_DIR$/Old/tests/Unit" />
         <option value="$PROJECT_DIR$/Old/tests/Feature" />
       </list>
