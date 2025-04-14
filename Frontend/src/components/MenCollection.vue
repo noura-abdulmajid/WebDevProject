@@ -25,10 +25,10 @@
         </div>
       </header>
 
-      <!-- Collection Header -->
+     
       <div class="header">Men's Collection</div>
 
-      <!-- Banner Section -->
+      
       <div class="banner container">
         <div>
           <h1>Discover our latest arrivals and top picks</h1>
@@ -39,7 +39,6 @@
         </div>
       </div>
 
-      <!-- Filter Section -->
       <div class="filter-container">
         <button @click="showDropdown = !showDropdown">Filter Options</button>
         <div v-if="showDropdown" class="filter-dropdown">
@@ -69,7 +68,7 @@
         </div>
       </div>
 
-      <!-- Sort Section -->
+ 
       <div class="sort-container">
         <label for="sort-select">Sort By:</label>
         <select id="sort-select" v-model="selectedSort">
@@ -80,7 +79,7 @@
         </select>
       </div>
 
-      <!-- Products Listing -->
+      
       <div class="products container">
         <div
             class="product"
@@ -110,9 +109,9 @@
         </div>
       </div>
 
-      <!-- (Removed Modal Section – Product details now open in a new page) -->
+     
 
-      <!-- Reviews Carousel -->
+ 
       <div class="reviews-carousel container">
         <h2>Customer Reviews</h2>
         <div class="carousel-container">
