@@ -38,7 +38,7 @@ class RefundConfirmation extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'mail.refund_confirmation',
+            markdown: 'mail.refund-confirmation',
         );
     }
 

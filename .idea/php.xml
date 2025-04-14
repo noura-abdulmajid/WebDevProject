@@ -132,7 +132,6 @@
       <path value="$PROJECT_DIR$/vendor/psr/http-message" />
       <path value="$PROJECT_DIR$/vendor/psr/event-dispatcher" />
       <path value="$PROJECT_DIR$/vendor/symfony/polyfill-mbstring" />
-      <path value="$PROJECT_DIR$/vendor/_laravel_idea" />
       <path value="$PROJECT_DIR$/vendor/symfony/polyfill-intl-icu" />
       <path value="$PROJECT_DIR$/vendor/laravel/cashier" />
       <path value="$PROJECT_DIR$/vendor/stripe/stripe-php" />
@@ -375,6 +374,7 @@
       <path value="$PROJECT_DIR$/Backend/vendor/hamcrest/hamcrest-php" />
       <path value="$PROJECT_DIR$/Backend/vendor/phar-io/manifest" />
       <path value="$PROJECT_DIR$/Backend/vendor/monolog/monolog" />
+      <path value="$PROJECT_DIR$/Old/vendor/_laravel_idea" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.2" />

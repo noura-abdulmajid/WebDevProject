@@ -17,7 +17,7 @@ class OrderShipped extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct(public Order $order)
+    public function __construct(public Order $order, $deliveryDate)
     {
         //
     }
@@ -38,7 +38,7 @@ class OrderShipped extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'view.name',
+            markdown: 'mail.order-shipped',
         );
     }
 

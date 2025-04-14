@@ -38,7 +38,7 @@ class MessageResponse extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'mail.message-response',
+            markdown: 'mail.message-response',
         );
     }
 

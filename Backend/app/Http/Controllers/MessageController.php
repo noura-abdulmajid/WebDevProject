@@ -12,26 +12,6 @@ use Illuminate\Support\Facades\Log;
 
 class MessageController extends Controller
 {
-    public function returnAllMessages()
-    {
-        Log::info("Returning all return requests");
-
-        $messages = Message::select(
-            'M_ID',
-            'first_name',
-            'last_name',
-            'email',
-            'message')->paginate(10);
-
-        return response()->json([
-            'message' => 'All return requests retrieved successfully',
-            'total_pages' => $messages->total(),
-            'current_page' => $messages->currentPage(),
-            'last_page' => $messages->lastPage(),
-            'return_requests' => $messages,
-        ]);
-    }
-
     /**
      * Store a newly created resource in storage.
      */
@@ -77,46 +57,6 @@ class MessageController extends Controller
     public function confirm()
     {
         return view('contact.message-confirmation');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function respondToMessage(Request $request)
-    {
-        try {
-            Log::info('[Contact-Us] Received message response request data: ', $request->all());
-            
-            $attributes = $request->validate([
-                'M_ID' => ['required', 'integer', 'exists:messages,M_ID'],
-                'response' => ['required', 'string'],
-            ]);
-
-            $message = Message::where('M_ID', $attributes['M_ID'])->first();
-
-            $message->response = $attributes['response'];
-            $message->save();
-            // email response to user
-
-            Mail::to($message->email)->queue(new MessageResponse($message));
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Response sent successfully',
-            ]);
-
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Validation failed',
-                'errors' => $e->errors(),
-            ], 422);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'An unexpected error occurred. Please try again later.',
-            ], 500);
-        }
     }
 
 
