@@ -300,7 +300,6 @@ export default {
   gap: 20px;
 }
 
-
 .left-column {
   flex: 2;
   display: flex;
