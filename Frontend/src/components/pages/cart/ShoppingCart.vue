@@ -66,7 +66,7 @@ export default {
     async logShoppingVisit() {
       try {
         await axios.post(
-            "http://127.0.0.1:8000/api/DashShoe/log-visit",
+            "http://127.0.0.1:9000/api/DashShoe/log-visit",
             {
               page: "ShoppingCart-page",
               timestamp: new Date().toISOString(),

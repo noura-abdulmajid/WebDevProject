@@ -366,7 +366,7 @@ export default {
     fetchProducts() {
       this.loading = true;
       axios
-          .get(`http://localhost:8000/api/DashShoe/admin/get_products?page=${this.currentPage}&per_page=${this.perPage}`)
+          .get(`http://localhost:9000/api/DashShoe/admin/get_products?page=${this.currentPage}&per_page=${this.perPage}`)
           .then((response) => {
             console.log(response.data);
             this.products = response.data.products.map((product) => {
@@ -474,7 +474,7 @@ export default {
 
       this.loading = true;
       
-      axios.post("http://localhost:8000/api/DashShoe/admin/upload_image", formData, {
+      axios.post("http://localhost:9000/api/DashShoe/admin/upload_image", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -640,15 +640,14 @@ export default {
 
       if (this.isAddingProduct) {
         const newProduct = {...this.editProductData, P_ID: this.getNextProductId()};
-        
-        // 先保存到後端
-        axios.post("http://localhost:8000/api/DashShoe/admin/add_product", newProduct)
+
+        axios.post("http://localhost:9000/api/DashShoe/admin/add_product", newProduct)
             .then((response) => {
               if (response.data && response.data.product) {
                 this.products.push(response.data.product);
                 this.showSuccess("Product added successfully!");
                 this.closeEditDialog();
-                this.fetchProducts(); // 重新獲取產品列表以確保數據最新
+                this.fetchProducts();
               } else {
                 this.showError("Failed to add product!");
               }
@@ -663,7 +662,7 @@ export default {
           inventory: [...this.editProductData.inventory],
         };
 
-        const url = `http://localhost:8000/api/DashShoe/admin/update_product/${this.editProductData.P_ID}`;
+        const url = `http://localhost:9000/api/DashShoe/admin/update_product/${this.editProductData.P_ID}`;
 
         axios.put(url, productData)
             .then((response) => {
@@ -690,7 +689,7 @@ export default {
     deleteProduct(productId) {
       if (confirm("Are you sure you want to delete this product?")) {
         axios
-            .delete(`http://localhost:8000/api/DashShoe/admin/delete_product/${productId}`)
+            .delete(`http://localhost:9000/api/DashShoe/admin/delete_product/${productId}`)
             .then((response) => {
               if (response.status === 200 || response.data.success) {
                 this.products = this.products.filter((product) => product.P_ID !== productId);

@@ -90,7 +90,7 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 
 #### **Development Server**
 - `php artisan serve`  
-  Start a local development server at `http://127.0.0.1:8000`.
+  Start a local development server at `http://127.0.0.1:9000`.
 
 - `lsof -i :8000`  
   Check which process is using port 8000 and resolve conflicts if the development server fails to start.

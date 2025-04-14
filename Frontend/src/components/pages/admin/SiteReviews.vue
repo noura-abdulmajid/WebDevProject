@@ -174,7 +174,7 @@ const sendReply = async (review) => {
 
   try {
     // Call the backend API to update the review
-    await axios.patch(`http://127.0.0.1:8000/api/DashShoe/admin/site-reviews/reply/${review.id}`, {
+    await axios.patch(`http://127.0.0.1:9000/api/DashShoe/admin/site-reviews/reply/${review.id}`, {
       reply: review.replyText,
       is_replied: true,
       is_read: true,
@@ -199,7 +199,7 @@ const toggleMarkRead = async (review) => {
   const newState = !review.is_read;
   try {
     await axios.put(
-        `http://127.0.0.1:8000/api/DashShoe/admin/site-reviews/${review.id}/mark-as-read`,
+        `http://127.0.0.1:9000/api/DashShoe/admin/site-reviews/${review.id}/mark-as-read`,
         { is_read: newState },
         {
           headers: {
@@ -217,7 +217,7 @@ const toggleMarkReplied = async (review) => {
   const newState = !review.is_replied;
   try {
     await axios.put(
-        `http://127.0.0.1:8000/api/DashShoe/admin/site-reviews/${review.id}/mark-as-replied`,
+        `http://127.0.0.1:9000/api/DashShoe/admin/site-reviews/${review.id}/mark-as-replied`,
         { is_replied: newState },
         {
           headers: {
@@ -247,7 +247,7 @@ const fetchReviews = async () => {
   loading.value = true;
   try {
     const response = await axios.get(
-        "http://127.0.0.1:8000/api/DashShoe/admin/site_review",
+        "http://127.0.0.1:9000/api/DashShoe/admin/site_review",
         {
           headers: {
             Authorization: `${localStorage.getItem("token_type")} ${localStorage.getItem("jwt")}`

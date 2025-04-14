@@ -414,7 +414,7 @@ class AdminProductController extends Controller
             }
 
             // Generate the correct URL
-            $baseUrl = config('app.url', 'http://localhost:8000');
+            $baseUrl = config('app.url', 'http://localhost:9000');
             $imageUrl = $baseUrl . '/storage/' . $filePath;
             Log::info('Generated image URL', ['url' => $imageUrl]);
 

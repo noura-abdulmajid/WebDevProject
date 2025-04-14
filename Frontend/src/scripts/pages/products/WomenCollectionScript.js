@@ -54,7 +54,7 @@ export default {
         async logWomenVisit() {
             try {
                 await axios.post(
-                    "http://127.0.0.1:8000/api/DashShoe/log-visit",
+                    "http://127.0.0.1:9000/api/DashShoe/log-visit",
                     {
                         page: "WomenCollection-page",
                         timestamp: new Date().toISOString(),

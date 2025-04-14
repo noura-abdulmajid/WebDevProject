@@ -52,7 +52,7 @@ export default {
         async logMenVisit() {
             try {
                 await axios.post(
-                    "http://127.0.0.1:8000/api/DashShoe/log-visit",
+                    "http://127.0.0.1:9000/api/DashShoe/log-visit",
                     {
                         page: "MenCollection-page",
                         timestamp: new Date().toISOString(),
@@ -102,7 +102,7 @@ export default {
         },
         async fetchProducts() {
             try {
-                const response = await axios.get("http://localhost:8000/api/DashShoe/products");
+                const response = await axios.get("http://localhost:9000/api/DashShoe/products");
                 this.products = response.data
                     .filter(product => product.gender_target === 'male' || product.gender_target === 'unisex')
                     .map(product => ({

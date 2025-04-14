@@ -156,7 +156,7 @@ export default {
 
       try {
         const response = await axios.post(
-            "http://127.0.0.1:8000/api/DashShoe/checkout",
+            "http://127.0.0.1:9000/api/DashShoe/checkout",
             paymentData,
             {
               headers: {
@@ -181,7 +181,7 @@ export default {
     async logCheckoutVisit() {
       try {
         await axios.post(
-            "http://127.0.0.1:8000/api/DashShoe/log-visit",
+            "http://127.0.0.1:9000/api/DashShoe/log-visit",
             {
               page: "Checkout-page",
               timestamp: new Date().toISOString(),

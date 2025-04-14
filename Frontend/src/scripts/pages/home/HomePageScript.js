@@ -27,7 +27,7 @@ export default {
         async getReviews() {
             try {
                 const response = await axios.get(
-                    "http://127.0.0.1:8000/api/DashShoe/reviews"
+                    "http://127.0.0.1:9000/api/DashShoe/reviews"
                 );
                 const allReviews = response.data.reviews;
 
@@ -47,7 +47,7 @@ export default {
         async logHomeVisit() {
             try {
                 await axios.post(
-                    "http://127.0.0.1:8000/api/DashShoe/log-visit",
+                    "http://127.0.0.1:9000/api/DashShoe/log-visit",
                     {
                         page: "Homepage-page",
                         timestamp: new Date().toISOString(),
