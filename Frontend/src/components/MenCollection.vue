@@ -234,7 +234,7 @@ export default {
   },
   methods: {
     openProduct(prod) {
-      // Navigate to the ProductDetail page using the product's id as a route parameter
+      
       this.$router.push({ name: 'ProductDetail', params: { id: prod.id } });
     },
     closeModal() {
