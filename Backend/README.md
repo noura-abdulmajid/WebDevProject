@@ -66,39 +66,96 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 
 
-## Useful Commands
+### Useful Commands
 
-
-- php artisan migrate
+#### **Migration**
+- `php artisan migrate`  
   Run all migration files to create or modify database tables.
 
-- php artisan migrate --path=/database/migrations/0001_01_01_000000_create_users_table.php
+- `php artisan migrate --path=/database/migrations/0001_01_01_000000_create_users_table.php`  
+  Run a specific migration file located at the specified path.
 
-- php artisan route:list
+- `php artisan migrate:refresh --seed`  
+  Rollback all migrations and re-run them, including database seeders.
+
+#### **Route Management**
+- `php artisan route:list`  
   Show all registered routes, including methods, URIs, and the controllers handling them.
-- php artisan route:cache
+
+- `php artisan route:cache`  
   Cache the application routes to improve performance (useful for production).
-- php artisan route:clear
+
+- `php artisan route:clear`  
   Clear the cached routes to apply updated route definitions.
-- php artisan serve
-  Start a local development server at `http://127.0.0.1:8000`.
-- lsof -i :8000
-  Check which process is using port 8000 and resolve conflicts if php artisan serve fails. 
-- curl -X GET -H "Accept: application/json" http://127.0.0.1:8080/api/DashShoe/test
 
-## Startup instructions
-rm -rf vendor
-rm composer.lock
-First, in .env
-CACHE_STORE=database
-change
-CACHE_STORE=file
-If there is no vendor folder, it must be installed
-composer install --no-dev --optimize-autoloader
-and clear the cache
-php artisan config:clear
-php artisan cache:clear
-php artisan config:cache
-Then change cache_store back.
-CACHE_STORE=database
+#### **Development Server**
+- `php artisan serve`  
+  Start a local development server at `http://127.0.0.1:9000`.
 
+- `lsof -i :8000`  
+  Check which process is using port 8000 and resolve conflicts if the development server fails to start.
+
+#### **API Testing**
+- `curl -X GET -H "Accept: application/json" http://127.0.0.1:8080/api/DashShoe/test`  
+  Send a GET request to the specified API endpoint for testing.
+
+#### **Database Seeding**
+- `php artisan db:seed`  
+  Run all seeders to populate the database with test data.
+
+- `php artisan db:seed --class=CustomerSeeder`  
+  Run a specific seeder, like `CustomerSeeder`.
+
+- `php artisan db:seed --class=OrdersSeeder`  
+  Run a specific seeder, like `OrdersSeeder`.
+
+- `php artisan make:seeder OrdersSeeder`  
+  Create a new seeder file named `OrdersSeeder`.
+
+- `php artisan make:seeder CustomerSeeder`  
+  Create a new seeder file named `CustomerSeeder`.
+
+#### **Factories**
+- `php artisan make:factory OrderFactory --model=Order`  
+  Create a new factory file for the `Order` model.
+
+#### **Log Management**
+- `echo "" > storage/logs/laravel.log`  
+  Clear the `laravel.log` file by replacing its content with an empty string.
+
+
+## Startup Instructions
+
+1. Delete the existing `vendor` folder and `composer.lock`:
+   ```bash
+   rm -rf vendor
+   rm composer.lock
+   ```
+
+2. Update `.env`:
+   ```plaintext
+   CACHE_STORE=database
+   Change to
+   CACHE_STORE=file
+   ```
+
+3. If the `vendor` folder does not exist, install dependencies:
+   ```bash
+   composer install --no-dev --optimize-autoloader
+   ```
+
+4. Clear and rebuild the cache:
+   ```bash
+   php artisan config:clear
+   php artisan cache:clear
+   php artisan config:cache
+   ```
+
+5. Change the `CACHE_STORE` in `.env` back to:
+   ```plaintext
+   CACHE_STORE=database
+   ```
+
+6.php artisan storage:link
+
+php artisan serve --port=9000

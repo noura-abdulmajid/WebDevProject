@@ -2,21 +2,23 @@
 
 namespace Database\Factories;
 
+use App\Models\AdminUser;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 class AdminUserFactory extends Factory
 {
+    protected $model = AdminUser::class;
+
     public function definition(): array
     {
         return [
             'username' => $this->faker->userName(),
             'email' => $this->faker->unique()->safeEmail(),
-            'email_verified_at' => now(),
-            'password' => Hash::make('admin_password'),
-            'role' => 'admin',
-            'remember_token' => Str::random(10),
+            'password' => bcrypt('admin123'),
+            'role' => $this->faker->randomElement(['super_admin', 'editor', 'moderator']),
+            'first_name' => $this->faker->firstName(),
+            'surname' => $this->faker->lastName(),
+            'date_joined' => now()
         ];
     }
 }

@@ -13,12 +13,12 @@ class DatabaseController extends Controller
 
             DB::connection()->getPdo();
 
-            Log::info('Test_Connection Database connection successful！');
-            return response()->json(['message' => 'Test_Connection Database connection successful！'], 200);
+            Log::info('Database connection successful');
+            return response()->json(['message' => 'Database connection successful'], 200);
         } catch (\Exception $e) {
 
-            Log::error('Test_Connection Database connection failed：' . $e->getMessage());
-            return response()->json(['message' => 'Database connection failed！', 'error' => $e->getMessage()], 500);
+            Log::error('Database connection failed: ' . $e->getMessage());
+            return response()->json(['message' => 'Database connection failed', 'error' => $e->getMessage()], 500);
         }
     }
 }

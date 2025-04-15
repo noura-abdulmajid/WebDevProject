@@ -12,11 +12,8 @@ class Customer extends Authenticatable implements JWTSubject
     use HasFactory, Notifiable;
 
     protected $table = 'customers';
-
     protected $primaryKey = 'C_ID';
-
     public $incrementing = true;
-
     protected $keyType = 'int';
 
     protected $fillable = [
@@ -38,7 +35,6 @@ class Customer extends Authenticatable implements JWTSubject
     protected $casts = [
         'email_verified_at' => 'datetime',
         'date_joined' => 'datetime',
-        'password' => 'hashed',
     ];
 
     public function getJWTIdentifier(): mixed
@@ -53,11 +49,6 @@ class Customer extends Authenticatable implements JWTSubject
 
     public function orders()
     {
-        return $this->hasMany(Order::class, 'customer_id', 'C_ID');
-    }
-
-    public function payments()
-    {
-        return $this->hasMany(Payment::class, 'customer_id', 'C_ID');
+        return $this->hasMany(Order::class, 'C_ID', 'C_ID');
     }
 }
