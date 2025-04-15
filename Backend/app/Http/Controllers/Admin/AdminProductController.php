@@ -8,8 +8,6 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-use Intervention\Image\ImageManager;
-use Intervention\Image\Drivers\Gd\Driver;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Queue;
 use App\Jobs\ProcessImageUpload;
@@ -350,87 +348,36 @@ class AdminProductController extends Controller
     public function uploadImage(Request $request)
     {
         try {
-            // Validate admin token and role
-            $admin = $this->validateAdminToken();
-            if ($admin instanceof \Illuminate\Http\JsonResponse) {
-                return $admin;
-            }
-
-            if (!$this->hasAdminRole($admin)) {
-                Log::warning('Unauthorized image upload attempt by admin: ' . $admin->email);
-                return response()->json(['error' => 'Unauthorized'], 403);
-            }
-
-            // Validate image file
-            $request->validate([
-                'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            Log::info('Starting image upload process', [
+                'original_name' => $request->file('image')->getClientOriginalName(),
+                'file_size' => $request->file('image')->getSize(),
+                'mime_type' => $request->file('image')->getMimeType()
             ]);
 
             if (!$request->hasFile('image')) {
-                Log::warning('No image file provided in upload request');
-                return response()->json([
-                    'message' => 'No image file uploaded.',
-                ], 400);
+                return response()->json(['error' => 'No image file provided'], 400);
             }
 
             $file = $request->file('image');
-            $fileName = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-            
-            Log::info('Starting image upload process', [
-                'original_name' => $file->getClientOriginalName(),
-                'file_size' => $file->getSize(),
-                'mime_type' => $file->getMimeType(),
-                'new_file_name' => $fileName
-            ]);
+            $originalName = $file->getClientOriginalName();
+            $extension = $file->getClientOriginalExtension();
+            $newFileName = time() . '_' . uniqid() . '.' . $extension;
 
-            // Store the original file
-            $filePath = $file->storeAs(
-                'product/images',
-                $fileName,
-                'public'
-            );
+            // Store the file
+            $path = $file->storeAs('product/images', $newFileName, 'public');
 
-            if (!$filePath) {
-                Log::error('Failed to store image file');
-                return response()->json([
-                    'message' => 'Failed to store image file.',
-                ], 500);
-            }
+            Log::info('File stored successfully', ['file_path' => $path]);
 
-            Log::info('File stored successfully', ['file_path' => $filePath]);
-
-            // Process image immediately
-            try {
-                $manager = new ImageManager(new Driver());
-                $image = $manager->read(storage_path('app/public/' . $filePath));
-                $image->scale(width: 800);
-                $image->save(storage_path('app/public/' . $filePath));
-                Log::info('Image processed successfully');
-            } catch (\Exception $e) {
-                Log::error('Image processing failed: ' . $e->getMessage());
-                // Delete the uploaded file if processing fails
-                Storage::disk('public')->delete($filePath);
-                throw $e;
-            }
-
-            // Generate the correct URL
-            $baseUrl = config('app.url', 'http://localhost:9000');
-            $imageUrl = $baseUrl . '/storage/' . $filePath;
-            Log::info('Generated image URL', ['url' => $imageUrl]);
-
+            // Return the path
             return response()->json([
-                'message' => 'Image uploaded and processed successfully.',
-                'image_url' => $imageUrl,
-            ], 200);
+                'success' => true,
+                'path' => $path,
+                'url' => Storage::url($path)
+            ]);
 
         } catch (\Exception $e) {
-            Log::error('Image upload failed: ' . $e->getMessage(), [
-                'trace' => $e->getTraceAsString()
-            ]);
-            return response()->json([
-                'message' => 'Failed to upload image.',
-                'error' => $e->getMessage()
-            ], 500);
+            Log::error('Image upload failed: ' . $e->getMessage(), ['trace' => $e->getTraceAsString()]);
+            return response()->json(['error' => 'Failed to upload image: ' . $e->getMessage()], 500);
         }
     }
 

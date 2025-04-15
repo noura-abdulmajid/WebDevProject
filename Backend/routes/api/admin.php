@@ -22,7 +22,7 @@ Route::prefix('admin')->group(function () {
     //Customer
     Route::delete('/delete_user/{id}', [AdminCustomerController::class, 'deleteUser'])->name('admin.user.deleteUser');
     Route::put('/update_user/{id}', [AdminCustomerController::class, 'updateUser'])->name('admin.updateUser');
-    Route::get('/get_users', [AdminCustomerController::class, 'getAllUsers'])->name('admin.users.getUsers');
+    Route::get('/get_users', [AdminCustomerController::class, 'index'])->name('admin.users.getUsers');
 
     //Customer-EditPage
     Route::get('/customers/{id}', [AdminCustomerController::class, 'show'])->name('admin.customers.show');

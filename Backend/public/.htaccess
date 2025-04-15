@@ -18,8 +18,19 @@
     RewriteCond %{REQUEST_URI} (.+)/$
     RewriteRule ^ %1 [L,R=301]
 
-    # Send Requests To Front Controller...
+    # Handle API Requests
+    RewriteCond %{REQUEST_URI} ^/api/ [NC]
+    RewriteRule ^ index.php [L]
+
+
+    # Handle Storage Files
+    RewriteCond %{REQUEST_URI} ^/storage/ [NC]
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^storage/(.*)$ /public/storage/$1 [L]
+
+
+    # Handle Front Controller...
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteRule ^ index.php [L]
+    RewriteRule ^ index.html [L]
 </IfModule>

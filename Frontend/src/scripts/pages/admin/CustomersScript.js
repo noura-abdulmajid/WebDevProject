@@ -44,11 +44,11 @@ export default {
             error.value = null;
             try {
                 console.log('Fetching customers from:', apiConfig.admin.customers);
-                const token = localStorage.getItem('admin_token');
+                const token = localStorage.getItem('jwt');
                 if (!token) {
                     throw new Error('No admin token found');
                 }
-                
+
                 const response = await axiosClient.get(apiConfig.admin.customers, {
                     headers: {
                         'Authorization': `Bearer ${token}`
