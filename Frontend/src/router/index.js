@@ -1,61 +1,172 @@
 import {createRouter, createWebHistory} from "vue-router";
-import Login from "@/components/Login.vue";
-import AdminLogin from "@/components/AdminLogin.vue";
-import Fix from "@/components/Fix.vue";
-import CreateAccount from "@/components/CreateAccount.vue";
-import ForgotPassword from "@/components/ForgotPassword.vue";
-import ResetPassword from "@/components/ResetPassword.vue";
-import AdminDashboard from "@/components/AdminDashboard.vue";
-import ContactUs from "@/components/ContactUs.vue";
-import SiteReview from "@/components/SiteReview.vue";
-import AdminUsers from "@/components/AdminUsers.vue";
-import AdminProducts from "@/components/AdminProducts.vue";
-import AdminCustomers from "@/components/AdminCustomers.vue";
-import AdminCustomerProfile from "@/components/AdminCustomerProfile.vue";
-import AdminOrders from "@/components/AdminOrders.vue";
-import AdminSettings from "@/components/AdminSettings.vue";
-import Forbidden from "@/components/Forbidden.vue";
-import Homepage from "@/components/Homepage.vue";
-import ChildrenCollection from "@/components/ChildrenCollection.vue";
-import MenCollection from "@/components/MenCollection.vue";
-import WomenCollection from "@/components/WomenCollection.vue";
-import ShoppingCart from "@/components/ShoppingCart.vue";
-import Checkout from "@/components/Checkout.vue";
-// ✅ Customer Pages (Require Authentication)
-import CustomerProfile from "@/components/CustomerProfile.vue";
+// Authentication Pages
+import Login from "@/components/pages/auth/Login.vue";
+import AdminLogin from "@/components/pages/admin/AdminLogin.vue";
+import Register from "@/components/pages/auth/Register.vue";
+import ForgotPassword from "@/components/pages/auth/ForgotPassword.vue";
+import ResetPassword from "@/components/pages/auth/ResetPassword.vue";
 
+// Admin Panel Pages
+import Dashboard from "@/components/pages/admin/Dashboard.vue";
+import Products from "@/components/pages/admin/Products.vue";
+import Customers from "@/components/pages/admin/Customers.vue";
+import CustomerProfile from "@/components/pages/admin/CustomerProfile.vue";
+import Orders from "@/components/pages/admin/Orders.vue";
+import Settings from "@/components/pages/admin/Settings.vue";
+import AdminUsers from "@/components/pages/admin/AdminUsers.vue";
+import RefundProcessing from "@/components/pages/admin/RefundProcessing.vue";
+import Shippings from "@/components/pages/admin/Shippings.vue";
+import SiteReviews from "@/components/pages/admin/SiteReviews.vue";
+
+// User Pages
+import ProfileSettings from "@/components/pages/user/ProfileSettings.vue";
+import Favorites from "@/components/pages/user/Favorites.vue";
+import ProfileDetails from "@/components/pages/user/ProfileDetails.vue";
+import OrdersHistory from "@/components/pages/user/OrdersHistory.vue";
+
+
+// Storefront Pages
+import Homepage from "@/components/pages/home/Homepage.vue";
+import ContactUs from "@/components/pages/home/ContactUs.vue";
+import SiteReview from "@/components/pages/home/SiteReview.vue";
+import NewArrival from "@/components/pages/products/NewArrival.vue";
+import ChildrenCollection from "@/components/pages/products/ChildrenCollection.vue";
+import MenCollection from "@/components/pages/products/MenCollection.vue";
+import WomenCollection from "@/components/pages/products/WomenCollection.vue";
+import Sustainability from "@/components/pages/products/Sustainability.vue";
+import ShoppingCart from "@/components/pages/cart/ShoppingCart.vue";
+import Checkout from "@/components/pages/cart/Checkout.vue";
+import ProductFavorites from "@/components/pages/cart/Favorite.vue";
+
+// Maintenance Pages
+import Fix from "@/components/pages/maintenance/Fix.vue";
+import Forbidden from "@/components/pages/maintenance/Forbidden.vue";
+
+// Layouts
+import AdminLayout from "@/components/layouts/AdminLayout.vue";
+import HomepageLayout from "@/components/layouts/HomepageLayout.vue";
+import AdminInfo from "@/components/pages/admin/AdminInfo.vue";
+
+
+// Modals
+import AdminViewCustomerModal from "@/components/modals/AdminViewCustomerModal.vue";
+
+import Refund from '@/components/pages/user/Refund.vue'
 
 const routes = [
     {path: "/", redirect: "/Homepage"},
-    {path: "/Homepage", component: Homepage},
-    {path: "/ChildrenCollection", component: ChildrenCollection},
-    {path: "/MenCollection", component: MenCollection},
-    {path: "/ShoppingCart", name: "ShoppingCart", component: ShoppingCart,},
-    {path: "/Checkout", name: "Checkout", component: Checkout,},
-    {path: "/WomenCollection", component: WomenCollection},
-    {path: "/login", component: Login, meta: {guestOnly: true}},
-    {path: "/fix", component: Fix, meta: {guestOnly: true}},
-    {path: "/register", component: CreateAccount, meta: {guestOnly: true}},
-    {path: "/forgot-password", component: ForgotPassword, meta: {guestOnly: true}},
-    {path: "/reset-password", component: ResetPassword, meta: {guestOnly: true}},
-    {path: "/admin-dashboard", component: AdminDashboard, meta: {requiresAuth: true}},
-    {path: "/customer-dashboard", component: CustomerProfile, meta: {requiresAuth: true}},
-    {path: "/contact", component: ContactUs},
-    {path: "/site-review", component: SiteReview},
+
+    // Public Pages
+    {
+        path: "/",
+        component: HomepageLayout,
+        children: [
+
+            {path: "/Homepage", name: "Homepage", component: Homepage},
+            {path: "/NewArrival", name: "NewArrival", component: NewArrival},
+            {path: "/ChildrenCollection", name: "ChildrenCollection", component: ChildrenCollection},
+            {path: "/MenCollection", name: "MenCollection", component: MenCollection},
+            {path: "/WomenCollection", name: "WomenCollection", component: WomenCollection},
+            {path: "/Sustainability", name: "Sustainability", component: Sustainability},
+            {path: "/ShoppingCart", name: "ShoppingCart", component: ShoppingCart},
+            {path: "/Checkout", name: "Checkout", component: Checkout},
+            {path: "/contact", component: ContactUs},
+            {path: "/site-review", component: SiteReview},
+            {path: "/product-favorites", name: "ProductFavorites", component: ProductFavorites},
+
+            // Guest Pages (No authentication required)
+            {path: "/login", name: "user-login", component: Login, meta: {guestOnly: true}},
+            {path: "/register", name: "user-register", component: Register, meta: {guestOnly: true, hideFooter: true}},
+            {
+                path: "/forgot-password",
+                name: "user-forgot-password",
+                component: ForgotPassword,
+                meta: {guestOnly: true, hideFooter: true}
+            },
+            {
+                path: "/reset-password",
+                name: "user-reset-password",
+                component: ResetPassword,
+                meta: {guestOnly: true, hideFooter: true}
+            },
+
+        ],
+    },
+
+    // Customer Pages (Require authentication)
+    {
+        path: "/customer-dashboard",
+        component: HomepageLayout,
+        meta: {requiresAuth: true, role: "customer"},
+        children: [
+            {
+                path: '',
+                name: "CustomerDashboard",
+                component: () => import('@/components/pages/user/ProfileSettings.vue'),
+                children: [
+                    {
+                        path: '',
+                        name: 'ProfileDetails',
+                        component: () => import('@/components/pages/user/ProfileDetails.vue'),
+                        meta: { hideFooter: true }
+                    },
+                    {
+                        path: 'favorites',
+                        name: 'Favorites',
+                        component: () => import('@/components/pages/user/Favorites.vue'),
+                        meta: { hideFooter: true }
+                    },
+                    {
+                        path: 'orders',
+                        name: 'OrdersHistory',
+                        component: () => import('@/components/pages/user/OrdersHistory.vue'),
+                        meta: { hideFooter: true }
+                    }
+                ]
+            }
+        ]
+    },
+
+
+    {
+        path: "/:pathMatch(.*)*",
+        redirect: "/customer-dashboard",
+    },
+
+
+    //Admin Page(Security Page)
+    {path: "/admin-login", name: "admin-login", component: AdminLogin, meta: {guestOnly: true}},
+    // Admin Pages (Require authentication) - Using AdminLayout
+    {
+        path: "/admin",
+        component: AdminLayout,
+        meta: {requiresAuth: true, role: ["admin", "super_admin"]},
+        children: [
+
+            {path: "dashboard", name: "admin-dashboard", component: Dashboard},
+            {path: "users", name: "admin-users", component: AdminUsers},
+            {path: "products", name: "admin-products", component: Products},
+            {path: "orders", name: "admin-orders", component: Orders},
+            {path: "settings", name: "admin-settings", component: Settings},
+            {path: "customers", name: "admin-customers", component: Customers},
+            {path: "customers/:id", name: "admin-customer-profile", component: CustomerProfile},
+            {path: "refund", name: "admin-refund", component: RefundProcessing},
+            {path: "shipping", name: "admin-shipping", component: Shippings},
+            {path: "site-reviews", name: "admin-site-reviews", component: SiteReviews},
+            {path: "admin-info", name: "admin-info", component: AdminInfo, meta: {role: "super_admin"}},
+        ],
+    },
+
+    // Forbidden Page
     {path: "/forbidden", component: Forbidden},
-    {path: "/admin-login", component: AdminLogin, meta: {guest: true}},
+    {path: "/fix", component: Fix, meta: {guestOnly: true}},
 
-    {path: "/admin-dashboard", component: AdminDashboard, meta: {requiresAuth: true, role: ["admin", "super_admin"]}},
-    {path: "/admin-users", component: AdminUsers, meta: {requiresAuth: true, role: ["admin", "super_admin"]}},
-    {path: "/admin-products", component: AdminProducts, meta: {requiresAuth: true, role: ["admin", "super_admin"]}},
-    {path: "/admin-orders", component: AdminOrders, meta: {requiresAuth: true, role: ["admin", "super_admin"]}},
-    {path: "/admin-settings", component: AdminSettings, meta: {requiresAuth: true, role: ["admin", "super_admin"]}},
-    {path: "/admin-customers", component: AdminCustomers, meta: {requiresAuth: true, role: ["admin", "super_admin"]}},
-    {path: "/admin-customers/:id", component: AdminCustomerProfile, meta: {requiresAuth: true, role: ["admin", "super_admin"]}},
-
-
-    {path: "/customer-dashboard", component: CustomerProfile, meta: {requiresAuth: true, role: "customer"}},
-
+    {
+        path: '/refund',
+        name: 'Refund',
+        component: Refund,
+        meta: { requiresAuth: true }
+    },
 ];
 
 const router = createRouter({
@@ -78,7 +189,7 @@ router.beforeEach((to, from, next) => {
                 throw new Error("Invalid JWT structure, expected 3 parts.");
             }
 
-            const payload = JSON.parse(atob(tokenParts[1])); // 解碼 payload
+            const payload = JSON.parse(atob(tokenParts[1])); // Decode payload
             console.log("Decoded Payload:", payload);
 
             if (payload.exp * 1000 > Date.now()) {
@@ -95,12 +206,11 @@ router.beforeEach((to, from, next) => {
     }
 
 
-
     if (to.meta.requiresAuth && !token) {
         alert("Please log in to access this page.");
         return next("/Homepage");
     }
-    const noRedirectRoutes = ["/register", "/login", "/forgot-password", "/reset-password", "/contact"];
+    const noRedirectRoutes = ["/register", "/login", "/forgot-password", "/reset-password", "/contact", "/admin-login"];
 
 
     if (to.meta.guestOnly && token && !noRedirectRoutes.includes(to.path)) {

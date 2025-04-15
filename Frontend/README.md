@@ -22,6 +22,12 @@ npm install
 npm run dev
 ```
 
+### close the project
+
+control + c
+
+
+
 ### Compile and Minify for Production
 
 ```sh

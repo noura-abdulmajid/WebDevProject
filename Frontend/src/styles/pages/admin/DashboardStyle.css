@@ -1,0 +1,140 @@
+/* Dashboard Layout */
+.admin-dashboard {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background: var(--background-color);
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Main Content */
+.content {
+    width: 80vw;
+    margin-left: 1vw;
+    padding: 25px;
+    overflow-y: auto;
+    height: calc(100vh - 50px);
+    flex: 1;
+    transition: margin-left 0.3s ease;
+}
+
+.donut-chart {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    margin: 30px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 12px;
+    text-align: center;
+}
+
+
+.donut-chart h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: var(--primary-color);
+}
+
+#allYearsDonutChart {
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto;
+}
+
+/* Dashboard Cards */
+.dashboard-cards {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.card {
+    flex: 1;
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px var(--shadow-color);
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Charts */
+.charts {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-top: 10px;
+    padding-bottom: 10px;
+}
+
+.chart-container {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    margin: 30px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 12px;
+    text-align: center;
+}
+
+canvas {
+    width: 80%;
+    background: white;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+/* Error Message */
+.error {
+    color: red;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .content {
+        margin-left: 7vw;
+    }
+
+    .dashboard-cards {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    canvas {
+        width: 70%;
+    }
+
+    .charts {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .content {
+        margin-left: 0;
+        width: 100vw;
+        padding: 15px;
+    }
+
+    .dashboard-cards {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    canvas {
+        width: 100%;
+    }
+}

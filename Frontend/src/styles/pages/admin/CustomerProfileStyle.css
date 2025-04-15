@@ -1,0 +1,405 @@
+/* ✅ Customer Profile Box */
+.customer-profile {
+    padding: 25px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin: auto;
+}
+
+/* ✅ Customer Details Section */
+.customer-details {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.08);
+}
+
+.customer-details h3 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.customer-details p {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 8px;
+}
+
+/* ✅ Order Table */
+.order-table {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    overflow-y: auto;
+    max-height: 300px;
+    margin-bottom: 20px;
+}
+
+.order-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.order-table th {
+    background: #2c3e50;
+    color: white;
+    padding: 12px;
+    text-align: left;
+}
+
+.order-table td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+}
+
+.order-table tr:hover {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+/* ✅ Error Message */
+.error-message {
+    color: red;
+    font-weight: bold;
+    font-size: 14px;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal {
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    width: 500px;
+    max-width: 90%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.save-button {
+    background: #4caf50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.cancel-button {
+    background: #f44336;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+/* ✅ Button Container */
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+/* ✅ Back & Edit Buttons */
+.back-button, .edit-button {
+    flex: 1;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+/* ✅ Back Button */
+.back-button {
+    background: #3498db;
+    color: white;
+}
+
+.back-button:hover {
+    background: #2980b9;
+    transform: translateY(-2px);
+}
+
+/* ✅ Edit Button */
+.edit-button {
+    background: #f39c12;
+    color: white;
+}
+
+.edit-button:hover {
+    background: #e67e22;
+    transform: translateY(-2px);
+}
+
+.order-detail-dialog {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.dialog-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.dialog-content {
+    position: relative;
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    z-index: 1100;
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+}
+
+.dialog-content h3 {
+    margin-bottom: 20px;
+}
+
+.dialog-content p {
+    margin: 10px 0;
+}
+
+.close-dialog-button {
+    background: #f44336;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.close-dialog-button:hover {
+    background: #d32f2f;
+}
+
+.edit-order-dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    background-color: #fff;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    padding: 20px;
+    z-index: 1000;
+}
+
+.dialog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.save-button {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.cancel-button {
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Background overlay */
+.delete-confirm-dialog .dialog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+    z-index: 99; /* Ensures it is above all other elements */
+}
+
+/* Dialog container */
+.delete-confirm-dialog .dialog-content {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 400px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    z-index: 100;
+    text-align: center;
+}
+
+/* Dialog text styling */
+.delete-confirm-dialog .dialog-content p {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 16px;
+}
+
+/* Button actions container */
+.delete-confirm-dialog .dialog-actions {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+/* General button styling */
+.delete-confirm-dialog button {
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+/* Confirm button styling */
+.delete-confirm-dialog .confirm-button {
+    background-color: #f44336;
+    color: #fff;
+}
+
+.delete-confirm-dialog .confirm-button:hover {
+    background-color: #d32f2f;
+    transform: scale(1.05);
+}
+
+/* Cancel button styling */
+.delete-confirm-dialog .cancel-button {
+    background-color: #e0e0e0;
+    color: #333;
+}
+
+.delete-confirm-dialog .cancel-button:hover {
+    background-color: #bdbdbd;
+    transform: scale(1.05);
+}
+
+/* ✅ Responsive Design */
+@media (max-width: 768px) {
+    .customer-profile {
+        padding: 20px;
+    }
+
+    .order-table th, .order-table td {
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    .button-group {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 480px) {
+    .customer-profile {
+        padding: 15px;
+    }
+
+    .customer-details {
+        padding: 15px;
+    }
+
+    .order-table th, .order-table td {
+        padding: 8px;
+        font-size: 13px;
+    }
+}

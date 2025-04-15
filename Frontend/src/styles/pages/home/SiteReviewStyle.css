@@ -1,0 +1,145 @@
+body {
+    font-family: "Inter", sans-serif;
+    background: linear-gradient(to right, #f3e9dc, #ecdcc5);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    min-height: 100vh;
+}
+
+.headerReview {
+    margin-top: 110px;
+}
+
+.containerReview {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    max-width: 500px;
+    width: 100%;
+    padding: 20px;
+    margin: auto;
+    height: 100vh;
+}
+
+.wrapper {
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 30px;
+    color: #222;
+}
+
+.form-review {
+    margin-bottom: 25px;
+    text-align: left;
+}
+
+.form-review label {
+    font-weight: 600;
+    margin-bottom: 8px;
+    display: block;
+    color: #333;
+    font-size: 1rem;
+}
+
+input[type="email"],
+textarea {
+    width: 100%;
+    padding: 14px;
+    font-size: 1rem;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    background: #f8f8f8;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input[type="email"]:focus,
+textarea:focus {
+    border-color: #007bff;
+    background: white;
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.1);
+}
+
+textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.required {
+    color: #e63946;
+    margin-left: 4px;
+    font-size: 0.9rem;
+}
+
+/* Star Rating */
+.star-rating {
+    display: flex;
+    justify-content: center;
+    font-size: 32px;
+    margin-top: 10px;
+    gap: 8px;
+}
+
+.star {
+    cursor: pointer;
+    color: #ccc;
+    transition: transform 0.2s, color 0.3s;
+}
+
+.star:hover,
+.star:hover ~ .star {
+    color: #ffcc00;
+    transform: scale(1.1);
+}
+
+.star.selected {
+    color: #ffcc00;
+}
+
+
+/* Submit Button */
+button[type="submit"] {
+    width: 100%;
+    padding: 16px;
+    font-size: 1rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+@media (max-width: 480px) {
+    .wrapper {
+        padding: 25px;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    input,
+    textarea {
+        font-size: 0.95rem;
+    }
+
+    button {
+        font-size: 0.95rem;
+    }
+}

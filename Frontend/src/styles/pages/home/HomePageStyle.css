@@ -1,0 +1,180 @@
+body {
+    background-color: #8b8276;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.banner-large {
+    margin-top: 50px;
+    width: 100%;
+    text-align: center;
+    padding: 60px 20px;
+    color: black;
+}
+
+.banner-large h1 {
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+.banner-large p {
+    font-size: 20px;
+    margin: 10px 0;
+}
+
+.promo {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 20px;
+    color: white;
+    background-color: #8b8276;
+}
+
+.promo h2 {
+    font-size: 48px;
+    margin-bottom: 10px;
+}
+
+.promo p {
+    font-size: 20px;
+}
+
+.promo .btn {
+    background-color: #ddff30;
+    color: black;
+    text-decoration: none;
+    padding: 12px 24px;
+    font-size: 18px;
+    border-radius: 8px;
+    margin-top: 20px;
+    display: inline-block;
+}
+
+.carousel-container {
+    position: relative;
+    width: 500px;
+    text-align: center;
+    border: 3px solid #d3c6b2;
+    padding: 10px;
+    background-color: white;
+}
+
+.carousel {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+.carousel img {
+    width: 100%;
+    display: none;
+}
+
+.carousel img.active {
+    display: block;
+}
+
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.carousel-btn.left {
+    left: 10px;
+}
+.carousel-btn.right {
+    right: 10px;
+}
+
+.trainer-description {
+    font-size: 16px;
+    color: #333;
+    margin-top: 10px;
+}
+
+.categories {
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.category-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+    margin-top: 40px;
+}
+
+.category-card {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    max-width: 280px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.category-card img {
+    width: 100%;
+    border-radius: 6px;
+}
+
+.category-card h3 {
+    font-size: 22px;
+    margin: 15px 0 10px;
+}
+
+.category-card p {
+    font-size: 16px;
+    color: #444;
+    margin-bottom: 15px;
+}
+
+.category-card .btn {
+    background: #828768;
+    color: black;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 16px;
+}
+
+.reviews {
+    padding: 60px 20px;
+    background: #f4f1ee;
+    text-align: center;
+}
+
+.reviews h2 {
+    font-size: 36px;
+    margin-bottom: 40px;
+}
+
+.reviews-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+}
+
+.review-card {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 280px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.reviewer {
+    margin-top: 10px;
+    font-weight: bold;
+}
